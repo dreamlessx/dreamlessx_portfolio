@@ -1,4 +1,4 @@
-/* animations.css — concentric circle gears, contained in right column */
+/* animations.css — clean concentric circle gears */
 
 .gear-scene {
   position: relative;
@@ -7,118 +7,88 @@
   overflow: visible;
 }
 
-/* each gear = two concentric circles (element + ::before) */
 .gear-scene .gear {
   position: absolute;
   border-radius: 50%;
-  border: 1.5px solid rgba(200, 255, 0, 0.4);
+  border: 1px solid rgba(200, 255, 0, 0.3);
   background: transparent;
   will-change: transform;
 }
 
-/* inner concentric circle */
+/* inner concentric circle — much smaller ratio, very subtle */
 .gear-scene .gear::before {
   content: '';
   position: absolute;
   top: 50%;
   left: 50%;
   border-radius: 50%;
-  border: 1.5px solid rgba(200, 255, 0, 0.6);
+  border: 1px solid rgba(200, 255, 0, 0.15);
   background: transparent;
   transform: translate(-50%, -50%);
 }
 
-/* no extra pseudo-elements */
 .gear-scene .gear::after { display: none; }
 
-/* gear 1 — very large, top-right, bleeds off edge */
+/* gear 1 — large, upper-right */
 .gear-scene .gear--1 {
-  width: 280px;
-  height: 280px;
-  top: -30px;
-  right: -60px;
-  animation: spin-cw 22s linear infinite;
-  border-color: rgba(200, 255, 0, 0.25);
+  width: 300px;
+  height: 300px;
+  top: -20px;
+  right: -50px;
+  animation: spin-cw 30s linear infinite;
 }
 .gear-scene .gear--1::before {
-  width: 200px;
-  height: 200px;
-  border-color: rgba(200, 255, 0, 0.4);
+  width: 180px;
+  height: 180px;
 }
 
 /* gear 2 — large, center-left, overlaps gear 1 */
 .gear-scene .gear--2 {
-  width: 220px;
-  height: 220px;
-  top: 80px;
-  left: -20px;
-  animation: spin-ccw 17s linear infinite;
-  border-color: rgba(200, 255, 0, 0.3);
+  width: 230px;
+  height: 230px;
+  top: 100px;
+  left: -10px;
+  animation: spin-ccw 24s linear infinite;
+  border-color: rgba(200, 255, 0, 0.25);
 }
 .gear-scene .gear--2::before {
-  width: 150px;
-  height: 150px;
-  border-color: rgba(200, 255, 0, 0.5);
+  width: 130px;
+  height: 130px;
 }
 
 /* gear 3 — medium, bottom-right */
 .gear-scene .gear--3 {
-  width: 180px;
-  height: 180px;
-  bottom: -20px;
-  right: 20px;
-  animation: spin-cw 14s linear infinite;
-  border-color: rgba(200, 255, 0, 0.22);
-}
-.gear-scene .gear--3::before {
-  width: 120px;
-  height: 120px;
-  border-color: rgba(200, 255, 0, 0.38);
-}
-
-/* gear 4 — medium, bottom-left, fills dead space */
-.gear-scene .gear--4 {
-  width: 140px;
-  height: 140px;
-  bottom: 40px;
-  left: 30px;
-  animation: spin-ccw 11s linear infinite;
+  width: 160px;
+  height: 160px;
+  bottom: -10px;
+  right: 40px;
+  animation: spin-cw 18s linear infinite;
   border-color: rgba(200, 255, 0, 0.2);
 }
-.gear-scene .gear--4::before {
+.gear-scene .gear--3::before {
   width: 90px;
   height: 90px;
-  border-color: rgba(200, 255, 0, 0.35);
 }
 
-/* gear 5 — small, upper-left accent */
-.gear-scene .gear--5 {
-  width: 80px;
-  height: 80px;
-  top: 30px;
-  left: 60px;
-  animation: spin-cw 7s linear infinite;
-  border-color: rgba(200, 255, 0, 0.15);
-}
-.gear-scene .gear--5::before {
-  width: 48px;
-  height: 48px;
-  border-color: rgba(200, 255, 0, 0.3);
-}
-
-/* gear 6 — small, center accent */
-.gear-scene .gear--6 {
-  width: 60px;
-  height: 60px;
-  top: 180px;
-  left: 140px;
-  animation: spin-ccw 5s linear infinite;
+/* gear 4 — small accent, tucked between 2 and 3 */
+.gear-scene .gear--4 {
+  width: 70px;
+  height: 70px;
+  bottom: 80px;
+  left: 120px;
+  animation: spin-ccw 10s linear infinite;
   border-color: rgba(200, 255, 0, 0.12);
 }
-.gear-scene .gear--6::before {
-  width: 36px;
-  height: 36px;
-  border-color: rgba(200, 255, 0, 0.25);
+.gear-scene .gear--4::before {
+  width: 38px;
+  height: 38px;
+  border-color: rgba(200, 255, 0, 0.08);
+}
+
+/* hide extra gears — only using 4 now for cleanliness */
+.gear-scene .gear--5,
+.gear-scene .gear--6 {
+  display: none;
 }
 
 @keyframes spin-cw {
