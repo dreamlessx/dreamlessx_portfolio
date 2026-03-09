@@ -13,11 +13,10 @@
 </head>
 <body>
 
-  <!-- status ticker -->
-  <div class="status-bar">
+  <div class="status-bar" id="statusBar">
     <div class="status-bar-inner">
       <span class="status-dot"></span>
-      <span class="mono">currently:</span> waiting on MCAT results, prepping for Harvard summer, building LandmarkDiff
+      <span class="status-text mono" id="statusText">currently doomscrolling insta</span>
     </div>
   </div>
 
@@ -27,8 +26,8 @@
       <div class="nav-links" id="navLinks">
         <a href="#about">about</a>
         <a href="#research">research</a>
-        <a href="#projects">projects</a>
         <a href="#clinical">clinical</a>
+        <a href="#projects">projects</a>
         <a href="#mentorship">mentorship</a>
         <a href="#contact">contact</a>
       </div>
@@ -41,43 +40,23 @@
   <main>
 
     <section class="hero" id="home">
-      <div class="container hero-grid">
+      <div class="container">
         <div class="hero-content">
-          <p class="hero-tag mono">neuroscience · biochemistry · too many side projects</p>
+          <p class="hero-tag mono">neuroscience · biochemistry · too many side projects · too little time</p>
           <h1 class="hero-title">
-            i make neurons fire<br>
-            and code compile.<br>
-            sometimes both at once.
+            somewhere between the<br>
+            wet lab and a terminal<br>
+            window, i found my thing.
           </h1>
-          <p class="hero-sub">
-            Junior at UW studying biochemistry. I bounce between six research labs, three institutions,
-            and an unreasonable number of terminal windows. This summer I'm headed to Harvard Medical School.
-            Long term? Physician-scientist who builds the tools other doctors actually want to use.
-          </p>
+          <p class="hero-sub" id="heroTyping"></p>
+          <noscript>
+            <p class="hero-sub">junior. uw. biochemistry + neuroscience. two active labs, three institutions, and an unreasonable number of terminal windows. this summer i'm headed to harvard medical school. long term? maybe a surgeon. maybe a scientist. probably both.</p>
+          </noscript>
           <div class="hero-links">
             <a href="#research" class="btn">view research &darr;</a>
             <a href="https://youtube.com/@theoverzealouspremed" target="_blank" rel="noopener" class="btn btn-ghost">youtube &nearr;</a>
             <a href="https://github.com/dreamlessx" target="_blank" rel="noopener" class="btn btn-ghost">github &nearr;</a>
-          </div>
-        </div>
-        <div class="hero-cat" aria-hidden="true">
-          <div class="cat-scene">
-            <div class="cat-body">
-              <div class="cat-head">
-                <div class="cat-ear cat-ear-l"></div>
-                <div class="cat-ear cat-ear-r"></div>
-                <div class="cat-eye cat-eye-l"></div>
-                <div class="cat-eye cat-eye-r"></div>
-              </div>
-              <div class="cat-paw cat-paw-l"></div>
-              <div class="cat-paw cat-paw-r"></div>
-            </div>
-            <div class="cat-laptop">
-              <div class="cat-screen">
-                <span class="cat-code mono"></span>
-              </div>
-              <div class="cat-keyboard"></div>
-            </div>
+            <a href="https://www.linkedin.com/in/rajagar/" target="_blank" rel="noopener" class="btn btn-ghost">linkedin &nearr;</a>
           </div>
         </div>
       </div>
@@ -92,50 +71,61 @@
               My path to medicine was not linear and honestly that's the whole point.
             </p>
             <p>
-              I got into research because I thought it would look good on applications. I stayed because I accidentally fell in love with the intersection of computation and biology. One semester I was doing primate neurosurgery in the Bair Lab, running calcium imaging pipelines, and debugging Python at 2am. The next I was at Vanderbilt building protein design tools with AlphaFold and Rosetta. Somewhere in between I was doing CRISPR in the Hawn Lab trying to figure out how tuberculosis hijacks macrophages.
+              I'm a junior at UW studying biochemistry and neuroscience. I got into research because I thought it would look good on applications. I stayed because I accidentally fell in love with building things that sit between computation and biology.
             </p>
             <p>
-              Outside the lab, I've spent over 1,600 hours as a medical assistant across cardiology and sleep medicine. I volunteer at Recovery Cafe, I train as a crisis counselor on Crisis Text Line, and I teach organic chemistry to students who think they're bad at it (they're not, the textbook is).
+              Right now I split my time between the Bair Lab where I do primate neurosurgery and calcium imaging analysis, and the Meiler Lab at Vanderbilt where I build protein design pipelines. Before that I was doing CRISPR in the Hawn Lab, molecular docking in the Anderson Lab, and neural network modeling in the Stiber Lab.
             </p>
             <p>
-              I also run <a href="https://youtube.com/@theoverzealouspremed" target="_blank" rel="noopener">The Overzealous Premed</a> on YouTube because nobody told me what actually mattered when I started this journey. So I'm telling everyone else.
+              Outside the lab I'm a medical assistant, a crisis counselor, a YouTube creator, a volunteer, and a guy who probably has too many VS Code windows open. I teach organic chemistry to students who think they're bad at it. They're not. The textbook is just written by someone who forgot what it's like to learn.
             </p>
             <p>
-              The through line? I like hard problems that sit between disciplines. The best stuff happens when you stop asking "what field is this?" and start asking "does this actually work?"
+              I run <a href="https://youtube.com/@theoverzealouspremed" target="_blank" rel="noopener">The Overzealous Premed</a> on YouTube because nobody told me what actually mattered when I started this journey. So I'm telling everyone else. No filter, no polish.
+            </p>
+            <p>
+              The through line is that I like hard problems that don't fit neatly into one field. The best stuff happens when you stop asking "what discipline is this?" and start asking "does this actually work?"
             </p>
           </div>
-          <div class="about-stats">
+          <div class="about-stats" id="aboutStats">
             <div class="stat-card">
-              <span class="stat-num mono">6</span>
+              <span class="stat-num mono" data-target="6" data-overshoot="9">0</span>
               <span class="stat-label">research labs</span>
             </div>
             <div class="stat-card">
-              <span class="stat-num mono">3</span>
+              <span class="stat-num mono" data-target="3" data-overshoot="5">0</span>
               <span class="stat-label">institutions</span>
             </div>
             <div class="stat-card">
-              <span class="stat-num mono">2,000+</span>
+              <span class="stat-num mono" data-target="3" data-overshoot="4">0</span>
+              <span class="stat-label">hospitals</span>
+            </div>
+            <div class="stat-card">
+              <span class="stat-num mono" data-target="2836" data-overshoot="2900" data-auto-increment="2.857" data-base-date="2026-03-09" data-suffix="+">0</span>
               <span class="stat-label">research hours</span>
             </div>
             <div class="stat-card">
-              <span class="stat-num mono">1,600+</span>
+              <span class="stat-num mono" data-target="1623" data-overshoot="1680">0</span>
               <span class="stat-label">clinical hours</span>
             </div>
             <div class="stat-card">
-              <span class="stat-num mono">4</span>
-              <span class="stat-label">TA positions</span>
+              <span class="stat-num mono" data-target="540" data-overshoot="580" data-suffix="+">0</span>
+              <span class="stat-label">volunteer hours</span>
             </div>
             <div class="stat-card">
-              <span class="stat-num mono">15%</span>
-              <span class="stat-label">avg test score improvement</span>
-            </div>
-            <div class="stat-card">
-              <span class="stat-num mono">137</span>
+              <span class="stat-num mono" data-target="136" data-overshoot="145">0</span>
               <span class="stat-label">shadowing hours</span>
             </div>
+            <div class="stat-card">
+              <span class="stat-num mono" data-rng-min="4" data-rng-max="10">0</span>
+              <span class="stat-label">terminal windows open</span>
+            </div>
             <div class="stat-card stat-card-fun">
-              <span class="stat-num mono">???</span>
-              <span class="stat-label">hours doomscrolled on insta</span>
+              <span class="stat-num mono" data-target="223" data-overshoot="240" data-auto-increment="1.5" data-base-date="2026-03-09">0</span>
+              <span class="stat-label">monsters consumed</span>
+            </div>
+            <div class="stat-card stat-card-fun">
+              <span class="stat-num mono" data-rng-min="0" data-rng-max="0">0</span>
+              <span class="stat-label">notifications</span>
             </div>
           </div>
         </div>
@@ -145,7 +135,7 @@
     <section class="section section-alt" id="research">
       <div class="container">
         <h2 class="section-label mono">research</h2>
-        <p class="section-intro">Six laboratories across three institutions. Computational neuroscience, structural biology, infectious disease, drug development, and AI-driven surgical simulation. The common thread is computation meets biology.</p>
+        <p class="section-intro">Six laboratories across three institutions. The common thread is computation meets biology. Click into Bair Lab and Meiler Lab for the deep dives.</p>
 
         <div class="research-grid">
 
@@ -153,31 +143,31 @@
             <div class="research-meta mono">incoming · summer 2026</div>
             <h3>Gu Lab · Harvard Medical School</h3>
             <p class="research-focus">Neurovascular Biology</p>
-            <p>Working under HHMI Investigator Dr. Chenghua Gu. I'll be applying the XORI cross-orientation analysis methodology I developed in the Bair Lab to cardiovascular knockouts in a neurovascular context. Self-directed research, 12 weeks. Also planning to validate LandmarkDiff clinically with Harvard-affiliated plastic surgeons while I'm there.</p>
+            <p>Working under HHMI Investigator Dr. Chenghua Gu. Applying the XORI cross-orientation analysis methodology I developed in the Bair Lab to cardiovascular knockouts in a neurovascular context. Self-directed, 12 weeks. Also planning to validate LandmarkDiff clinically with Harvard-affiliated plastic surgeons.</p>
             <p class="research-output mono">planned: neurovascular contributions, LandmarkDiff clinical validation</p>
           </div>
 
-          <div class="research-card">
-            <div class="research-meta mono">dec 2024 - present · <a href="https://github.com/dreamlessx/XORI_Data_Analysis" target="_blank" rel="noopener">github &nearr;</a></div>
+          <a href="bair-lab.html" class="research-card research-card-link">
+            <div class="research-meta mono">dec 2024 - present · <span class="research-detail-link">full details &nearr;</span></div>
             <h3>Bair Lab · University of Washington</h3>
             <p class="research-focus">Computational Neuroscience</p>
-            <p>I assist in non-human primate neurosurgeries and then analyze the data computationally. We're using two-photon and three-photon calcium imaging to study cross-orientation suppression in macaque visual cortex. I built the full XORI analysis pipeline: 4,785 ROIs across 28 cortical depths (140 to 518 microns), mixed-effects modeling that found a laminar shift from facilitation to suppression (p = 7.9 x 10^-10). Spatial frequency mediates ~40% of the variance.</p>
-            <p class="research-output mono">first-author arXiv preprint · SfN 2025 poster · second-author manuscript in prep</p>
-          </div>
+            <p>Non-human primate neurosurgery + all computational analysis. Two-photon/three-photon calcium imaging of cross-orientation suppression in macaque V1. 4,785 ROIs across 28 cortical depths. Built the full XORI pipeline.</p>
+            <p class="research-output mono">first-author arXiv preprint · SfN 2025 · WANPRC · <a href="https://github.com/dreamlessx/XORI_Data_Analysis" target="_blank" rel="noopener" onclick="event.stopPropagation()">github</a></p>
+          </a>
 
-          <div class="research-card">
-            <div class="research-meta mono">may 2025 - present · <a href="https://github.com/dreamlessx/Protein_Ideal" target="_blank" rel="noopener">github &nearr;</a></div>
+          <a href="meiler-lab.html" class="research-card research-card-link">
+            <div class="research-meta mono">may 2025 - present · <span class="research-detail-link">full details &nearr;</span></div>
             <h3>Meiler Lab · Vanderbilt University</h3>
             <p class="research-focus">Computational Structural Biology</p>
-            <p>Alphavirus stabilization for vaccine development as part of ARPA-H. I built the full BM5.5 protein-protein complex relaxation benchmark: AlphaFold 2.3.2 + Boltz-1 v0.4.1 with AMBER relaxation, Rosetta 3.15 relaxation (6 protocols x 5 replicates) across 257 complexes, 6,800+ structures total. End-to-end computational pipeline integrating AlphaFold, Rosetta, and ProteinMPNN for protein design.</p>
-            <p class="research-output mono">first-author manuscript in prep · vanderbilt symposium · <a href="https://github.com/dreamlessx/Protein_Data_Analysis" target="_blank" rel="noopener">Protein_Data_Analysis</a> · <a href="https://github.com/dreamlessx/Protein_Ideal" target="_blank" rel="noopener">Protein_Ideal</a> · <a href="https://github.com/dreamlessx/Protein_Relax_Pipeline" target="_blank" rel="noopener">Relax_Pipeline</a></p>
-          </div>
+            <p>Alphavirus stabilization for vaccine development under a $46M ARPA-H grant. Full BM5.5 benchmark across 257 complexes, 6,800+ structures. AlphaFold + Rosetta + ProteinMPNN pipeline.</p>
+            <p class="research-output mono">first-author manuscript · vanderbilt symposium · <a href="https://github.com/dreamlessx/Protein_Ideal" target="_blank" rel="noopener" onclick="event.stopPropagation()">3 repos</a></p>
+          </a>
 
           <div class="research-card">
             <div class="research-meta mono">jan - nov 2025</div>
             <h3>Hawn Lab · University of Washington</h3>
             <p class="research-focus">Infectious Disease / Immunology</p>
-            <p>Wet lab work investigating how tuberculosis impacts MAPKAPK2-regulated gene expression in macrophages. This was my hands-on bench science experience: Western blot, PCR, cell culture, CRISPR-Cas9, gene expression analysis. Different from everything else I do but that was the point.</p>
+            <p>Wet lab investigating how TB impacts MAPKAPK2-regulated gene expression in macrophages. CRISPR-Cas9, PCR, cell culture, gene expression analysis. My hands-on bench science experience.</p>
             <p class="research-output mono">second-author publication in prep</p>
           </div>
 
@@ -185,194 +175,216 @@
             <div class="research-meta mono">sep - dec 2024</div>
             <h3>Anderson Lab · University of Washington</h3>
             <p class="research-focus">Computational Drug Development</p>
-            <p>Computational development of rifampin replacement compounds for tuberculosis treatment. Molecular docking with AutoDock Vina, virtual screening, structure-activity relationship analysis. My first taste of using computation to solve a clinical problem directly.</p>
+            <p>Computational development of rifampin replacement compounds for TB treatment. AutoDock Vina, virtual screening, structure-activity analysis.</p>
             <p class="research-output mono">UW undergraduate research symposium</p>
           </div>
 
           <div class="research-card">
-            <div class="research-meta mono">dec 2023 - jun 2024</div>
+            <div class="research-meta mono">dec 2023 - jun 2024 · <a href="https://github.com/dreamlessx" target="_blank" rel="noopener">github &nearr;</a></div>
             <h3>Stiber Lab · University of Washington</h3>
             <p class="research-focus">Computational Neuroscience</p>
-            <p>Where it all started. Modeling neuronal network behaviors in cell cultures. Wrote C++ and Python for neural activity analysis. Contributed to the lab codebase on GitHub. Learned what research actually is versus what I thought it was.</p>
+            <p>Where it all started. Modeling neuronal network behaviors in cell cultures. C++ and Python for neural activity analysis. Learned what research actually is vs what I thought it was.</p>
           </div>
 
         </div>
       </div>
     </section>
 
-    <section class="section" id="projects">
-      <div class="container">
-        <h2 class="section-label mono">projects</h2>
-        <p class="section-intro">Research tools, side projects, and things I built because I thought "how hard could it be?" (always harder than expected)</p>
-
-        <div class="projects-carousel">
-
-          <div class="project-card project-card-featured">
-            <div class="project-status mono">active / in development</div>
-            <h3>LandmarkDiff</h3>
-            <p class="project-sub mono">facial surgery prediction from a smartphone photo</p>
-            <p>A ControlNet-conditioned latent diffusion model that generates photorealistic before/after facial surgery previews from standard 2D clinical photos. No CT scanner required ($50K-$100K each). No published work does this with diffusion models and anatomical constraints. 530+ cataloged boundary conditions across mobile optics, 3D reconstruction, FLUX diffusion, biomechanics, and HPC infrastructure.</p>
-            <div class="project-tech">
-              <span>React Native</span>
-              <span>FLUX.1-dev</span>
-              <span>ControlNet</span>
-              <span>FLAME</span>
-              <span>FastAPI</span>
-              <span>AWS/SLURM</span>
-            </div>
-            <p class="project-vision">
-              <strong>Vision:</strong> Democratize surgical planning. Any patient, any clinic, any phone.
-              <strong>What's needed:</strong> Clinical validation dataset, IRB approval, training compute on Hyak HPC.
-            </p>
-            <a href="https://github.com/dreamlessx" target="_blank" rel="noopener" class="project-link mono">repo coming soon &nearr;</a>
-          </div>
-
-          <div class="project-card">
-            <div class="project-status mono">active / preprint coming</div>
-            <h3>XORI</h3>
-            <p class="project-sub mono">cross-orientation suppression in macaque V1</p>
-            <p>Full computational analysis pipeline for two-photon calcium imaging data. 4,785 ROIs, 28 cortical depths, mixed-effects modeling. Found that cross-orientation suppression follows a laminar gradient. Built custom Suite2p integration, statistical modeling, and visualization.</p>
-            <div class="project-tech">
-              <span>Python</span>
-              <span>Suite2p</span>
-              <span>statsmodels</span>
-              <span>matplotlib</span>
-            </div>
-            <p class="project-vision">
-              <strong>Vision:</strong> First-author arXiv preprint (target April 2026), SfN poster.
-            </p>
-            <a href="https://github.com/dreamlessx/XORI_Data_Analysis" target="_blank" rel="noopener" class="project-link mono">view on github &nearr;</a>
-          </div>
-
-          <div class="project-card">
-            <div class="project-status mono">active / 3 public repos</div>
-            <h3>Protein Benchmarking</h3>
-            <p class="project-sub mono">AlphaFold vs Boltz-1 on BM5.5</p>
-            <p>Comprehensive benchmarking of AI protein structure prediction against experimental structures from the Protein-Protein Docking Benchmark 5.5. MolProbity quality metrics, Rosetta relaxation protocols, 6,800+ structures analyzed. Part of ARPA-H alphavirus vaccine initiative.</p>
-            <div class="project-tech">
-              <span>Python</span>
-              <span>AlphaFold</span>
-              <span>Rosetta</span>
-              <span>ProteinMPNN</span>
-              <span>MolProbity</span>
-            </div>
-            <div style="display:flex;gap:1rem;flex-wrap:wrap;">
-              <a href="https://github.com/dreamlessx/Protein_Data_Analysis" target="_blank" rel="noopener" class="project-link mono">data analysis &nearr;</a>
-              <a href="https://github.com/dreamlessx/Protein_Ideal" target="_blank" rel="noopener" class="project-link mono">full benchmark &nearr;</a>
-              <a href="https://github.com/dreamlessx/Protein_Relax_Pipeline" target="_blank" rel="noopener" class="project-link mono">relax pipeline &nearr;</a>
-            </div>
-          </div>
-
-          <div class="project-card">
-            <div class="project-status mono">shipped / private</div>
-            <h3>ICT God</h3>
-            <p class="project-sub mono">full-stack web app</p>
-            <p>Next.js 14 application with TypeScript, Prisma ORM, and PostgreSQL. Server components, API routes, the whole deal. Migrated from SQLite to Postgres on the shared dev Docker stack. My "learn modern web dev by actually building something" project.</p>
-            <div class="project-tech">
-              <span>Next.js 14</span>
-              <span>TypeScript</span>
-              <span>Prisma</span>
-              <span>PostgreSQL</span>
-            </div>
-          </div>
-
-          <div class="project-card">
-            <div class="project-status mono">shipped / private</div>
-            <h3>YouTube Pipeline</h3>
-            <p class="project-sub mono">automated content production</p>
-            <p>End-to-end content pipeline for The Overzealous Premed. FastAPI backend, Celery task queue, n8n workflow automation, Redis, PostgreSQL. Automates the boring parts of running a YouTube channel so I can focus on making videos.</p>
-            <div class="project-tech">
-              <span>Python</span>
-              <span>FastAPI</span>
-              <span>Celery</span>
-              <span>n8n</span>
-              <span>Docker</span>
-            </div>
-          </div>
-
-          <div class="project-card">
-            <div class="project-status mono">shipped / private</div>
-            <h3>RAG Med</h3>
-            <p class="project-sub mono">medical knowledge retrieval system</p>
-            <p>Retrieval-augmented generation system for medical literature. FastAPI backend with React/Vite frontend. Built because I got tired of Ctrl+F-ing through PubMed papers. Semantic search over medical docs with LLM-powered answers.</p>
-            <div class="project-tech">
-              <span>FastAPI</span>
-              <span>React</span>
-              <span>Vite</span>
-              <span>SQLite</span>
-            </div>
-          </div>
-
-          <div class="project-card">
-            <div class="project-status mono">in progress / public</div>
-            <h3>Rusty OS</h3>
-            <p class="project-sub mono">bare-metal x86_64 kernel in rust</p>
-            <p>Because apparently I needed to understand computers from the literal metal up. Custom bootloader, VGA text mode, interrupt handling, memory management. Cross-compiled with nightly Rust targeting x86_64-unknown-none. I run it in QEMU and feel like a wizard every time it boots.</p>
-            <div class="project-tech">
-              <span>Rust</span>
-              <span>x86_64 asm</span>
-              <span>QEMU</span>
-              <span>no_std</span>
-            </div>
-            <span class="project-link mono">repo is private (for now)</span>
-          </div>
-
-        </div>
-      </div>
-    </section>
-
-    <section class="section section-alt" id="clinical">
+    <section class="section" id="clinical">
       <div class="container">
         <h2 class="section-label mono">clinical experience</h2>
-        <p class="section-intro">1,900+ total hours across paid clinical roles, hospital volunteering, and physician shadowing.</p>
+        <p class="section-intro">1,900+ total hours across paid clinical roles, hospital volunteering, and physician shadowing across five specialties.</p>
 
-        <h3 class="subsection-label mono">paid positions</h3>
-        <div class="clinical-grid">
+        <h3 class="subsection-label mono">paid positions · evergreen hospital, kirkland WA</h3>
+        <div class="clinical-grid clinical-grid-2">
           <div class="clinical-card">
             <div class="clinical-hours mono">~1,026 hrs</div>
             <h4>Medical Assistant, Heart Care Cardiology</h4>
-            <p class="clinical-meta mono">mar 2023 - jan 2025 · 12 hrs/week</p>
+            <p class="clinical-meta mono">jul 2023 - jan 2025 · 12 hrs/week</p>
             <p>Patient rooming, vitals, 12-lead EKG administration, patient education, EMR documentation. Worked directly under cardiologists managing chronic heart failure, arrhythmias, and post-procedural follow-up. This is where I learned what it actually means to show up for someone on their worst day.</p>
           </div>
           <div class="clinical-card">
             <div class="clinical-hours mono">~600 hrs</div>
             <h4>Medical Assistant, Sleep Medicine Clinic</h4>
-            <p class="clinical-meta mono">jan 2025 - mar 2026 · 24 hrs/week</p>
-            <p>Sleep study coordination, patient intake, Epworth Sleepiness Scale administration, CPAP fitting and education. Managed patient flow in a high-volume sleep disorders practice. Learned that half of medicine is just listening to people describe how tired they are (relatable).</p>
+            <p class="clinical-meta mono">feb 2025 - present · 24 hrs/week</p>
+            <p>Sleep study coordination, patient intake, Epworth Sleepiness Scale administration, CPAP fitting and education. Managing patient flow in a high-volume sleep disorders practice. Half of medicine is just listening to people describe how tired they are (relatable).</p>
           </div>
         </div>
 
         <h3 class="subsection-label mono">volunteering</h3>
-        <div class="clinical-grid">
+        <div class="clinical-grid clinical-grid-1">
           <div class="clinical-card">
             <div class="clinical-hours mono">283 hrs</div>
-            <h4>COPE Health Scholars</h4>
+            <h4>COPE Health Scholars · Swedish Medical Center, Seattle</h4>
             <p class="clinical-meta mono">hospital program</p>
-            <p>Hospital-based clinical observation and direct patient support. Rotated through units, assisted nursing staff, learned the actual rhythms of how a hospital works from the inside.</p>
+            <p>Hospital-based clinical observation and direct patient support. Rotated through units, assisted nursing staff, learned the rhythms of how a hospital actually works from the inside.</p>
           </div>
         </div>
 
-        <h3 class="subsection-label mono">physician shadowing · 137 hours · 5 specialties · 12 physicians</h3>
-        <div class="shadowing-grid">
-          <div class="shadowing-item">
-            <span class="mono">neurology</span>
-            <span>54 hrs · stroke clinic, movement disorders, telemedicine</span>
+        <h3 class="subsection-label mono">physician shadowing · 136 hours · 5 specialties · 12 physicians</h3>
+
+        <div class="shadowing-details">
+
+          <details class="shadow-group">
+            <summary>
+              <span class="shadow-specialty mono">neurology</span>
+              <span class="shadow-hours mono">54 hrs · 4 physicians</span>
+            </summary>
+            <div class="shadow-content">
+              <div class="shadow-doctor">
+                <h4>Dr. Pinky Agarwal · Evergreen Hospital</h4>
+                <p class="mono">9 hrs</p>
+                <p>Clinic operations, Botox for muscle spasms, Parkinson's identification and treatment. Toured the Evergreen research lab.</p>
+              </div>
+              <div class="shadow-doctor">
+                <h4>Dr. Raghu Upender</h4>
+                <p class="mono">12 hrs</p>
+                <p>Telemedicine procedures, continuity clinic for general neurology. Resident-attending interactions, muscle disorder cross-specialty overlap (cardiology/rheumatology/neurology), stepwise diagnostic elimination.</p>
+              </div>
+              <div class="shadow-doctor">
+                <h4>Dr. Winston Bell</h4>
+                <p class="mono">18 hrs</p>
+                <p>Stroke clinic. Stroke alerts and image processing, bedside manner variation between residents, rapid functional testing post-stroke. Pin prick tests, hierarchy between residents.</p>
+              </div>
+              <div class="shadow-doctor">
+                <h4>Dr. Raymond Park</h4>
+                <p class="mono">12 hrs</p>
+                <p>General neurology. Basic procedures to check strength of cognition and nerves, alternative Botox methods, patient rapport.</p>
+              </div>
+              <div class="shadow-doctor">
+                <h4>Dr. Theodore Brown</h4>
+                <p class="mono">3 hrs</p>
+                <p>Multiple sclerosis, spinal cord symptom display, imaging techniques, basic spinal and neural anatomy screening.</p>
+              </div>
+            </div>
+          </details>
+
+          <details class="shadow-group">
+            <summary>
+              <span class="shadow-specialty mono">cardiology</span>
+              <span class="shadow-hours mono">38 hrs · 4 physicians</span>
+            </summary>
+            <div class="shadow-content">
+              <div class="shadow-doctor">
+                <h4>Dr. Laura Benes · Evergreen Hospital</h4>
+                <p class="mono">14 hrs</p>
+                <p>Clinical operations, cardiac symptoms, sleep apnea workups. Learned basic TTE controls and cardiac ultrasound reading.</p>
+              </div>
+              <div class="shadow-doctor">
+                <h4>Dr. Vikas Sharotri · Evergreen Hospital</h4>
+                <p class="mono">15.5 hrs</p>
+                <p>Atrial fibrillation management, bedside manner focus. Angiogram/angioplasty observation. Trained on EKG interpretation and tested on readings.</p>
+              </div>
+              <div class="shadow-doctor">
+                <h4>Dr. William Getchell · Evergreen Hospital</h4>
+                <p class="mono">6 hrs</p>
+                <p>Triple-stent placement, emergency STEMI intervention. Anesthesia protocols, heparin/dye contrast, stent mechanics, real-time complication resolution during emergency cath.</p>
+              </div>
+              <div class="shadow-doctor">
+                <h4>Dr. Radha Mehta · Evergreen Hospital</h4>
+                <p class="mono">3 hrs</p>
+                <p>Cath conference. Cangrelor implementation, cost-benefit analysis between ticagrelor, heparin, and prasugrel.</p>
+              </div>
+            </div>
+          </details>
+
+          <details class="shadow-group">
+            <summary>
+              <span class="shadow-specialty mono">urology</span>
+              <span class="shadow-hours mono">22 hrs · 1 physician</span>
+            </summary>
+            <div class="shadow-content">
+              <div class="shadow-doctor">
+                <h4>Dr. Phillip May · Evergreen Hospital</h4>
+                <p class="mono">22 hrs across 5 sessions</p>
+                <p>Robotic kidney cancer removal, kidney lump removal, ureter blockage stent placement, full kidney removal. Learned robotic arm navigation, cauterization, adhesion management, stapler vs clip decision-making. Observed dual-surgeon collaboration and skilled ureter suturing.</p>
+              </div>
+            </div>
+          </details>
+
+          <details class="shadow-group">
+            <summary>
+              <span class="shadow-specialty mono">plastic surgery</span>
+              <span class="shadow-hours mono">10 hrs · 1 physician</span>
+            </summary>
+            <div class="shadow-content">
+              <div class="shadow-doctor">
+                <h4>Dr. Galen Perdikis · Vanderbilt University Medical Center</h4>
+                <p class="mono">10 hrs · OR shadowing</p>
+                <p>Academic plastic surgery attending balancing multiple cases. Observed residents on facelift and fat removal procedures. Learned about scalpel technique, precise skin cutting for proper stitching and lifting, surgical hierarchy.</p>
+              </div>
+            </div>
+          </details>
+
+          <details class="shadow-group">
+            <summary>
+              <span class="shadow-specialty mono">infectious disease</span>
+              <span class="shadow-hours mono">12 hrs · 1 physician</span>
+            </summary>
+            <div class="shadow-content">
+              <div class="shadow-doctor">
+                <h4>Dr. Thomas Hawn · UW Medical Center</h4>
+                <p class="mono">12 hrs</p>
+                <p>HIV clinic counseling, infectious disease clinic with complex infection cases, triage pipeline for treatment. More general practice vs specialized, saw the diagnostic breadth of ID.</p>
+              </div>
+            </div>
+          </details>
+
+        </div>
+      </div>
+    </section>
+
+    <section class="section section-alt" id="projects">
+      <div class="container">
+        <h2 class="section-label mono">side projects</h2>
+        <p class="section-intro">Things I built because I thought "how hard could it be?" (always harder than expected)</p>
+
+        <div class="project-card project-card-featured">
+          <div class="project-status mono">active / in development</div>
+          <h3>LandmarkDiff</h3>
+          <p class="project-sub mono">facial surgery prediction from a smartphone photo</p>
+          <p>A ControlNet-conditioned latent diffusion model that generates photorealistic before/after facial surgery previews from standard 2D clinical photos. No CT scanner required. No published work does this with diffusion models and anatomical constraints. 530+ boundary conditions cataloged across mobile optics, 3D reconstruction, FLUX diffusion, biomechanics, and HPC.</p>
+          <div class="project-tech">
+            <span>React Native</span>
+            <span>FLUX.1-dev</span>
+            <span>ControlNet</span>
+            <span>IP-Adapter</span>
+            <span>FLAME</span>
+            <span>MediaPipe</span>
+            <span>FastAPI</span>
+            <span>Triton</span>
+            <span>AWS/SLURM</span>
           </div>
-          <div class="shadowing-item">
-            <span class="mono">cardiology</span>
-            <span>38 hrs · cath lab, angioplasty, stent placement, EKG training</span>
+          <p class="project-vision">
+            <strong>Vision:</strong> Democratize surgical planning. Any patient, any clinic, any phone.
+            <strong>Needs:</strong> Clinical validation dataset, IRB approval, training compute on Hyak HPC.
+          </p>
+        </div>
+
+        <div class="projects-small-grid">
+          <div class="project-small">
+            <div class="project-status mono">shipped / private</div>
+            <h4>ICT God</h4>
+            <p>Full-stack Next.js 14 app. TypeScript, Prisma, PostgreSQL. Server components, API routes.</p>
+            <div class="project-tech"><span>Next.js</span><span>TypeScript</span><span>Prisma</span></div>
           </div>
-          <div class="shadowing-item">
-            <span class="mono">urology</span>
-            <span>22 hrs · robotic surgery, kidney removal, stent procedures</span>
+          <div class="project-small">
+            <div class="project-status mono">shipped / private</div>
+            <h4>YouTube Pipeline</h4>
+            <p>End-to-end content automation for The Overzealous Premed. FastAPI, Celery, n8n workflows.</p>
+            <div class="project-tech"><span>FastAPI</span><span>Celery</span><span>n8n</span><span>Docker</span></div>
           </div>
-          <div class="shadowing-item">
-            <span class="mono">sleep medicine</span>
-            <span>15 hrs</span>
+          <div class="project-small">
+            <div class="project-status mono">shipped / private</div>
+            <h4>RAG Med</h4>
+            <p>Medical knowledge RAG system. Semantic search over medical docs with LLM answers.</p>
+            <div class="project-tech"><span>FastAPI</span><span>React</span><span>Vite</span></div>
           </div>
-          <div class="shadowing-item">
-            <span class="mono">general</span>
-            <span>8 hrs</span>
+          <div class="project-small">
+            <div class="project-status mono">in progress / private</div>
+            <h4>Rusty OS</h4>
+            <p>Bare-metal x86_64 kernel in Rust. Custom bootloader, VGA text mode, interrupt handling. Feels like a wizard every time it boots.</p>
+            <div class="project-tech"><span>Rust</span><span>x86_64 asm</span><span>QEMU</span></div>
           </div>
         </div>
       </div>
@@ -383,14 +395,13 @@
         <h2 class="section-label mono">leadership & service</h2>
 
         <h3 class="subsection-label mono">leadership</h3>
-        <div class="service-grid">
-          <div class="service-item">
-            <h4>LEAD Teaching Assistant</h4>
-            <p>Four positions across General Biology, Organic Chemistry, and Pre-Chemistry. My students averaged a 15% test score improvement. I run weekly review sessions, office hours, and build practice problems because the ones in the textbook are garbage.</p>
-          </div>
+        <div class="service-grid service-grid-1">
           <div class="service-item">
             <h4>The Overzealous Premed</h4>
-            <p>YouTube channel and peer mentorship program for pre-med students. MCAT strategy, application walkthroughs, day-in-the-life content. Because the premed process is hard enough without also being confusing.</p>
+            <p>YouTube channel and peer mentorship program for pre-med students. I make videos about the premed journey because when I started nobody told me what actually mattered vs what was just noise. MCAT strategy, application walkthroughs, personal statement breakdowns, day-in-the-life content, and honest conversations about the mental side of this path. I also run 1-on-1 mentorship sessions and a peer community. Over 100 students helped directly through mentoring.</p>
+            <div class="service-links">
+              <a href="https://youtube.com/@theoverzealouspremed" target="_blank" rel="noopener" class="mono">youtube &nearr;</a>
+            </div>
           </div>
         </div>
 
@@ -398,11 +409,11 @@
         <div class="service-grid">
           <div class="service-item">
             <h4>Crisis Text Line Counselor</h4>
-            <p>Trained crisis counselor providing text-based support to people in their hardest moments. Connection first, problem-solving later. One question at a time. Real conversations with real stakes.</p>
+            <p>Trained crisis counselor providing text-based support to people in their hardest moments. Connection first, problem-solving later. One question at a time. Meeting people where they are, not where you think they should be.</p>
           </div>
           <div class="service-item">
             <h4>Recovery Cafe Volunteer</h4>
-            <p>Serving meals and building community with individuals recovering from addiction and homelessness. Showing up consistently is the whole thing.</p>
+            <p>Weekly volunteer serving meals and building community with individuals recovering from addiction and homelessness. Showing up consistently is the whole thing.</p>
           </div>
         </div>
       </div>
@@ -411,22 +422,23 @@
     <section class="section section-alt" id="publications">
       <div class="container">
         <h2 class="section-label mono">publications & presentations</h2>
+        <p class="section-intro">Currently on hiatus from publishing while I finish my application cycle. See <a href="https://www.linkedin.com/in/rajagar/" target="_blank" rel="noopener" class="accent-link">LinkedIn</a> for the latest.</p>
         <div class="pub-list">
           <div class="pub-item">
             <span class="pub-status mono">in prep</span>
-            <p><strong>Agarwal, M.</strong> et al. Cross-orientation suppression across cortical depth in macaque V1. <em>arXiv preprint, target April 2026.</em></p>
+            <p>First-author. Cross-orientation suppression across cortical depth in macaque V1. <em>arXiv preprint, target April 2026.</em></p>
           </div>
           <div class="pub-item">
             <span class="pub-status mono">in prep</span>
-            <p><strong>Agarwal, M.</strong> et al. Benchmarking AlphaFold 2.3.2 and Boltz-1 on BM5.5 protein-protein complexes. <em>Meiler Lab, Vanderbilt University.</em></p>
+            <p>First-author. Benchmarking AlphaFold 2.3.2 and Boltz-1 on BM5.5 protein-protein complexes. <em>Meiler Lab, Vanderbilt.</em></p>
           </div>
           <div class="pub-item">
             <span class="pub-status mono">in prep</span>
-            <p>Second author. TB/macrophage MAPKAPK2 gene expression study. <em>Hawn Lab, University of Washington.</em></p>
+            <p>Second author. TB/macrophage MAPKAPK2 gene expression study. <em>Hawn Lab, UW.</em></p>
           </div>
           <div class="pub-item">
             <span class="pub-status mono">presented</span>
-            <p>Society for Neuroscience (SfN) 2025 poster. WANPRC poster.</p>
+            <p>Society for Neuroscience (SfN) 2025 poster, San Diego. WANPRC poster, Seattle.</p>
           </div>
           <div class="pub-item">
             <span class="pub-status mono">presented</span>
@@ -443,67 +455,37 @@
           <div class="tools-group">
             <h4 class="mono">languages</h4>
             <div class="tools-tags">
-              <span>Python</span>
-              <span>TypeScript</span>
-              <span>Rust</span>
-              <span>C++</span>
-              <span>R</span>
-              <span>SQL</span>
+              <span>Python</span><span>TypeScript</span><span>Rust</span><span>C++</span><span>R</span><span>SQL</span><span>MATLAB</span><span>Bash</span>
             </div>
           </div>
           <div class="tools-group">
             <h4 class="mono">research</h4>
             <div class="tools-tags">
-              <span>AlphaFold</span>
-              <span>Rosetta</span>
-              <span>ProteinMPNN</span>
-              <span>Suite2p</span>
-              <span>MATLAB</span>
-              <span>MolProbity</span>
+              <span>AlphaFold</span><span>Rosetta</span><span>ProteinMPNN</span><span>Suite2p</span><span>MolProbity</span><span>AutoDock Vina</span><span>PoseBusters</span>
             </div>
           </div>
           <div class="tools-group">
             <h4 class="mono">ml / ai</h4>
             <div class="tools-tags">
-              <span>PyTorch</span>
-              <span>FLUX.1</span>
-              <span>ControlNet</span>
-              <span>MediaPipe</span>
-              <span>FLAME</span>
-              <span>Triton</span>
+              <span>PyTorch</span><span>FLUX.1</span><span>ControlNet</span><span>IP-Adapter</span><span>MediaPipe</span><span>FLAME</span><span>Triton</span><span>HuggingFace</span>
             </div>
           </div>
           <div class="tools-group">
             <h4 class="mono">web / infra</h4>
             <div class="tools-tags">
-              <span>Next.js</span>
-              <span>React</span>
-              <span>FastAPI</span>
-              <span>Docker</span>
-              <span>PostgreSQL</span>
-              <span>Redis</span>
-              <span>AWS</span>
-              <span>SLURM</span>
+              <span>Next.js</span><span>React</span><span>FastAPI</span><span>Docker</span><span>PostgreSQL</span><span>Redis</span><span>AWS</span><span>SLURM</span><span>Celery</span><span>Git</span>
             </div>
           </div>
           <div class="tools-group">
             <h4 class="mono">wet lab</h4>
             <div class="tools-tags">
-              <span>Western Blot</span>
-              <span>PCR</span>
-              <span>CRISPR-Cas9</span>
-              <span>Cell Culture</span>
-              <span>EKG</span>
+              <span>CRISPR-Cas9</span><span>PCR</span><span>Cell Culture</span><span>Gene Expression</span><span>EKG</span><span>ELISA</span><span>Biological Assays</span>
             </div>
           </div>
           <div class="tools-group">
             <h4 class="mono">daily drivers</h4>
             <div class="tools-tags">
-              <span>neovim</span>
-              <span>VS Code</span>
-              <span>zsh</span>
-              <span>lazygit</span>
-              <span>ripgrep</span>
+              <span>neovim</span><span>VS Code</span><span>zsh + starship</span><span>lazygit</span><span>ripgrep</span><span>atuin</span><span>fzf</span><span>yazi</span>
             </div>
           </div>
         </div>
@@ -514,20 +496,18 @@
       <div class="container">
         <h2 class="section-label mono">mentorship</h2>
         <div class="mentorship-block">
-          <div class="mentorship-text">
-            <p class="lead">
-              I started The Overzealous Premed because the premed process felt way harder than it needed to be. Not because the material is impossible. Because nobody tells you what actually matters vs what's just noise.
-            </p>
-            <p>
-              I run a peer mentorship program for pre-medical students and document the real journey on YouTube. MCAT strategy, application walkthroughs, personal statement feedback, school list building, interview prep, and the general "what should I even be doing right now?" conversations.
-            </p>
-            <p>
-              If you want to work together, reach out. I'll send you details on what I offer and we'll figure out what makes sense for where you're at.
-            </p>
-            <div class="mentorship-actions">
-              <a href="#contact" class="btn">get in touch</a>
-              <a href="https://youtube.com/@theoverzealouspremed" target="_blank" rel="noopener" class="btn btn-ghost">free content on youtube &nearr;</a>
-            </div>
+          <p class="lead">
+            The premed process felt way harder than it needed to be. Not because the material is impossible. Because nobody tells you what actually matters vs what's just noise.
+          </p>
+          <p>
+            I run 1-on-1 mentorship for pre-med students. MCAT strategy, application walkthroughs, personal statement feedback, school list building, interview prep, and the general "what should I even be doing right now?" conversations.
+          </p>
+          <p>
+            If you want to work together, reach out. I'll send you details on what I offer and we'll figure out what makes sense for where you're at.
+          </p>
+          <div class="mentorship-actions">
+            <a href="#contact" class="btn">get in touch</a>
+            <a href="https://youtube.com/@theoverzealouspremed" target="_blank" rel="noopener" class="btn btn-ghost">free content on youtube &nearr;</a>
           </div>
         </div>
       </div>
@@ -540,7 +520,8 @@
           <div class="contact-text">
             <p class="lead">Interested in mentorship, research collaboration, or just want to say what's up?</p>
             <div class="contact-links">
-              <a href="mailto:muditagar2005@gmail.com" class="contact-link mono">muditagar2005@gmail.com &nearr;</a>
+              <a href="#contactForm" class="contact-link mono">use the form &rarr;</a>
+              <a href="https://www.linkedin.com/in/rajagar/" target="_blank" rel="noopener" class="contact-link mono">linkedin &nearr;</a>
               <a href="https://youtube.com/@theoverzealouspremed" target="_blank" rel="noopener" class="contact-link mono">youtube &nearr;</a>
               <a href="https://github.com/dreamlessx" target="_blank" rel="noopener" class="contact-link mono">github &nearr;</a>
             </div>
@@ -568,13 +549,20 @@
 
   </main>
 
+  <!-- scroll cat -->
+  <div class="scroll-cat" id="scrollCat" aria-hidden="true">
+    <div class="cat-sprite" id="catSprite"></div>
+  </div>
+
   <footer class="footer">
     <div class="container footer-inner">
       <span class="mono">mudit agarwal &copy; 2026</span>
       <span class="footer-links">
+        <a href="https://www.linkedin.com/in/rajagar/" target="_blank" rel="noopener">linkedin</a>
         <a href="https://youtube.com/@theoverzealouspremed" target="_blank" rel="noopener">youtube</a>
         <a href="https://github.com/dreamlessx" target="_blank" rel="noopener">github</a>
-        <a href="mailto:muditagar2005@gmail.com">email</a>
+        <a href="#contact">contact</a>
+        <a href="resume.pdf" target="_blank" rel="noopener">resume</a>
       </span>
     </div>
   </footer>
