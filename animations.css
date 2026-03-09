@@ -1,830 +1,118 @@
-/* animations.css — mechanical gears, gear cat, nyan cat, cat dividers */
-
-/* ==========================================================================
-   CSS CUSTOM PROPERTIES (inherited from main stylesheet)
-   --bg: #0c0c0c
-   --accent: #c8ff00
-   --text: #e5e5e5
-   --text-dim: #666666
-   --border: rgba(255,255,255,0.08)
-   ========================================================================== */
-
-
-/* ==========================================================================
-   1. CLOCKWORK GEAR SCENE — 8 interlocking mechanical gears
-   300x300px container, positioned in hero section
-   ========================================================================== */
+/* animations.css — simple circle gears with hub dots */
 
 .gear-scene {
   position: relative;
-  width: 300px;
-  height: 300px;
-  overflow: hidden;
+  width: 320px;
+  height: 320px;
 }
 
-/* --- shared gear base --------------------------------------------------- */
+/* shared gear base — clean circle outlines */
 .gear-scene .gear {
   position: absolute;
   border-radius: 50%;
-  background: rgba(255,255,255,0.06);
+  border: 1.5px solid #c8ff00;
+  background: transparent;
   will-change: transform;
 }
 
-/* axle hole on every gear */
+/* hub dot on the edge of each gear */
+.gear-dot {
+  position: absolute;
+  width: 8px;
+  height: 8px;
+  background: #c8ff00;
+  border-radius: 50%;
+  top: -4px;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+/* gear 1 — large, top-left */
+.gear-scene .gear--1 {
+  width: 160px;
+  height: 160px;
+  top: 20px;
+  left: 10px;
+  animation: spin-cw 12s linear infinite;
+}
+
+/* gear 2 — large, right, interlocks with gear 1 */
+.gear-scene .gear--2 {
+  width: 140px;
+  height: 140px;
+  top: 10px;
+  left: 155px;
+  animation: spin-ccw 10.5s linear infinite;
+}
+
+/* gear 3 — medium, bottom-left */
+.gear-scene .gear--3 {
+  width: 100px;
+  height: 100px;
+  top: 175px;
+  left: 40px;
+  animation: spin-ccw 7.5s linear infinite;
+}
+
+/* gear 4 — medium, bottom-right */
+.gear-scene .gear--4 {
+  width: 110px;
+  height: 110px;
+  top: 155px;
+  left: 170px;
+  animation: spin-cw 8.25s linear infinite;
+}
+
+/* gear 5 — small, center accent */
+.gear-scene .gear--5 {
+  width: 50px;
+  height: 50px;
+  top: 135px;
+  left: 130px;
+  animation: spin-ccw 3.75s linear infinite;
+  border-color: rgba(200, 255, 0, 0.5);
+}
+
+.gear-scene .gear--5 .gear-dot {
+  width: 5px;
+  height: 5px;
+  top: -2.5px;
+  background: rgba(200, 255, 0, 0.5);
+}
+
+/* center axle dots */
 .gear-scene .gear::after {
   content: '';
   position: absolute;
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  width: 22%;
-  height: 22%;
+  width: 6px;
+  height: 6px;
   border-radius: 50%;
-  background: var(--bg, #0c0c0c);
-  border: 1.5px solid rgba(200, 255, 0, 0.35);
-  z-index: 2;
+  border: 1px solid rgba(200, 255, 0, 0.3);
+  background: transparent;
 }
 
-/* --- gear teeth via clip-path polygon ----------------------------------- */
-
-/*
-   Gear tooth polygon generator logic:
-   For N teeth, we create 4N points alternating between inner radius (r)
-   and outer radius (R). Each tooth is a trapezoid bump.
-   Inner radius = ~42% from center, outer radius = 50% from center.
-   Points are calculated as percentages for clip-path: polygon().
-*/
-
-/* GEAR 1: Large (120px), 16 teeth, clockwise, top-left area */
-.gear-scene .gear--1 {
-  width: 120px;
-  height: 120px;
-  top: 50px;
-  left: 10px;
-  clip-path: polygon(
-    50% 0%, 53.5% 6%, 58% 6%, 56% 0%,
-    66% 3%, 65% 9%, 70% 11%, 72% 5%,
-    80% 12%, 77% 18%, 81% 22%, 85% 17%,
-    90% 27%, 85% 31%, 87% 36%, 93% 33%,
-    96% 44%, 90% 46%, 90% 51%, 96% 51%,
-    96% 62%, 90% 61%, 88% 66%, 93% 70%,
-    88% 79%, 83% 75%, 80% 79%, 84% 85%,
-    76% 91%, 72% 86%, 68% 88%, 70% 94%,
-    61% 97%, 58% 91%, 54% 92%, 54% 98%,
-    44% 98%, 44% 92%, 40% 91%, 38% 97%,
-    29% 94%, 31% 88%, 27% 86%, 24% 91%,
-    16% 85%, 20% 80%, 17% 76%, 12% 79%,
-    8% 70%, 13% 67%, 12% 62%, 6% 62%,
-    4% 52%, 10% 51%, 10% 46%, 4% 45%,
-    6% 35%, 12% 36%, 14% 31%, 9% 27%,
-    15% 19%, 19% 23%, 23% 19%, 19% 13%,
-    27% 7%, 30% 12%, 34% 10%, 32% 4%,
-    42% 1%, 43% 7%, 47% 7%, 48% 1%
-  );
-  animation: gear-cw 10s linear infinite;
+.gear-scene .gear--1::after,
+.gear-scene .gear--2::after {
+  width: 8px;
+  height: 8px;
 }
 
-/* tooth edge glow for gear 1 */
-.gear-scene .gear--1::before {
-  content: '';
-  position: absolute;
-  inset: -1px;
-  border-radius: 50%;
-  background: rgba(255,255,255,0.06);
-  clip-path: inherit;
-  box-shadow: 0 0 8px rgba(200, 255, 0, 0.08);
-  z-index: 1;
-}
-
-/* GEAR 2: Medium (80px), 12 teeth, counter-clockwise, meshed right of gear 1 */
-.gear-scene .gear--2 {
-  width: 80px;
-  height: 80px;
-  top: 60px;
-  left: 120px;
-  clip-path: polygon(
-    50% 0%, 55% 8%, 62% 6%, 59% 0%,
-    73% 5%, 69% 13%, 76% 17%, 80% 10%,
-    90% 22%, 84% 28%, 89% 35%, 96% 30%,
-    98% 46%, 90% 48%, 90% 55%, 98% 56%,
-    94% 72%, 87% 68%, 83% 75%, 89% 82%,
-    78% 92%, 73% 85%, 66% 88%, 69% 96%,
-    54% 100%, 52% 92%, 45% 92%, 44% 100%,
-    29% 96%, 32% 88%, 25% 85%, 21% 92%,
-    12% 82%, 18% 76%, 14% 69%, 7% 72%,
-    3% 57%, 10% 55%, 10% 48%, 3% 46%,
-    6% 31%, 13% 35%, 17% 28%, 10% 22%,
-    20% 11%, 25% 18%, 32% 13%, 28% 5%,
-    42% 0%, 44% 8%, 48% 8%, 48% 0%
-  );
-  animation: gear-ccw 6.67s linear infinite;
-}
-
-.gear-scene .gear--2::before {
-  content: '';
-  position: absolute;
-  inset: -1px;
-  border-radius: 50%;
-  background: rgba(255,255,255,0.06);
-  clip-path: inherit;
-  box-shadow: 0 0 6px rgba(200, 255, 0, 0.06);
-  z-index: 1;
-}
-
-/* GEAR 3: Small (50px), 10 teeth, clockwise, meshed below gear 2 */
-.gear-scene .gear--3 {
-  width: 50px;
-  height: 50px;
-  top: 135px;
-  left: 128px;
-  clip-path: polygon(
-    50% 0%, 57% 10%, 65% 7%, 61% 0%,
-    78% 8%, 72% 17%, 80% 24%, 88% 17%,
-    95% 35%, 86% 39%, 88% 48%, 97% 47%,
-    95% 66%, 86% 62%, 82% 71%, 90% 79%,
-    78% 91%, 72% 83%, 64% 88%, 67% 97%,
-    50% 100%, 48% 90%, 40% 90%, 38% 100%,
-    22% 95%, 28% 86%, 20% 80%, 12% 88%,
-    5% 74%, 14% 68%, 12% 59%, 3% 58%,
-    3% 40%, 12% 42%, 15% 33%, 6% 27%,
-    16% 13%, 22% 21%, 30% 15%, 25% 5%,
-    40% 0%, 42% 10%, 47% 10%, 48% 0%
-  );
-  animation: gear-cw 4.17s linear infinite;
-}
-
-.gear-scene .gear--3::before {
-  content: '';
-  position: absolute;
-  inset: -1px;
-  border-radius: 50%;
-  background: rgba(255,255,255,0.06);
-  clip-path: inherit;
-  box-shadow: 0 0 5px rgba(200, 255, 0, 0.06);
-  z-index: 1;
-}
-
-/* GEAR 4: Small (44px), 8 teeth, counter-clockwise, top-right */
-.gear-scene .gear--4 {
-  width: 44px;
-  height: 44px;
-  top: 15px;
-  left: 140px;
-  clip-path: polygon(
-    50% 0%, 58% 12%, 68% 8%, 64% 0%,
-    85% 12%, 78% 22%, 88% 32%, 96% 24%,
-    100% 48%, 88% 50%, 90% 62%, 100% 62%,
-    90% 82%, 80% 76%, 74% 86%, 82% 96%,
-    60% 100%, 56% 88%, 46% 90%, 44% 100%,
-    22% 94%, 28% 84%, 18% 76%, 10% 84%,
-    2% 66%, 12% 62%, 10% 50%, 0% 48%,
-    6% 28%, 16% 34%, 22% 24%, 14% 14%,
-    34% 2%, 38% 14%, 46% 12%, 46% 0%
-  );
-  animation: gear-ccw 3.67s linear infinite;
-}
-
-.gear-scene .gear--4::before {
-  content: '';
-  position: absolute;
-  inset: -1px;
-  border-radius: 50%;
-  background: rgba(255,255,255,0.06);
-  clip-path: inherit;
-  box-shadow: 0 0 4px rgba(200, 255, 0, 0.05);
-  z-index: 1;
-}
-
-.gear-scene .gear--4::after {
-  width: 20%;
-  height: 20%;
-}
-
-/* GEAR 5: Medium (70px), 12 teeth, clockwise, lower-left area */
-.gear-scene .gear--5 {
-  width: 70px;
-  height: 70px;
-  top: 160px;
-  left: 20px;
-  clip-path: polygon(
-    50% 0%, 55% 8%, 62% 6%, 59% 0%,
-    73% 5%, 69% 13%, 76% 17%, 80% 10%,
-    90% 22%, 84% 28%, 89% 35%, 96% 30%,
-    98% 46%, 90% 48%, 90% 55%, 98% 56%,
-    94% 72%, 87% 68%, 83% 75%, 89% 82%,
-    78% 92%, 73% 85%, 66% 88%, 69% 96%,
-    54% 100%, 52% 92%, 45% 92%, 44% 100%,
-    29% 96%, 32% 88%, 25% 85%, 21% 92%,
-    12% 82%, 18% 76%, 14% 69%, 7% 72%,
-    3% 57%, 10% 55%, 10% 48%, 3% 46%,
-    6% 31%, 13% 35%, 17% 28%, 10% 22%,
-    20% 11%, 25% 18%, 32% 13%, 28% 5%,
-    42% 0%, 44% 8%, 48% 8%, 48% 0%
-  );
-  animation: gear-cw 5.83s linear infinite;
-}
-
-.gear-scene .gear--5::before {
-  content: '';
-  position: absolute;
-  inset: -1px;
-  border-radius: 50%;
-  background: rgba(255,255,255,0.06);
-  clip-path: inherit;
-  box-shadow: 0 0 5px rgba(200, 255, 0, 0.06);
-  z-index: 1;
-}
-
-/* GEAR 6: Tiny (34px), 8 teeth, counter-clockwise, top-right corner */
-.gear-scene .gear--6 {
-  width: 34px;
-  height: 34px;
-  top: 8px;
-  left: 178px;
-  clip-path: polygon(
-    50% 0%, 58% 12%, 68% 8%, 64% 0%,
-    85% 12%, 78% 22%, 88% 32%, 96% 24%,
-    100% 48%, 88% 50%, 90% 62%, 100% 62%,
-    90% 82%, 80% 76%, 74% 86%, 82% 96%,
-    60% 100%, 56% 88%, 46% 90%, 44% 100%,
-    22% 94%, 28% 84%, 18% 76%, 10% 84%,
-    2% 66%, 12% 62%, 10% 50%, 0% 48%,
-    6% 28%, 16% 34%, 22% 24%, 14% 14%,
-    34% 2%, 38% 14%, 46% 12%, 46% 0%
-  );
-  animation: gear-ccw 2.83s linear infinite;
-}
-
-.gear-scene .gear--6::before {
-  content: '';
-  position: absolute;
-  inset: -1px;
-  border-radius: 50%;
-  background: rgba(255,255,255,0.06);
-  clip-path: inherit;
-  box-shadow: 0 0 3px rgba(200, 255, 0, 0.05);
-  z-index: 1;
-}
-
-.gear-scene .gear--6::after {
-  width: 18%;
-  height: 18%;
-}
-
-/* GEAR 7: Medium-large (100px), 14 teeth, clockwise, right side */
-.gear-scene .gear--7 {
-  width: 100px;
-  height: 100px;
-  top: 100px;
-  left: 188px;
-  clip-path: polygon(
-    50% 0%, 54% 7%, 59% 6%, 57% 0%,
-    67% 2%, 65% 9%, 71% 10%, 73% 4%,
-    82% 10%, 78% 16%, 83% 20%, 87% 15%,
-    93% 24%, 88% 29%, 91% 34%, 97% 31%,
-    99% 43%, 92% 44%, 93% 50%, 99% 51%,
-    98% 63%, 92% 61%, 90% 66%, 96% 70%,
-    91% 80%, 86% 76%, 82% 80%, 86% 87%,
-    78% 93%, 74% 88%, 69% 90%, 71% 97%,
-    61% 99%, 59% 93%, 54% 93%, 53% 99%,
-    43% 99%, 43% 93%, 38% 92%, 36% 98%,
-    27% 95%, 29% 89%, 24% 87%, 21% 93%,
-    13% 86%, 17% 81%, 14% 77%, 9% 80%,
-    5% 71%, 10% 67%, 8% 62%, 2% 63%,
-    1% 52%, 7% 51%, 7% 45%, 1% 44%,
-    3% 33%, 9% 35%, 11% 30%, 5% 26%,
-    11% 17%, 16% 21%, 20% 17%, 15% 11%,
-    24% 5%, 27% 11%, 32% 9%, 30% 3%,
-    41% 0%, 43% 7%, 47% 7%, 48% 0%
-  );
-  animation: gear-cw 8.33s linear infinite;
-}
-
-.gear-scene .gear--7::before {
-  content: '';
-  position: absolute;
-  inset: -1px;
-  border-radius: 50%;
-  background: rgba(255,255,255,0.06);
-  clip-path: inherit;
-  box-shadow: 0 0 7px rgba(200, 255, 0, 0.07);
-  z-index: 1;
-}
-
-/* GEAR 8: Tiny accent (30px), 8 teeth, counter-clockwise, bottom center */
-.gear-scene .gear--8 {
-  width: 30px;
-  height: 30px;
-  top: 180px;
-  left: 90px;
-  clip-path: polygon(
-    50% 0%, 58% 12%, 68% 8%, 64% 0%,
-    85% 12%, 78% 22%, 88% 32%, 96% 24%,
-    100% 48%, 88% 50%, 90% 62%, 100% 62%,
-    90% 82%, 80% 76%, 74% 86%, 82% 96%,
-    60% 100%, 56% 88%, 46% 90%, 44% 100%,
-    22% 94%, 28% 84%, 18% 76%, 10% 84%,
-    2% 66%, 12% 62%, 10% 50%, 0% 48%,
-    6% 28%, 16% 34%, 22% 24%, 14% 14%,
-    34% 2%, 38% 14%, 46% 12%, 46% 0%
-  );
-  background: rgba(200, 255, 0, 0.08);
-  animation: gear-ccw 2.5s linear infinite;
-}
-
-.gear-scene .gear--8::before {
-  content: '';
-  position: absolute;
-  inset: -1px;
-  border-radius: 50%;
-  background: rgba(200, 255, 0, 0.08);
-  clip-path: inherit;
-  box-shadow: 0 0 3px rgba(200, 255, 0, 0.06);
-  z-index: 1;
-}
-
-.gear-scene .gear--8::after {
-  width: 18%;
-  height: 18%;
-}
-
-/* --- gear rotation keyframes -------------------------------------------- */
-
-@keyframes gear-cw {
+@keyframes spin-cw {
   from { transform: rotate(0deg); }
   to { transform: rotate(360deg); }
 }
 
-@keyframes gear-ccw {
+@keyframes spin-ccw {
   from { transform: rotate(0deg); }
   to { transform: rotate(-360deg); }
 }
 
-
-/* ==========================================================================
-   2. GEAR CAT — kawaii knight cat (~65px) that jumps between gears
-   Round chibi body, big lime eyes, tiny helmet, small sword
-   ========================================================================== */
-
-.gear-scene .gear-cat {
-  position: absolute;
-  width: 65px;
-  height: 70px;
-  z-index: 10;
-  transition: top 0.6s cubic-bezier(0.34, 1.56, 0.64, 1), left 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
-}
-
-/* ::before = body + head + legs + ears + eyes + cheeks */
-.gear-scene .gear-cat::before {
-  content: '';
-  position: absolute;
-  bottom: 0;
-  left: 8px;
-  width: 40px;
-  height: 28px;
-  background: #e5e5e5;
-  border-radius: 20px 20px 10px 10px;
-  box-shadow:
-    /* head — large round, kawaii oversized */
-    8px -30px 0 4px #e5e5e5,
-    /* left ear outer */
-    -2px -46px 0 -6px #e5e5e5,
-    /* left ear inner lime */
-    -1px -44px 0 -8px #c8ff00,
-    /* right ear outer */
-    18px -46px 0 -6px #e5e5e5,
-    /* right ear inner lime */
-    17px -44px 0 -8px #c8ff00,
-    /* left eye — big lime */
-    3px -30px 0 -3px #c8ff00,
-    1px -32px 0 -6px #ffffff,
-    /* right eye — big lime */
-    13px -30px 0 -3px #c8ff00,
-    11px -32px 0 -6px #ffffff,
-    /* stubby legs */
-    6px 26px 0 -8px #e5e5e5,
-    26px 26px 0 -8px #e5e5e5,
-    /* cheek blush */
-    -2px -26px 0 -6px rgba(200, 255, 0, 0.2),
-    18px -26px 0 -6px rgba(200, 255, 0, 0.2);
-}
-
-/* ::after = knight helmet + sword */
-.gear-scene .gear-cat::after {
-  content: '';
-  position: absolute;
-  bottom: 10px;
-  right: -8px;
-  width: 4px;
-  height: 40px;
-  background: #c8ff00;
-  border-radius: 2px 2px 0 0;
-  box-shadow:
-    /* sword glow */
-    0 0 8px rgba(200, 255, 0, 0.7),
-    0 0 16px rgba(200, 255, 0, 0.3),
-    /* cross-guard */
-    -5px 30px 0 0px #c8ff00,
-    5px 30px 0 0px #c8ff00,
-    /* handle */
-    0px 36px 0 0px #999,
-    /* helmet dome */
-    -15px -46px 0 3px rgba(200, 255, 0, 0.5),
-    /* visor slit */
-    -15px -42px 0 -2px rgba(12, 12, 12, 0.9);
-}
-
-/* cat tail */
-.gear-scene .gear-cat__tail {
-  position: absolute;
-  bottom: 8px;
-  right: 0px;
-  width: 18px;
-  height: 6px;
-  background: #e5e5e5;
-  border-radius: 0 8px 8px 0;
-  transform-origin: left center;
-  animation: gear-cat-tail-wag 0.8s ease-in-out infinite alternate;
-}
-
-/* --- gear cat positions (on top of gears, adjusted for 65px cat) --- */
-
-.gear-scene .gear-cat.on-gear-1 {
-  top: -10px;
-  left: 30px;
-  animation: gear-cat-bounce-1 2s ease-in-out infinite;
-}
-
-.gear-scene .gear-cat.on-gear-2 {
-  top: 10px;
-  left: 120px;
-  animation: gear-cat-bounce-2 1.8s ease-in-out infinite;
-}
-
-.gear-scene .gear-cat.on-gear-3 {
-  top: 50px;
-  left: 200px;
-  animation: gear-cat-bounce-3 2.2s ease-in-out infinite;
-}
-
-@keyframes gear-cat-bounce-1 {
-  0%, 100% { transform: translateY(0); }
-  50% { transform: translateY(-8px); }
-}
-
-@keyframes gear-cat-bounce-2 {
-  0%, 100% { transform: translateY(0); }
-  50% { transform: translateY(-10px); }
-}
-
-@keyframes gear-cat-bounce-3 {
-  0%, 100% { transform: translateY(0); }
-  50% { transform: translateY(-8px); }
-}
-
-@keyframes gear-cat-jump-arc {
-  0% { transform: translateY(0); }
-  25% { transform: translateY(-40px); }
-  50% { transform: translateY(-55px); }
-  75% { transform: translateY(-30px); }
-  100% { transform: translateY(0); }
-}
-
-@keyframes gear-cat-tail-wag {
-  from { transform: rotate(-15deg); }
-  to { transform: rotate(20deg); }
-}
-
-
-/* ==========================================================================
-   3. NYAN CAT — kawaii knight cat, fixed bottom-right corner
-   ========================================================================== */
-
-.nyan-cat {
-  position: fixed;
-  bottom: 20px;
-  right: 30px;
-  z-index: 50;
-  pointer-events: none;
-  display: flex;
-  align-items: center;
-}
-
-/* --- rainbow trail (6-color horizontal stripes) ------------------------- */
-
-.nyan-cat__trail {
-  width: 40px;
-  height: 18px;
-  display: flex;
-  flex-direction: column;
-  overflow: hidden;
-  margin-right: -2px;
-}
-
-.nyan-cat__trail span {
-  display: block;
-  height: 3px;
-  width: 100%;
-  animation: nyan-shimmer 1.2s ease-in-out infinite;
-}
-
-.nyan-cat__trail span:nth-child(1) { background: #ff0000; animation-delay: 0s; }
-.nyan-cat__trail span:nth-child(2) { background: #ff9900; animation-delay: 0.1s; }
-.nyan-cat__trail span:nth-child(3) { background: #ffff00; animation-delay: 0.2s; }
-.nyan-cat__trail span:nth-child(4) { background: #33ff00; animation-delay: 0.3s; }
-.nyan-cat__trail span:nth-child(5) { background: #0099ff; animation-delay: 0.4s; }
-.nyan-cat__trail span:nth-child(6) { background: #6633ff; animation-delay: 0.5s; }
-
-@keyframes nyan-shimmer {
-  0%, 100% { opacity: 0.7; transform: scaleX(1); }
-  50% { opacity: 1; transform: scaleX(0.7); }
-}
-
-/* --- kawaii knight cat body (~34px) ------------------------------------- */
-
-.nyan-cat__body {
-  position: relative;
-  width: 34px;
-  height: 30px;
-  will-change: transform;
-}
-
-/* ::before = round chibi body + head + ears + eyes + legs + cheeks */
-.nyan-cat__body::before {
-  content: '';
-  position: absolute;
-  bottom: 0;
-  left: 4px;
-  width: 22px;
-  height: 14px;
-  background: #e5e5e5;
-  border-radius: 11px 11px 5px 5px;
-  box-shadow:
-    /* head — large round kawaii head */
-    4px -15px 0 2px #e5e5e5,
-    /* left ear */
-    -1px -23px 0 -3px #e5e5e5,
-    0px -22px 0 -4.5px #c8ff00,
-    /* right ear */
-    9px -23px 0 -3px #e5e5e5,
-    8px -22px 0 -4.5px #c8ff00,
-    /* left eye — big lime */
-    1px -15px 0 -2px #c8ff00,
-    0px -16px 0 -3.5px #ffffff,
-    /* right eye */
-    7px -15px 0 -2px #c8ff00,
-    6px -16px 0 -3.5px #ffffff,
-    /* stubby legs */
-    3px 13px 0 -5px #e5e5e5,
-    13px 13px 0 -5px #e5e5e5,
-    /* cheek blush */
-    -1px -12px 0 -3px rgba(200, 255, 0, 0.15),
-    9px -12px 0 -3px rgba(200, 255, 0, 0.15);
-}
-
-/* ::after = helmet + sword */
-.nyan-cat__body::after {
-  content: '';
-  position: absolute;
-  /* sword blade */
-  bottom: 6px;
-  right: -4px;
-  width: 2px;
-  height: 18px;
-  background: #c8ff00;
-  border-radius: 1px 1px 0 0;
-  box-shadow:
-    /* sword glow */
-    0 0 5px rgba(200, 255, 0, 0.6),
-    0 0 10px rgba(200, 255, 0, 0.3),
-    /* cross-guard */
-    -3px 14px 0 -0.5px #c8ff00,
-    3px 14px 0 -0.5px #c8ff00,
-    /* handle */
-    0px 17px 0 -0.5px #999,
-    /* helmet dome */
-    -6px -21px 0 1px rgba(200, 255, 0, 0.5),
-    /* helmet visor slit */
-    -6px -19px 0 -1px rgba(12, 12, 12, 0.8);
-}
-
-/* tail */
-.nyan-cat__tail {
-  position: absolute;
-  bottom: 8px;
-  left: -2px;
-  width: 8px;
-  height: 3px;
-  background: #e5e5e5;
-  border-radius: 3px 0 0 3px;
-  transform-origin: right center;
-  animation: nyan-tail 0.5s ease-in-out infinite alternate;
-}
-
-@keyframes nyan-tail {
-  from { transform: rotate(-20deg); }
-  to { transform: rotate(15deg); }
-}
-
-/* zzz text for sleeping state */
-.nyan-cat__zzz {
-  position: absolute;
-  top: -6px;
-  right: -4px;
-  font-family: var(--mono, monospace);
-  font-size: 0.5rem;
-  color: #c8ff00;
-  opacity: 0;
-  pointer-events: none;
-  will-change: transform, opacity;
-}
-
-/* --- state: running (user is scrolling) --------------------------------- */
-
-.nyan-cat.is-running .nyan-cat__body {
-  animation: nyan-bob 0.25s ease-in-out infinite alternate;
-}
-
-.nyan-cat.is-running .nyan-cat__trail span {
-  animation: nyan-shimmer-fast 0.4s ease-in-out infinite;
-}
-
-.nyan-cat.is-running .nyan-cat__trail span:nth-child(1) { animation-delay: 0s; }
-.nyan-cat.is-running .nyan-cat__trail span:nth-child(2) { animation-delay: 0.05s; }
-.nyan-cat.is-running .nyan-cat__trail span:nth-child(3) { animation-delay: 0.1s; }
-.nyan-cat.is-running .nyan-cat__trail span:nth-child(4) { animation-delay: 0.15s; }
-.nyan-cat.is-running .nyan-cat__trail span:nth-child(5) { animation-delay: 0.2s; }
-.nyan-cat.is-running .nyan-cat__trail span:nth-child(6) { animation-delay: 0.25s; }
-
-@keyframes nyan-bob {
-  from { transform: translateY(0); }
-  to { transform: translateY(-3px); }
-}
-
-@keyframes nyan-shimmer-fast {
-  0%, 100% { opacity: 0.8; transform: scaleX(1); }
-  50% { opacity: 1; transform: scaleX(0.6); }
-}
-
-/* --- state: idle (default, not scrolling) ------------------------------- */
-
-.nyan-cat.is-idle .nyan-cat__body {
-  animation: none;
-}
-
-.nyan-cat.is-idle .nyan-cat__trail span {
-  animation: nyan-shimmer 1.2s ease-in-out infinite;
-}
-
-/* --- state: sleeping (idle for >5s) ------------------------------------- */
-
-.nyan-cat.is-sleeping .nyan-cat__body::before {
-  height: 12px;
-  width: 24px;
-  border-radius: 12px 12px 6px 6px;
-}
-
-.nyan-cat.is-sleeping .nyan-cat__body::after {
-  bottom: 8px;
-}
-
-.nyan-cat.is-sleeping .nyan-cat__body {
-  animation: none;
-}
-
-.nyan-cat.is-sleeping .nyan-cat__zzz {
-  opacity: 0.6;
-  animation: nyan-zzz 2s ease-in-out infinite;
-}
-
-.nyan-cat.is-sleeping .nyan-cat__trail span {
-  animation: nyan-shimmer-sleep 3s ease-in-out infinite;
-}
-
-@keyframes nyan-zzz {
-  0%, 100% {
-    transform: translateY(0);
-    opacity: 0.6;
-  }
-  50% {
-    transform: translateY(-8px);
-    opacity: 0.2;
-  }
-}
-
-@keyframes nyan-shimmer-sleep {
-  0%, 100% { opacity: 0.3; transform: scaleX(0.8); }
-  50% { opacity: 0.5; transform: scaleX(1); }
-}
-
-
-/* ==========================================================================
-   4. CAT SECTION DIVIDERS — kawaii knight cat silhouette
-   ========================================================================== */
-
-.cat-divider {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 0;
-  padding: 1.5rem 0;
-  width: 100%;
-}
-
-/* lines on each side */
-.cat-divider::before,
-.cat-divider::after {
-  content: '';
-  flex: 1;
-  height: 1px;
-  background: rgba(255,255,255,0.06);
-  max-width: 200px;
-}
-
-/* knight cat silhouette in the center */
-.cat-divider__cat {
-  position: relative;
-  width: 20px;
-  height: 18px;
-  margin: 0 12px;
-  flex-shrink: 0;
-}
-
-/* body + head + ears + eyes + legs */
-.cat-divider__cat::before {
-  content: '';
-  position: absolute;
-  bottom: 0;
-  left: 3px;
-  width: 12px;
-  height: 8px;
-  background: var(--text-dim, #666666);
-  border-radius: 6px 6px 2px 2px;
-  box-shadow:
-    /* head */
-    2px -9px 0 1px var(--text-dim, #666666),
-    /* ears */
-    -1px -14px 0 -3px var(--text-dim, #666666),
-    5px -14px 0 -3px var(--text-dim, #666666),
-    /* eyes */
-    1px -9px 0 -2.5px #c8ff00,
-    5px -9px 0 -2.5px #c8ff00,
-    /* legs */
-    1px 7px 0 -4px var(--text-dim, #666666),
-    7px 7px 0 -4px var(--text-dim, #666666);
-}
-
-/* helmet + tiny sword silhouette */
-.cat-divider__cat::after {
-  content: '';
-  position: absolute;
-  /* sword */
-  bottom: 2px;
-  right: -3px;
-  width: 1.5px;
-  height: 10px;
-  background: rgba(200, 255, 0, 0.35);
-  border-radius: 1px;
-  box-shadow:
-    /* helmet dome */
-    -5px -13px 0 0px rgba(200, 255, 0, 0.3),
-    /* cross-guard */
-    -1px 8px 0 -0.5px rgba(200, 255, 0, 0.3),
-    1px 8px 0 -0.5px rgba(200, 255, 0, 0.3);
-}
-
-/* tail wraps around */
-.cat-divider__tail {
-  position: absolute;
-  bottom: 1px;
-  right: 0;
-  width: 6px;
-  height: 2px;
-  background: var(--text-dim, #666666);
-  border-radius: 0 3px 3px 0;
-}
-
-
-/* ==========================================================================
-   5. REDUCED MOTION — respects user preferences
-   ========================================================================== */
-
+/* reduced motion */
 @media (prefers-reduced-motion: reduce) {
-  .gear-scene .gear,
-  .gear-scene .gear-cat,
-  .gear-scene .gear-cat__tail,
-  .nyan-cat__body,
-  .nyan-cat__trail span,
-  .nyan-cat__tail,
-  .nyan-cat__zzz {
-    animation-duration: 0.01ms !important;
-    animation-iteration-count: 1 !important;
-  }
-
-  .nyan-cat.is-running .nyan-cat__body,
-  .nyan-cat.is-running .nyan-cat__trail span,
-  .nyan-cat.is-sleeping .nyan-cat__zzz,
-  .nyan-cat.is-sleeping .nyan-cat__trail span {
+  .gear-scene .gear {
     animation: none !important;
   }
 }
