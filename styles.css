@@ -277,30 +277,6 @@ a {
   animation: hero-fade-up 0.8s var(--ease-out-expo) 0.4s both;
 }
 
-/* --- project nav arrows --- */
-.project-nav {
-  display: flex;
-  justify-content: flex-end;
-  gap: 0.5rem;
-  margin-bottom: 1rem;
-}
-
-.proj-prev, .proj-next {
-  font-family: var(--mono);
-  font-size: 0.75rem;
-  padding: 0.5rem 1rem;
-  background: var(--bg-card);
-  border: 1px solid var(--border);
-  border-radius: 4px;
-  color: var(--text-secondary);
-  cursor: pointer;
-  transition: all var(--transition);
-}
-
-.proj-prev:hover, .proj-next:hover {
-  border-color: var(--accent);
-  color: var(--accent);
-}
 
 /* --- buttons --- */
 .btn {
@@ -1902,9 +1878,87 @@ a {
 /* --- projects side-by-side layout --- */
 .projects-layout {
   display: grid;
-  grid-template-columns: 1fr 260px;
-  gap: 1.5rem;
-  align-items: start;
+  grid-template-columns: 1fr 220px;
+  gap: 1rem;
+  align-items: stretch;
+}
+
+.projects-featured-wrap {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  position: relative;
+}
+
+.projects-featured-wrap .project-card-featured {
+  flex: 1;
+}
+
+.proj-arrow {
+  font-family: var(--mono);
+  font-size: 1.2rem;
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  color: var(--text-secondary);
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  transition: all var(--transition);
+}
+
+.proj-arrow:hover {
+  border-color: var(--accent);
+  color: var(--accent);
+}
+
+.projects-gallery {
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+  background: var(--border);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.projects-gallery .project-small {
+  background: var(--bg-alt);
+  padding: 1rem 1.25rem;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  display: flex;
+  flex-direction: column;
+  gap: 0.15rem;
+}
+
+.projects-gallery .project-small:hover {
+  background: var(--bg-card-hover);
+  border-left: 2px solid var(--accent);
+  box-shadow: inset 0 0 20px rgba(200, 255, 0, 0.03);
+}
+
+.projects-gallery .project-small h4 {
+  font-size: 0.85rem;
+  font-weight: 500;
+}
+
+.projects-gallery .project-small p {
+  font-size: 0.7rem;
+  color: var(--text-dim);
+}
+
+.projects-gallery .project-small .project-status {
+  font-size: 0.55rem;
+  margin: 0;
+}
+
+.projects-gallery .project-small .project-tech {
+  display: none;
 }
 
 /* --- pub scroll --- */

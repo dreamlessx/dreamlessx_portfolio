@@ -89,24 +89,11 @@
         <h2 class="section-label mono">about</h2>
         <div class="about-grid">
           <div class="about-text">
-            <p class="lead">
-              My path to medicine was not linear and honestly that's the whole point.
-            </p>
-            <p>
-              I'm a junior at UW studying biochemistry and neuroscience. I got into research because I thought it would look good on applications. I stayed because I accidentally fell in love with building things that sit between computation and biology.
-            </p>
-            <p>
-              Right now I split my time between the Bair Lab where I do primate neurosurgery and calcium imaging analysis, and the Meiler Lab at Vanderbilt where I build protein design pipelines. Before that I was doing CRISPR in the Hawn Lab, molecular docking in the Anderson Lab, and neural network modeling in the Stiber Lab.
-            </p>
-            <p>
-              Outside the lab I'm a medical assistant, a crisis counselor, a YouTube creator, a volunteer, and a guy who probably has too many VS Code windows open. I teach organic chemistry to students who think they're bad at it. They're not. The textbook is just written by someone who forgot what it's like to learn.
-            </p>
-            <p>
-              I run <a href="https://youtube.com/@theoverzealouspremed" target="_blank" rel="noopener">The Overzealous Premed</a> on YouTube because nobody told me what actually mattered when I started this journey. So I'm telling everyone else. No filter, no polish.
-            </p>
-            <p>
-              The through line is that I like hard problems that don't fit neatly into one field. The best stuff happens when you stop asking "what discipline is this?" and start asking "does this actually work?"
-            </p>
+            <p class="lead">I got into research to pad my med school app. I stayed because I accidentally built a career.</p>
+            <p>I'm a junior at UW studying biochemistry and neuroscience. On any given week I'm doing primate neurosurgery in the Bair Lab, building protein design pipelines at Vanderbilt, and wondering why I have 7 terminal windows open. Six labs, three schools, two coasts. Before all this I was doing CRISPR on TB macrophages, docking drug compounds, and writing C++ to model neural networks.</p>
+            <p>When I'm not in a lab I'm at Evergreen Hospital running EKGs and fitting CPAP masks, volunteering at Recovery Cafe, answering crisis texts on Crisis Text Line, or teaching orgo to students who are convinced they're going to fail (they're not, the textbook is just bad).</p>
+            <p>I also run <a href="https://youtube.com/@theoverzealouspremed" target="_blank" rel="noopener">The Overzealous Premed</a> on YouTube. Nobody told me what actually mattered when I started this. So I tell everyone else. No filter, no polish, no "10 tips to get into Harvard" clickbait.</p>
+            <p>I like problems that don't fit in one field. Computation, biology, medicine, engineering. The best work happens at the edges where nobody's looking.</p>
           </div>
           <div class="about-stats" id="aboutStats">
             <div class="stat-card">
@@ -162,8 +149,8 @@
             <div class="research-meta mono">incoming · summer 2026</div>
             <h3>Gu Lab · Harvard Medical School</h3>
             <p class="research-focus">Neurovascular Biology</p>
-            <p>Working under HHMI Investigator Dr. Chenghua Gu. Applying the XORI cross-orientation analysis methodology I developed in the Bair Lab to cardiovascular knockouts in a neurovascular context. Self-directed, 12 weeks. Also planning to validate LandmarkDiff clinically with Harvard-affiliated plastic surgeons.</p>
-            <p class="research-output mono">planned: neurovascular contributions, LandmarkDiff clinical validation</p>
+            <p>HHMI Investigator Dr. Chenghua Gu. Applying XORI methodology to cardiovascular knockouts. 12 weeks, self-directed. LandmarkDiff clinical validation planned.</p>
+            <p class="research-output mono">planned: neurovascular + LandmarkDiff validation</p>
           </div>
 
           <a href="bair-lab.html" class="research-card research-card-link">
@@ -220,24 +207,23 @@
           <div class="clinical-card">
             <div class="clinical-hours mono">1,026 hrs</div>
             <h4>Medical Assistant, Heart Care Cardiology</h4>
-            <p class="clinical-meta mono">jul 2023 - jan 2025 · 12 hrs/week</p>
-            <p>Patient rooming, vitals, 12-lead EKG administration, patient education, EMR documentation. Worked directly under cardiologists managing chronic heart failure, arrhythmias, and post-procedural follow-up. This is where I learned what it actually means to show up for someone on their worst day.</p>
+            <p class="clinical-meta mono">jul 2023 - jan 2025 · evergreen hospital</p>
+            <p>Patient rooming, vitals, 12-lead EKGs, EMR documentation. Cardiologists managing heart failure, arrhythmias, post-procedural follow-up.</p>
           </div>
           <div class="clinical-card">
             <div class="clinical-hours mono">597 hrs</div>
-            <h4>Medical Assistant, Sleep Medicine Clinic</h4>
-            <p class="clinical-meta mono">feb 2025 - present · 24 hrs/week</p>
-            <p>Sleep study coordination, patient intake, Epworth Sleepiness Scale administration, CPAP fitting and education. Managing patient flow in a high-volume sleep disorders practice. Half of medicine is just listening to people describe how tired they are (relatable).</p>
+            <h4>Medical Assistant, Sleep Medicine</h4>
+            <p class="clinical-meta mono">feb 2025 - present · evergreen hospital</p>
+            <p>Sleep study coordination, patient intake, Epworth Scale, CPAP fitting. High-volume sleep disorders practice.</p>
           </div>
         </div>
 
         <h3 class="subsection-label mono">volunteering</h3>
         <div class="clinical-grid clinical-grid-1">
-          <div class="clinical-card">
+          <div class="clinical-card clinical-card-inline">
             <div class="clinical-hours mono">283 hrs</div>
             <h4>COPE Health Scholars · Swedish Medical Center, Seattle</h4>
-            <p class="clinical-meta mono">hospital program</p>
-            <p>Hospital-based clinical observation and direct patient support. Rotated through units, assisted nursing staff, learned the rhythms of how a hospital actually works from the inside.</p>
+            <p>Hospital-based clinical observation, unit rotations, nursing support.</p>
           </div>
         </div>
 
@@ -360,56 +346,45 @@
         <h2 class="section-label mono">side projects</h2>
         <p class="section-intro">Things I built because I thought "how hard could it be?" (always harder than expected)</p>
 
-        <div class="project-nav">
-          <button class="proj-prev mono" aria-label="Previous project">&larr; prev</button>
-          <button class="proj-next mono" aria-label="Next project">next &rarr;</button>
-        </div>
-        <div class="project-card project-card-featured">
-          <div class="project-status mono">active / in development</div>
-          <h3>LandmarkDiff</h3>
-          <p class="project-sub mono">facial surgery prediction from a smartphone photo</p>
-          <p>A ControlNet-conditioned latent diffusion model that generates photorealistic before/after facial surgery previews from standard 2D clinical photos. No CT scanner required. No published work does this with diffusion models and anatomical constraints. 530+ boundary conditions cataloged across mobile optics, 3D reconstruction, FLUX diffusion, biomechanics, and HPC.</p>
-          <div class="project-tech">
-            <span>React Native</span>
-            <span>FLUX.1-dev</span>
-            <span>ControlNet</span>
-            <span>IP-Adapter</span>
-            <span>FLAME</span>
-            <span>MediaPipe</span>
-            <span>FastAPI</span>
-            <span>Triton</span>
-            <span>AWS/SLURM</span>
+        <div class="projects-layout">
+          <div class="projects-featured-wrap">
+            <button class="proj-arrow proj-prev" aria-label="Previous">&larr;</button>
+            <div class="project-card project-card-featured">
+              <div class="project-status mono">active / in development</div>
+              <h3>LandmarkDiff</h3>
+              <p class="project-sub mono">facial surgery prediction from a smartphone photo</p>
+              <p>A ControlNet-conditioned latent diffusion model that generates photorealistic before/after facial surgery previews from standard 2D clinical photos. No CT scanner required. No published work does this with diffusion models and anatomical constraints. 530+ boundary conditions cataloged.</p>
+              <div class="project-tech">
+                <span>React Native</span><span>FLUX.1-dev</span><span>ControlNet</span><span>IP-Adapter</span><span>FLAME</span><span>MediaPipe</span><span>FastAPI</span><span>Triton</span><span>AWS/SLURM</span>
+              </div>
+              <p class="project-vision">
+                <strong>Vision:</strong> Democratize surgical planning. Any patient, any clinic, any phone.
+                <strong>Needs:</strong> Clinical validation dataset, IRB approval, training compute on Hyak HPC.
+              </p>
+            </div>
+            <button class="proj-arrow proj-next" aria-label="Next">&rarr;</button>
           </div>
-          <p class="project-vision">
-            <strong>Vision:</strong> Democratize surgical planning. Any patient, any clinic, any phone.
-            <strong>Needs:</strong> Clinical validation dataset, IRB approval, training compute on Hyak HPC.
-          </p>
-        </div>
-
-        <div class="projects-small-grid">
-          <div class="project-small">
-            <div class="project-status mono">shipped / private</div>
-            <h4>ICT God</h4>
-            <p>Full-stack Next.js 14 app. TypeScript, Prisma, PostgreSQL. Server components, API routes.</p>
-            <div class="project-tech"><span>Next.js</span><span>TypeScript</span><span>Prisma</span></div>
-          </div>
-          <div class="project-small">
-            <div class="project-status mono">shipped / private</div>
-            <h4>YouTube Pipeline</h4>
-            <p>End-to-end content automation for The Overzealous Premed. FastAPI, Celery, n8n workflows.</p>
-            <div class="project-tech"><span>FastAPI</span><span>Celery</span><span>n8n</span><span>Docker</span></div>
-          </div>
-          <div class="project-small">
-            <div class="project-status mono">shipped / private</div>
-            <h4>RAG Med</h4>
-            <p>Medical knowledge RAG system. Semantic search over medical docs with LLM answers.</p>
-            <div class="project-tech"><span>FastAPI</span><span>React</span><span>Vite</span></div>
-          </div>
-          <div class="project-small">
-            <div class="project-status mono">in progress / private</div>
-            <h4>Rusty OS</h4>
-            <p>Bare-metal x86_64 kernel in Rust. Custom bootloader, VGA text mode, interrupt handling. Feels like a wizard every time it boots.</p>
-            <div class="project-tech"><span>Rust</span><span>x86_64 asm</span><span>QEMU</span></div>
+          <div class="projects-gallery">
+            <div class="project-small">
+              <h4>ICT God</h4>
+              <p>Full-stack Next.js 14 app</p>
+              <span class="project-status mono">shipped</span>
+            </div>
+            <div class="project-small">
+              <h4>YouTube Pipeline</h4>
+              <p>Automated content production</p>
+              <span class="project-status mono">shipped</span>
+            </div>
+            <div class="project-small">
+              <h4>RAG Med</h4>
+              <p>Medical knowledge retrieval</p>
+              <span class="project-status mono">shipped</span>
+            </div>
+            <div class="project-small">
+              <h4>Rusty OS</h4>
+              <p>Bare-metal x86_64 kernel</p>
+              <span class="project-status mono">in progress</span>
+            </div>
           </div>
         </div>
       </div>
