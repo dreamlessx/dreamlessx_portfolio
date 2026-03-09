@@ -1,0 +1,536 @@
+/* animations.css — clockwork gears, nyan cat, cat dividers */
+
+/* ==========================================================================
+   1. CLOCKWORK GEAR SCENE
+   280x280px, positioned in hero section
+   ========================================================================== */
+
+.gear-scene {
+  position: relative;
+  width: 280px;
+  height: 280px;
+  overflow: hidden;
+}
+
+/* --- shared gear base --- */
+.gear-scene .gear {
+  position: absolute;
+  border-radius: 50%;
+  background: var(--border);
+  will-change: transform;
+}
+
+/* gear teeth via box-shadow ring */
+.gear-scene .gear::before {
+  content: '';
+  position: absolute;
+  inset: -6px;
+  border-radius: 50%;
+  background: transparent;
+  /* 12 teeth around the gear using radial pseudo-tooth trick */
+  box-shadow:
+    0 -3px 0 -1px var(--accent),
+    3px 0 0 -1px var(--accent),
+    0 3px 0 -1px var(--accent),
+    -3px 0 0 -1px var(--accent),
+    2.1px -2.1px 0 -1px var(--accent),
+    2.1px 2.1px 0 -1px var(--accent),
+    -2.1px 2.1px 0 -1px var(--accent),
+    -2.1px -2.1px 0 -1px var(--accent);
+  z-index: -1;
+}
+
+/* gear axle hole */
+.gear-scene .gear::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 30%;
+  height: 30%;
+  border-radius: 50%;
+  background: var(--bg, #0c0c0c);
+  border: 2px solid var(--accent);
+}
+
+/* --- gear 1: large, top-left, clockwise --- */
+.gear-scene .gear--1 {
+  width: 120px;
+  height: 120px;
+  top: 40px;
+  left: 20px;
+  animation: gear-cw 8s linear infinite;
+}
+
+.gear-scene .gear--1::before {
+  inset: -8px;
+  box-shadow:
+    0px -10px 0 -3px var(--accent),
+    7.07px -7.07px 0 -3px var(--accent),
+    10px 0px 0 -3px var(--accent),
+    7.07px 7.07px 0 -3px var(--accent),
+    0px 10px 0 -3px var(--accent),
+    -7.07px 7.07px 0 -3px var(--accent),
+    -10px 0px 0 -3px var(--accent),
+    -7.07px -7.07px 0 -3px var(--accent),
+    3.83px -9.24px 0 -3px var(--accent),
+    9.24px -3.83px 0 -3px var(--accent),
+    9.24px 3.83px 0 -3px var(--accent),
+    3.83px 9.24px 0 -3px var(--accent),
+    -3.83px 9.24px 0 -3px var(--accent),
+    -9.24px 3.83px 0 -3px var(--accent),
+    -9.24px -3.83px 0 -3px var(--accent),
+    -3.83px -9.24px 0 -3px var(--accent);
+}
+
+/* --- gear 2: medium, meshed right of gear 1, counter-clockwise --- */
+.gear-scene .gear--2 {
+  width: 80px;
+  height: 80px;
+  top: 60px;
+  left: 132px;
+  animation: gear-ccw 5.33s linear infinite;
+}
+
+.gear-scene .gear--2::before {
+  inset: -7px;
+  box-shadow:
+    0px -8px 0 -2.5px var(--accent),
+    5.66px -5.66px 0 -2.5px var(--accent),
+    8px 0px 0 -2.5px var(--accent),
+    5.66px 5.66px 0 -2.5px var(--accent),
+    0px 8px 0 -2.5px var(--accent),
+    -5.66px 5.66px 0 -2.5px var(--accent),
+    -8px 0px 0 -2.5px var(--accent),
+    -5.66px -5.66px 0 -2.5px var(--accent),
+    3.06px -7.39px 0 -2.5px var(--accent),
+    7.39px -3.06px 0 -2.5px var(--accent),
+    7.39px 3.06px 0 -2.5px var(--accent),
+    3.06px 7.39px 0 -2.5px var(--accent);
+}
+
+/* --- gear 3: small, meshed below gear 2, clockwise --- */
+.gear-scene .gear--3 {
+  width: 60px;
+  height: 60px;
+  top: 136px;
+  left: 142px;
+  animation: gear-cw 4s linear infinite;
+}
+
+.gear-scene .gear--3::before {
+  inset: -6px;
+  box-shadow:
+    0px -7px 0 -2px var(--accent),
+    4.95px -4.95px 0 -2px var(--accent),
+    7px 0px 0 -2px var(--accent),
+    4.95px 4.95px 0 -2px var(--accent),
+    0px 7px 0 -2px var(--accent),
+    -4.95px 4.95px 0 -2px var(--accent),
+    -7px 0px 0 -2px var(--accent),
+    -4.95px -4.95px 0 -2px var(--accent);
+}
+
+/* --- gear 4: tiny accent gear, top-right, counter-clockwise --- */
+.gear-scene .gear--4 {
+  width: 44px;
+  height: 44px;
+  top: 10px;
+  left: 200px;
+  animation: gear-ccw 3s linear infinite;
+  background: rgba(200, 255, 0, 0.12);
+}
+
+.gear-scene .gear--4::before {
+  inset: -5px;
+  box-shadow:
+    0px -6px 0 -2px var(--accent),
+    4.24px -4.24px 0 -2px var(--accent),
+    6px 0px 0 -2px var(--accent),
+    4.24px 4.24px 0 -2px var(--accent),
+    0px 6px 0 -2px var(--accent),
+    -4.24px 4.24px 0 -2px var(--accent),
+    -6px 0px 0 -2px var(--accent),
+    -4.24px -4.24px 0 -2px var(--accent);
+}
+
+.gear-scene .gear--4::after {
+  width: 25%;
+  height: 25%;
+}
+
+@keyframes gear-cw {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+@keyframes gear-ccw {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(-360deg); }
+}
+
+/* --- pixel cat on the gears --- */
+.gear-scene .gear-cat {
+  position: absolute;
+  width: 20px;
+  height: 16px;
+  top: 18px;
+  left: 68px;
+  z-index: 10;
+  animation: gear-cat-bounce 3s ease-in-out infinite;
+}
+
+/* cat body */
+.gear-scene .gear-cat::before {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 2px;
+  width: 14px;
+  height: 9px;
+  background: #e5e5e5;
+  border-radius: 7px 7px 3px 3px;
+}
+
+/* cat head + ears */
+.gear-scene .gear-cat::after {
+  content: '';
+  position: absolute;
+  bottom: 7px;
+  left: 4px;
+  width: 10px;
+  height: 8px;
+  background: #e5e5e5;
+  border-radius: 50% 50% 40% 40%;
+  /* ears as box-shadow triangles approximated with circles */
+  box-shadow:
+    -3px -4px 0 -2px #e5e5e5,
+    3px -4px 0 -2px #e5e5e5;
+}
+
+/* cat tail */
+.gear-scene .gear-cat-tail {
+  position: absolute;
+  bottom: 2px;
+  right: 0;
+  width: 8px;
+  height: 3px;
+  background: #e5e5e5;
+  border-radius: 0 4px 4px 0;
+  transform-origin: left center;
+  animation: gear-cat-tail-wag 0.8s ease-in-out infinite alternate;
+}
+
+@keyframes gear-cat-bounce {
+  0%, 100% {
+    transform: translateY(0);
+  }
+  15% {
+    transform: translateY(-14px) translateX(4px);
+  }
+  30% {
+    transform: translateY(0) translateX(8px);
+  }
+  50% {
+    transform: translateY(-18px) translateX(40px);
+  }
+  65% {
+    transform: translateY(0) translateX(50px);
+  }
+  80% {
+    transform: translateY(-12px) translateX(25px);
+  }
+}
+
+@keyframes gear-cat-tail-wag {
+  from { transform: rotate(-15deg); }
+  to { transform: rotate(20deg); }
+}
+
+
+/* ==========================================================================
+   2. NYAN CAT
+   Fixed bottom-right, replaces scroll cat
+   ========================================================================== */
+
+.nyan-cat {
+  position: fixed;
+  bottom: 20px;
+  right: 30px;
+  z-index: 50;
+  pointer-events: none;
+  display: flex;
+  align-items: center;
+}
+
+/* rainbow trail */
+.nyan-cat__trail {
+  width: 40px;
+  height: 18px;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  margin-right: -2px;
+}
+
+.nyan-cat__trail span {
+  display: block;
+  height: 3px;
+  width: 100%;
+  animation: nyan-shimmer 1.2s ease-in-out infinite;
+}
+
+.nyan-cat__trail span:nth-child(1) { background: #ff0000; animation-delay: 0s; }
+.nyan-cat__trail span:nth-child(2) { background: #ff9900; animation-delay: 0.1s; }
+.nyan-cat__trail span:nth-child(3) { background: #ffff00; animation-delay: 0.2s; }
+.nyan-cat__trail span:nth-child(4) { background: #33ff00; animation-delay: 0.3s; }
+.nyan-cat__trail span:nth-child(5) { background: #0099ff; animation-delay: 0.4s; }
+.nyan-cat__trail span:nth-child(6) { background: #6633ff; animation-delay: 0.5s; }
+
+@keyframes nyan-shimmer {
+  0%, 100% { opacity: 0.7; transform: scaleX(1); }
+  50% { opacity: 1; transform: scaleX(0.7); }
+}
+
+/* cat body */
+.nyan-cat__body {
+  position: relative;
+  width: 30px;
+  height: 20px;
+  will-change: transform;
+}
+
+/* torso */
+.nyan-cat__body::before {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 3px;
+  width: 22px;
+  height: 13px;
+  background: #e5e5e5;
+  border-radius: 8px 8px 4px 4px;
+}
+
+/* head with ears and eyes */
+.nyan-cat__body::after {
+  content: '';
+  position: absolute;
+  bottom: 10px;
+  left: 7px;
+  width: 14px;
+  height: 11px;
+  background: #e5e5e5;
+  border-radius: 50% 50% 40% 40%;
+  /* ears */
+  box-shadow:
+    -4px -5px 0 -2.5px #e5e5e5,
+    4px -5px 0 -2.5px #e5e5e5,
+    /* eyes using accent color */
+    -2px 3px 0 -1.5px var(--accent),
+    2px 3px 0 -1.5px var(--accent);
+}
+
+/* tail */
+.nyan-cat__tail {
+  position: absolute;
+  bottom: 6px;
+  left: -2px;
+  width: 8px;
+  height: 3px;
+  background: #e5e5e5;
+  border-radius: 3px 0 0 3px;
+  transform-origin: right center;
+  animation: nyan-tail 0.5s ease-in-out infinite alternate;
+}
+
+@keyframes nyan-tail {
+  from { transform: rotate(-20deg); }
+  to { transform: rotate(15deg); }
+}
+
+/* zzz for sleeping state */
+.nyan-cat__zzz {
+  position: absolute;
+  top: -6px;
+  right: -4px;
+  font-family: var(--mono, monospace);
+  font-size: 0.5rem;
+  color: var(--accent);
+  opacity: 0;
+  pointer-events: none;
+  will-change: transform, opacity;
+}
+
+/* --- state: running (scrolling) --- */
+.nyan-cat.is-running .nyan-cat__body {
+  animation: nyan-bob 0.25s ease-in-out infinite alternate;
+}
+
+.nyan-cat.is-running .nyan-cat__trail span {
+  animation: nyan-shimmer-fast 0.4s ease-in-out infinite;
+}
+
+.nyan-cat.is-running .nyan-cat__trail span:nth-child(1) { animation-delay: 0s; }
+.nyan-cat.is-running .nyan-cat__trail span:nth-child(2) { animation-delay: 0.05s; }
+.nyan-cat.is-running .nyan-cat__trail span:nth-child(3) { animation-delay: 0.1s; }
+.nyan-cat.is-running .nyan-cat__trail span:nth-child(4) { animation-delay: 0.15s; }
+.nyan-cat.is-running .nyan-cat__trail span:nth-child(5) { animation-delay: 0.2s; }
+.nyan-cat.is-running .nyan-cat__trail span:nth-child(6) { animation-delay: 0.25s; }
+
+@keyframes nyan-bob {
+  from { transform: translateY(0); }
+  to { transform: translateY(-3px); }
+}
+
+@keyframes nyan-shimmer-fast {
+  0%, 100% { opacity: 0.8; transform: scaleX(1); }
+  50% { opacity: 1; transform: scaleX(0.6); }
+}
+
+/* --- state: idle (default) --- */
+.nyan-cat.is-idle .nyan-cat__body {
+  animation: none;
+}
+
+.nyan-cat.is-idle .nyan-cat__trail span {
+  animation: nyan-shimmer 1.2s ease-in-out infinite;
+}
+
+/* --- state: sleeping (idle > 5s) --- */
+.nyan-cat.is-sleeping .nyan-cat__body::before {
+  /* flatten body slightly to look curled up */
+  height: 10px;
+  width: 24px;
+  border-radius: 12px 12px 6px 6px;
+}
+
+.nyan-cat.is-sleeping .nyan-cat__body::after {
+  bottom: 7px;
+}
+
+.nyan-cat.is-sleeping .nyan-cat__body {
+  animation: none;
+}
+
+.nyan-cat.is-sleeping .nyan-cat__zzz {
+  opacity: 0.6;
+  animation: nyan-zzz 2s ease-in-out infinite;
+}
+
+.nyan-cat.is-sleeping .nyan-cat__trail span {
+  animation: nyan-shimmer-sleep 3s ease-in-out infinite;
+}
+
+@keyframes nyan-zzz {
+  0%, 100% {
+    transform: translateY(0);
+    opacity: 0.6;
+  }
+  50% {
+    transform: translateY(-8px);
+    opacity: 0.2;
+  }
+}
+
+@keyframes nyan-shimmer-sleep {
+  0%, 100% { opacity: 0.3; transform: scaleX(0.8); }
+  50% { opacity: 0.5; transform: scaleX(1); }
+}
+
+
+/* ==========================================================================
+   3. CAT SECTION DIVIDERS
+   ========================================================================== */
+
+.cat-divider {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0;
+  padding: 1.5rem 0;
+  width: 100%;
+}
+
+/* lines on each side */
+.cat-divider::before,
+.cat-divider::after {
+  content: '';
+  flex: 1;
+  height: 1px;
+  background: var(--border);
+  max-width: 200px;
+}
+
+/* cat silhouette in the center */
+.cat-divider__cat {
+  position: relative;
+  width: 16px;
+  height: 14px;
+  margin: 0 12px;
+  flex-shrink: 0;
+}
+
+/* sitting cat body */
+.cat-divider__cat::before {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 2px;
+  width: 10px;
+  height: 8px;
+  background: var(--text-dim);
+  border-radius: 5px 5px 2px 2px;
+}
+
+/* cat head + ears */
+.cat-divider__cat::after {
+  content: '';
+  position: absolute;
+  bottom: 6px;
+  left: 3px;
+  width: 8px;
+  height: 7px;
+  background: var(--text-dim);
+  border-radius: 50% 50% 40% 40%;
+  box-shadow:
+    -2.5px -3.5px 0 -1.5px var(--text-dim),
+    2.5px -3.5px 0 -1.5px var(--text-dim);
+}
+
+/* tail wraps around */
+.cat-divider__tail {
+  position: absolute;
+  bottom: 1px;
+  right: 0;
+  width: 6px;
+  height: 2px;
+  background: var(--text-dim);
+  border-radius: 0 3px 3px 0;
+}
+
+
+/* ==========================================================================
+   REDUCED MOTION
+   ========================================================================== */
+
+@media (prefers-reduced-motion: reduce) {
+  .gear-scene .gear,
+  .gear-scene .gear-cat,
+  .gear-scene .gear-cat-tail,
+  .nyan-cat__body,
+  .nyan-cat__trail span,
+  .nyan-cat__tail,
+  .nyan-cat__zzz {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+  }
+
+  .nyan-cat.is-running .nyan-cat__body,
+  .nyan-cat.is-running .nyan-cat__trail span,
+  .nyan-cat.is-sleeping .nyan-cat__zzz,
+  .nyan-cat.is-sleeping .nyan-cat__trail span {
+    animation: none !important;
+  }
+}

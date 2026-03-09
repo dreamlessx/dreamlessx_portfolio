@@ -246,6 +246,62 @@ a {
   animation: hero-fade-up 0.8s var(--ease-out-expo) 0.55s both;
 }
 
+/* --- hero layout --- */
+.hero-layout {
+  display: grid;
+  grid-template-columns: 1fr 300px;
+  gap: 3rem;
+  align-items: center;
+}
+
+.hero-gear-area {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+  z-index: 2;
+  animation: hero-fade-up 0.8s var(--ease-out-expo) 0.7s both;
+}
+
+/* --- hero blurb box --- */
+.hero-blurb {
+  color: var(--text-secondary);
+  font-size: 0.95rem;
+  max-width: 600px;
+  line-height: 1.7;
+  margin-bottom: 2.5rem;
+  padding: 1.25rem 1.5rem;
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  background: rgba(255, 255, 255, 0.02);
+  animation: hero-fade-up 0.8s var(--ease-out-expo) 0.4s both;
+}
+
+/* --- project nav arrows --- */
+.project-nav {
+  display: flex;
+  justify-content: flex-end;
+  gap: 0.5rem;
+  margin-bottom: 1rem;
+}
+
+.proj-prev, .proj-next {
+  font-family: var(--mono);
+  font-size: 0.75rem;
+  padding: 0.5rem 1rem;
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  color: var(--text-secondary);
+  cursor: pointer;
+  transition: all var(--transition);
+}
+
+.proj-prev:hover, .proj-next:hover {
+  border-color: var(--accent);
+  color: var(--accent);
+}
+
 /* --- buttons --- */
 .btn {
   display: inline-flex;
@@ -1826,6 +1882,13 @@ a {
 
 /* --- responsive additions --- */
 @media (max-width: 900px) {
+  .hero-layout {
+    grid-template-columns: 1fr;
+    gap: 2rem;
+  }
+  .hero-gear-area {
+    display: none;
+  }
   .tools-grid {
     grid-template-columns: repeat(2, 1fr);
   }

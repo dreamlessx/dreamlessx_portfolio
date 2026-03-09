@@ -7,6 +7,7 @@
   <meta name="description" content="Neuroscience, biochemistry, and way too many side projects.">
   <link rel="icon" type="image/svg+xml" href="favicon.svg">
   <link rel="stylesheet" href="styles.css">
+  <link rel="stylesheet" href="animations.css">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
@@ -40,7 +41,7 @@
   <main>
 
     <section class="hero" id="home">
-      <div class="container">
+      <div class="container hero-layout">
         <div class="hero-content">
           <p class="hero-tag mono">neuroscience · biochemistry · too many side projects · too little time</p>
           <h1 class="hero-title">
@@ -48,10 +49,9 @@
             wet lab and a terminal<br>
             window, i found my thing.
           </h1>
-          <p class="hero-sub" id="heroTyping"></p>
-          <noscript>
-            <p class="hero-sub">junior. uw. biochemistry + neuroscience. two active labs, three institutions, and an unreasonable number of terminal windows. this summer i'm headed to harvard medical school. long term? maybe a surgeon. maybe a scientist. probably both.</p>
-          </noscript>
+          <div class="hero-blurb" id="heroTyping">
+            <noscript>junior. uw. biochemistry + neuroscience. two active labs, three institutions, and an unreasonable number of terminal windows. this summer i'm headed to harvard medical school. long term? maybe a surgeon. maybe a scientist. probably both.</noscript>
+          </div>
           <div class="hero-links">
             <a href="#research" class="btn">view research &darr;</a>
             <a href="https://youtube.com/@theoverzealouspremed" target="_blank" rel="noopener" class="btn btn-ghost">youtube &nearr;</a>
@@ -59,8 +59,19 @@
             <a href="https://www.linkedin.com/in/rajagar/" target="_blank" rel="noopener" class="btn btn-ghost">linkedin &nearr;</a>
           </div>
         </div>
+        <div class="hero-gear-area">
+          <div class="gear-scene">
+            <div class="gear gear--1"></div>
+            <div class="gear gear--2"></div>
+            <div class="gear gear--3"></div>
+            <div class="gear gear--4"></div>
+            <div class="gear-cat on-gear-1"></div>
+          </div>
+        </div>
       </div>
     </section>
+
+    <div class="cat-divider"><span></span></div>
 
     <section class="section" id="about">
       <div class="container">
@@ -198,13 +209,13 @@
         <h3 class="subsection-label mono">paid positions · evergreen hospital, kirkland WA</h3>
         <div class="clinical-grid clinical-grid-2">
           <div class="clinical-card">
-            <div class="clinical-hours mono">~1,026 hrs</div>
+            <div class="clinical-hours mono">1,026 hrs</div>
             <h4>Medical Assistant, Heart Care Cardiology</h4>
             <p class="clinical-meta mono">jul 2023 - jan 2025 · 12 hrs/week</p>
             <p>Patient rooming, vitals, 12-lead EKG administration, patient education, EMR documentation. Worked directly under cardiologists managing chronic heart failure, arrhythmias, and post-procedural follow-up. This is where I learned what it actually means to show up for someone on their worst day.</p>
           </div>
           <div class="clinical-card">
-            <div class="clinical-hours mono">~600 hrs</div>
+            <div class="clinical-hours mono">597 hrs</div>
             <h4>Medical Assistant, Sleep Medicine Clinic</h4>
             <p class="clinical-meta mono">feb 2025 - present · 24 hrs/week</p>
             <p>Sleep study coordination, patient intake, Epworth Sleepiness Scale administration, CPAP fitting and education. Managing patient flow in a high-volume sleep disorders practice. Half of medicine is just listening to people describe how tired they are (relatable).</p>
@@ -339,6 +350,10 @@
         <h2 class="section-label mono">side projects</h2>
         <p class="section-intro">Things I built because I thought "how hard could it be?" (always harder than expected)</p>
 
+        <div class="project-nav">
+          <button class="proj-prev mono" aria-label="Previous project">&larr; prev</button>
+          <button class="proj-next mono" aria-label="Next project">next &rarr;</button>
+        </div>
         <div class="project-card project-card-featured">
           <div class="project-status mono">active / in development</div>
           <h3>LandmarkDiff</h3>
@@ -455,13 +470,13 @@
           <div class="tools-group">
             <h4 class="mono">languages</h4>
             <div class="tools-tags">
-              <span>Python</span><span>TypeScript</span><span>Rust</span><span>C++</span><span>R</span><span>SQL</span><span>MATLAB</span><span>Bash</span>
+              <span>Python</span><span>Java</span><span>C++</span><span>TypeScript</span><span>JavaScript</span><span>Rust</span><span>R</span><span>SQL</span><span>MATLAB</span><span>HTML/CSS</span><span>Bash</span>
             </div>
           </div>
           <div class="tools-group">
-            <h4 class="mono">research</h4>
+            <h4 class="mono">computational research</h4>
             <div class="tools-tags">
-              <span>AlphaFold</span><span>Rosetta</span><span>ProteinMPNN</span><span>Suite2p</span><span>MolProbity</span><span>AutoDock Vina</span><span>PoseBusters</span>
+              <span>AlphaFold</span><span>Rosetta</span><span>ProteinMPNN</span><span>Chai</span><span>Boltz</span><span>Suite2p</span><span>MolProbity</span><span>PoseBusters</span><span>AutoDock Vina</span><span>PyMOL</span><span>Solidworks</span>
             </div>
           </div>
           <div class="tools-group">
@@ -473,19 +488,19 @@
           <div class="tools-group">
             <h4 class="mono">web / infra</h4>
             <div class="tools-tags">
-              <span>Next.js</span><span>React</span><span>FastAPI</span><span>Docker</span><span>PostgreSQL</span><span>Redis</span><span>AWS</span><span>SLURM</span><span>Celery</span><span>Git</span>
+              <span>Next.js</span><span>React</span><span>FastAPI</span><span>Docker</span><span>PostgreSQL</span><span>Redis</span><span>AWS</span><span>SLURM</span><span>Celery</span><span>Git</span><span>Linux</span>
             </div>
           </div>
           <div class="tools-group">
-            <h4 class="mono">wet lab</h4>
+            <h4 class="mono">laboratory</h4>
             <div class="tools-tags">
-              <span>CRISPR-Cas9</span><span>PCR</span><span>Cell Culture</span><span>Gene Expression</span><span>EKG</span><span>ELISA</span><span>Biological Assays</span>
+              <span>Two-Photon Calcium Imaging</span><span>CRISPR-Cas9</span><span>RT-qPCR</span><span>ELISA</span><span>Cell Culture</span><span>DNA Library Construction</span><span>Gel Electrophoresis</span><span>Phosphoproteomics</span><span>Sterile Surgical Assistance</span><span>EKG</span>
             </div>
           </div>
           <div class="tools-group">
-            <h4 class="mono">daily drivers</h4>
+            <h4 class="mono">certifications & daily drivers</h4>
             <div class="tools-tags">
-              <span>neovim</span><span>VS Code</span><span>zsh + starship</span><span>lazygit</span><span>ripgrep</span><span>atuin</span><span>fzf</span><span>yazi</span>
+              <span>Registered MA (MA-R)</span><span>BLS Certified</span><span>neovim</span><span>VS Code</span><span>zsh + starship</span><span>lazygit</span><span>ripgrep</span><span>atuin</span><span>fzf</span>
             </div>
           </div>
         </div>
@@ -549,9 +564,15 @@
 
   </main>
 
-  <!-- scroll cat -->
-  <div class="scroll-cat" id="scrollCat" aria-hidden="true">
-    <div class="cat-sprite" id="catSprite"></div>
+  <!-- nyan cat -->
+  <div class="nyan-cat" aria-hidden="true">
+    <span class="nyan-trail"></span>
+    <span class="nyan-trail"></span>
+    <span class="nyan-trail"></span>
+    <span class="nyan-trail"></span>
+    <span class="nyan-trail"></span>
+    <span class="nyan-trail"></span>
+    <div class="nyan-body"></div>
   </div>
 
   <footer class="footer">
