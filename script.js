@@ -35,10 +35,10 @@ document.addEventListener('DOMContentLoaded', () => {
     .hero-sentence {
       opacity: 0; transform: translateY(12px);
       transition: opacity 0.5s cubic-bezier(0.16,1,0.3,1), transform 0.5s cubic-bezier(0.16,1,0.3,1);
-      display: inline;
+      display: inline-block;
     }
     .hero-sentence.visible {
-      opacity: 1; transform: translateY(0);
+      opacity: 1; transform: translateY(0) !important;
     }
     .project-card-featured { transition: opacity 0.35s ease, transform 0.35s ease; }
     .project-card-featured.crossfade-out { opacity: 0; transform: scale(0.98); }
