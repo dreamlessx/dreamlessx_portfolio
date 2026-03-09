@@ -7,7 +7,7 @@
 }
 
 :root {
-  --bg: #0c0c0c;
+  --bg: #060a06;
   --bg-alt: #111111;
   --bg-card: #161616;
   --bg-card-hover: #1c1c1c;
@@ -51,7 +51,8 @@ html {
 
 body {
   font-family: var(--font);
-  background: var(--bg);
+  background: linear-gradient(to top, #0a1a0a, #060a06 40%, #050505);
+  background-attachment: fixed;
   color: var(--text);
   line-height: 1.65;
   overflow-x: hidden;
