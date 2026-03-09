@@ -44,7 +44,7 @@
 
 html {
   scroll-behavior: smooth;
-  scroll-padding-top: 7rem;
+  scroll-padding-top: 0;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
@@ -55,6 +55,39 @@ body {
   color: var(--text);
   line-height: 1.65;
   overflow-x: hidden;
+}
+
+/* --- snap-scroll slideshow (desktop only) --- */
+@media (min-width: 769px) {
+  main {
+    scroll-snap-type: y mandatory;
+    overflow-y: auto;
+    height: calc(100vh - 33px);
+    scroll-behavior: smooth;
+  }
+
+  .hero, .section {
+    scroll-snap-align: start;
+    min-height: 100vh;
+    height: 100vh;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+  }
+
+  .hero {
+    padding: 0;
+  }
+
+  .section .container {
+    max-height: 100vh;
+    overflow-y: auto;
+    scrollbar-width: none;
+  }
+
+  .section .container::-webkit-scrollbar {
+    display: none;
+  }
 }
 
 a {
@@ -174,7 +207,7 @@ a {
   min-height: 100vh;
   display: flex;
   align-items: center;
-  padding: 8rem 0 6rem;
+  padding: 6rem 0 4rem;
   position: relative;
   overflow: hidden;
 }
@@ -258,25 +291,14 @@ a {
 
 /* --- hero layout --- */
 .hero-layout {
-  display: grid;
-  grid-template-columns: 1fr 340px;
-  gap: 2rem;
-  align-items: center;
+  position: relative;
   padding: 0;
 }
 
 .hero-content {
   position: relative;
   z-index: 2;
-}
-
-.hero-gear-area {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  position: relative;
-  z-index: 2;
-  animation: hero-fade-up 0.8s var(--ease-out-expo) 0.7s both;
+  max-width: 620px;
 }
 
 /* hero-blurb removed, using .hero-sub instead */
@@ -329,7 +351,7 @@ a {
 
 /* --- sections --- */
 .section {
-  padding: 7rem 0;
+  padding: clamp(3rem, 5vh, 7rem) 0;
 }
 
 .section-alt {
@@ -2046,13 +2068,6 @@ a {
 
 /* --- responsive additions --- */
 @media (max-width: 900px) {
-  .hero-layout {
-    grid-template-columns: 1fr;
-    gap: 2rem;
-  }
-  .hero-gear-area {
-    display: none;
-  }
   .hero-links .btn {
     flex: none;
   }

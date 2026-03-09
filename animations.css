@@ -1,103 +1,129 @@
-/* animations.css — simple circle gears with hub dots */
+/* animations.css — concentric circle gears */
 
+/* gear scene takes full right side of hero, bleeds off edges */
 .gear-scene {
-  position: relative;
-  width: 320px;
-  height: 320px;
+  position: absolute;
+  top: 0;
+  right: -5vw;
+  bottom: 0;
+  width: 55vw;
+  max-width: 700px;
+  overflow: visible;
+  pointer-events: none;
 }
 
-/* shared gear base — clean circle outlines */
+/* each gear = two concentric circles via element + ::before */
 .gear-scene .gear {
   position: absolute;
   border-radius: 50%;
-  border: 1.5px solid #c8ff00;
+  border: 1.5px solid rgba(200, 255, 0, 0.4);
   background: transparent;
   will-change: transform;
 }
 
-/* hub dot on the edge of each gear */
-.gear-dot {
-  position: absolute;
-  width: 8px;
-  height: 8px;
-  background: #c8ff00;
-  border-radius: 50%;
-  top: -4px;
-  left: 50%;
-  transform: translateX(-50%);
-}
-
-/* gear 1 — large, top-left */
-.gear-scene .gear--1 {
-  width: 160px;
-  height: 160px;
-  top: 20px;
-  left: 10px;
-  animation: spin-cw 12s linear infinite;
-}
-
-/* gear 2 — large, right, interlocks with gear 1 */
-.gear-scene .gear--2 {
-  width: 140px;
-  height: 140px;
-  top: 10px;
-  left: 155px;
-  animation: spin-ccw 10.5s linear infinite;
-}
-
-/* gear 3 — medium, bottom-left */
-.gear-scene .gear--3 {
-  width: 100px;
-  height: 100px;
-  top: 175px;
-  left: 40px;
-  animation: spin-ccw 7.5s linear infinite;
-}
-
-/* gear 4 — medium, bottom-right */
-.gear-scene .gear--4 {
-  width: 110px;
-  height: 110px;
-  top: 155px;
-  left: 170px;
-  animation: spin-cw 8.25s linear infinite;
-}
-
-/* gear 5 — small, center accent */
-.gear-scene .gear--5 {
-  width: 50px;
-  height: 50px;
-  top: 135px;
-  left: 130px;
-  animation: spin-ccw 3.75s linear infinite;
-  border-color: rgba(200, 255, 0, 0.5);
-}
-
-.gear-scene .gear--5 .gear-dot {
-  width: 5px;
-  height: 5px;
-  top: -2.5px;
-  background: rgba(200, 255, 0, 0.5);
-}
-
-/* center axle dots */
-.gear-scene .gear::after {
+/* inner circle */
+.gear-scene .gear::before {
   content: '';
   position: absolute;
   top: 50%;
   left: 50%;
-  transform: translate(-50%, -50%);
-  width: 6px;
-  height: 6px;
   border-radius: 50%;
-  border: 1px solid rgba(200, 255, 0, 0.3);
+  border: 1.5px solid rgba(200, 255, 0, 0.6);
   background: transparent;
+  transform: translate(-50%, -50%);
 }
 
-.gear-scene .gear--1::after,
-.gear-scene .gear--2::after {
-  width: 8px;
-  height: 8px;
+/* no axle dots, no hub dots */
+.gear-scene .gear::after { display: none; }
+
+/* gear 1 — very large, upper-right, partially off-screen */
+.gear-scene .gear--1 {
+  width: 420px;
+  height: 420px;
+  top: -8%;
+  right: -10%;
+  animation: spin-cw 25s linear infinite;
+  border-color: rgba(200, 255, 0, 0.25);
+}
+.gear-scene .gear--1::before {
+  width: 300px;
+  height: 300px;
+  border-color: rgba(200, 255, 0, 0.35);
+}
+
+/* gear 2 — large, center-left, overlaps gear 1 */
+.gear-scene .gear--2 {
+  width: 320px;
+  height: 320px;
+  top: 25%;
+  left: 5%;
+  animation: spin-ccw 20s linear infinite;
+  border-color: rgba(200, 255, 0, 0.3);
+}
+.gear-scene .gear--2::before {
+  width: 220px;
+  height: 220px;
+  border-color: rgba(200, 255, 0, 0.45);
+}
+
+/* gear 3 — medium, bottom-right, partially off-screen */
+.gear-scene .gear--3 {
+  width: 260px;
+  height: 260px;
+  bottom: -5%;
+  right: 5%;
+  animation: spin-cw 16s linear infinite;
+  border-color: rgba(200, 255, 0, 0.2);
+}
+.gear-scene .gear--3::before {
+  width: 180px;
+  height: 180px;
+  border-color: rgba(200, 255, 0, 0.35);
+}
+
+/* gear 4 — medium, mid-left, fills dead space */
+.gear-scene .gear--4 {
+  width: 180px;
+  height: 180px;
+  top: 55%;
+  left: 20%;
+  animation: spin-ccw 12s linear infinite;
+  border-color: rgba(200, 255, 0, 0.25);
+}
+.gear-scene .gear--4::before {
+  width: 120px;
+  height: 120px;
+  border-color: rgba(200, 255, 0, 0.4);
+}
+
+/* gear 5 — small accent, upper area */
+.gear-scene .gear--5 {
+  width: 100px;
+  height: 100px;
+  top: 15%;
+  left: 30%;
+  animation: spin-cw 8s linear infinite;
+  border-color: rgba(200, 255, 0, 0.15);
+}
+.gear-scene .gear--5::before {
+  width: 60px;
+  height: 60px;
+  border-color: rgba(200, 255, 0, 0.3);
+}
+
+/* gear 6 — small accent, bottom-left */
+.gear-scene .gear--6 {
+  width: 80px;
+  height: 80px;
+  bottom: 20%;
+  left: 5%;
+  animation: spin-ccw 6s linear infinite;
+  border-color: rgba(200, 255, 0, 0.12);
+}
+.gear-scene .gear--6::before {
+  width: 48px;
+  height: 48px;
+  border-color: rgba(200, 255, 0, 0.25);
 }
 
 @keyframes spin-cw {
@@ -110,7 +136,14 @@
   to { transform: rotate(-360deg); }
 }
 
-/* reduced motion */
+@media (max-width: 900px) {
+  .gear-scene {
+    width: 100vw;
+    right: -20vw;
+    opacity: 0.3;
+  }
+}
+
 @media (prefers-reduced-motion: reduce) {
   .gear-scene .gear {
     animation: none !important;
