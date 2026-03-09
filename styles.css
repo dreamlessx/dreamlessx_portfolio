@@ -296,18 +296,22 @@ a {
 
 /* --- hero layout --- */
 .hero-layout {
-  display: grid;
-  grid-template-columns: 1fr 340px;
-  gap: 2rem;
+  display: flex;
   align-items: center;
+  justify-content: space-between;
+  gap: 2rem;
 }
 
 .hero-content {
   position: relative;
   z-index: 2;
+  flex: 1;
+  min-width: 0;
 }
 
 .hero-gear-area {
+  flex-shrink: 0;
+  width: 340px;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -2084,7 +2088,7 @@ a {
 /* --- responsive additions --- */
 @media (max-width: 900px) {
   .hero-layout {
-    grid-template-columns: 1fr;
+    flex-direction: column;
   }
   .hero-gear-area {
     display: none;
