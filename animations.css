@@ -1,18 +1,13 @@
-/* animations.css — concentric circle gears */
+/* animations.css — concentric circle gears, contained in right column */
 
-/* gear scene takes full right side of hero, bleeds off edges */
 .gear-scene {
-  position: absolute;
-  top: 0;
-  right: -5vw;
-  bottom: 0;
-  width: 55vw;
-  max-width: 700px;
+  position: relative;
+  width: 340px;
+  height: 400px;
   overflow: visible;
-  pointer-events: none;
 }
 
-/* each gear = two concentric circles via element + ::before */
+/* each gear = two concentric circles (element + ::before) */
 .gear-scene .gear {
   position: absolute;
   border-radius: 50%;
@@ -21,7 +16,7 @@
   will-change: transform;
 }
 
-/* inner circle */
+/* inner concentric circle */
 .gear-scene .gear::before {
   content: '';
   position: absolute;
@@ -33,96 +28,96 @@
   transform: translate(-50%, -50%);
 }
 
-/* no axle dots, no hub dots */
+/* no extra pseudo-elements */
 .gear-scene .gear::after { display: none; }
 
-/* gear 1 — very large, upper-right, partially off-screen */
+/* gear 1 — very large, top-right, bleeds off edge */
 .gear-scene .gear--1 {
-  width: 420px;
-  height: 420px;
-  top: -8%;
-  right: -10%;
-  animation: spin-cw 25s linear infinite;
+  width: 280px;
+  height: 280px;
+  top: -30px;
+  right: -60px;
+  animation: spin-cw 22s linear infinite;
   border-color: rgba(200, 255, 0, 0.25);
 }
 .gear-scene .gear--1::before {
-  width: 300px;
-  height: 300px;
-  border-color: rgba(200, 255, 0, 0.35);
+  width: 200px;
+  height: 200px;
+  border-color: rgba(200, 255, 0, 0.4);
 }
 
 /* gear 2 — large, center-left, overlaps gear 1 */
 .gear-scene .gear--2 {
-  width: 320px;
-  height: 320px;
-  top: 25%;
-  left: 5%;
-  animation: spin-ccw 20s linear infinite;
+  width: 220px;
+  height: 220px;
+  top: 80px;
+  left: -20px;
+  animation: spin-ccw 17s linear infinite;
   border-color: rgba(200, 255, 0, 0.3);
 }
 .gear-scene .gear--2::before {
-  width: 220px;
-  height: 220px;
-  border-color: rgba(200, 255, 0, 0.45);
+  width: 150px;
+  height: 150px;
+  border-color: rgba(200, 255, 0, 0.5);
 }
 
-/* gear 3 — medium, bottom-right, partially off-screen */
+/* gear 3 — medium, bottom-right */
 .gear-scene .gear--3 {
-  width: 260px;
-  height: 260px;
-  bottom: -5%;
-  right: 5%;
-  animation: spin-cw 16s linear infinite;
-  border-color: rgba(200, 255, 0, 0.2);
-}
-.gear-scene .gear--3::before {
   width: 180px;
   height: 180px;
+  bottom: -20px;
+  right: 20px;
+  animation: spin-cw 14s linear infinite;
+  border-color: rgba(200, 255, 0, 0.22);
+}
+.gear-scene .gear--3::before {
+  width: 120px;
+  height: 120px;
+  border-color: rgba(200, 255, 0, 0.38);
+}
+
+/* gear 4 — medium, bottom-left, fills dead space */
+.gear-scene .gear--4 {
+  width: 140px;
+  height: 140px;
+  bottom: 40px;
+  left: 30px;
+  animation: spin-ccw 11s linear infinite;
+  border-color: rgba(200, 255, 0, 0.2);
+}
+.gear-scene .gear--4::before {
+  width: 90px;
+  height: 90px;
   border-color: rgba(200, 255, 0, 0.35);
 }
 
-/* gear 4 — medium, mid-left, fills dead space */
-.gear-scene .gear--4 {
-  width: 180px;
-  height: 180px;
-  top: 55%;
-  left: 20%;
-  animation: spin-ccw 12s linear infinite;
-  border-color: rgba(200, 255, 0, 0.25);
-}
-.gear-scene .gear--4::before {
-  width: 120px;
-  height: 120px;
-  border-color: rgba(200, 255, 0, 0.4);
-}
-
-/* gear 5 — small accent, upper area */
+/* gear 5 — small, upper-left accent */
 .gear-scene .gear--5 {
-  width: 100px;
-  height: 100px;
-  top: 15%;
-  left: 30%;
-  animation: spin-cw 8s linear infinite;
+  width: 80px;
+  height: 80px;
+  top: 30px;
+  left: 60px;
+  animation: spin-cw 7s linear infinite;
   border-color: rgba(200, 255, 0, 0.15);
 }
 .gear-scene .gear--5::before {
-  width: 60px;
-  height: 60px;
+  width: 48px;
+  height: 48px;
   border-color: rgba(200, 255, 0, 0.3);
 }
 
-/* gear 6 — small accent, bottom-left */
+/* gear 6 — small, center accent */
 .gear-scene .gear--6 {
-  width: 80px;
-  height: 80px;
-  bottom: 20%;
-  left: 5%;
-  animation: spin-ccw 6s linear infinite;
+  width: 60px;
+  height: 60px;
+  top: 180px;
+  left: 140px;
+  animation: spin-ccw 5s linear infinite;
   border-color: rgba(200, 255, 0, 0.12);
 }
 .gear-scene .gear--6::before {
-  width: 48px;
-  height: 48px;
+  width: 36px;
+  height: 36px;
   border-color: rgba(200, 255, 0, 0.25);
 }
 
@@ -134,14 +129,6 @@
 @keyframes spin-ccw {
   from { transform: rotate(0deg); }
   to { transform: rotate(-360deg); }
-}
-
-@media (max-width: 900px) {
-  .gear-scene {
-    width: 100vw;
-    right: -20vw;
-    opacity: 0.3;
-  }
 }
 
 @media (prefers-reduced-motion: reduce) {
