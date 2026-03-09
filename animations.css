@@ -1,164 +1,354 @@
-/* animations.css — clockwork gears, nyan cat, cat dividers */
+/* animations.css — mechanical gears, gear cat, nyan cat, cat dividers */
 
 /* ==========================================================================
-   1. CLOCKWORK GEAR SCENE
-   280x280px, positioned in hero section
+   CSS CUSTOM PROPERTIES (inherited from main stylesheet)
+   --bg: #0c0c0c
+   --accent: #c8ff00
+   --text: #e5e5e5
+   --text-dim: #666666
+   --border: rgba(255,255,255,0.08)
+   ========================================================================== */
+
+
+/* ==========================================================================
+   1. CLOCKWORK GEAR SCENE — 8 interlocking mechanical gears
+   300x300px container, positioned in hero section
    ========================================================================== */
 
 .gear-scene {
   position: relative;
-  width: 280px;
-  height: 280px;
+  width: 300px;
+  height: 300px;
   overflow: hidden;
 }
 
-/* --- shared gear base --- */
+/* --- shared gear base --------------------------------------------------- */
 .gear-scene .gear {
   position: absolute;
   border-radius: 50%;
-  background: var(--border);
+  background: rgba(255,255,255,0.06);
   will-change: transform;
 }
 
-/* gear teeth via box-shadow ring */
-.gear-scene .gear::before {
-  content: '';
-  position: absolute;
-  inset: -6px;
-  border-radius: 50%;
-  background: transparent;
-  /* 12 teeth around the gear using radial pseudo-tooth trick */
-  box-shadow:
-    0 -3px 0 -1px var(--accent),
-    3px 0 0 -1px var(--accent),
-    0 3px 0 -1px var(--accent),
-    -3px 0 0 -1px var(--accent),
-    2.1px -2.1px 0 -1px var(--accent),
-    2.1px 2.1px 0 -1px var(--accent),
-    -2.1px 2.1px 0 -1px var(--accent),
-    -2.1px -2.1px 0 -1px var(--accent);
-  z-index: -1;
-}
-
-/* gear axle hole */
+/* axle hole on every gear */
 .gear-scene .gear::after {
   content: '';
   position: absolute;
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  width: 30%;
-  height: 30%;
+  width: 22%;
+  height: 22%;
   border-radius: 50%;
   background: var(--bg, #0c0c0c);
-  border: 2px solid var(--accent);
+  border: 1.5px solid rgba(200, 255, 0, 0.35);
+  z-index: 2;
 }
 
-/* --- gear 1: large, top-left, clockwise --- */
+/* --- gear teeth via clip-path polygon ----------------------------------- */
+
+/*
+   Gear tooth polygon generator logic:
+   For N teeth, we create 4N points alternating between inner radius (r)
+   and outer radius (R). Each tooth is a trapezoid bump.
+   Inner radius = ~42% from center, outer radius = 50% from center.
+   Points are calculated as percentages for clip-path: polygon().
+*/
+
+/* GEAR 1: Large (120px), 16 teeth, clockwise, top-left area */
 .gear-scene .gear--1 {
   width: 120px;
   height: 120px;
-  top: 40px;
-  left: 20px;
-  animation: gear-cw 8s linear infinite;
+  top: 50px;
+  left: 10px;
+  clip-path: polygon(
+    50% 0%, 53.5% 6%, 58% 6%, 56% 0%,
+    66% 3%, 65% 9%, 70% 11%, 72% 5%,
+    80% 12%, 77% 18%, 81% 22%, 85% 17%,
+    90% 27%, 85% 31%, 87% 36%, 93% 33%,
+    96% 44%, 90% 46%, 90% 51%, 96% 51%,
+    96% 62%, 90% 61%, 88% 66%, 93% 70%,
+    88% 79%, 83% 75%, 80% 79%, 84% 85%,
+    76% 91%, 72% 86%, 68% 88%, 70% 94%,
+    61% 97%, 58% 91%, 54% 92%, 54% 98%,
+    44% 98%, 44% 92%, 40% 91%, 38% 97%,
+    29% 94%, 31% 88%, 27% 86%, 24% 91%,
+    16% 85%, 20% 80%, 17% 76%, 12% 79%,
+    8% 70%, 13% 67%, 12% 62%, 6% 62%,
+    4% 52%, 10% 51%, 10% 46%, 4% 45%,
+    6% 35%, 12% 36%, 14% 31%, 9% 27%,
+    15% 19%, 19% 23%, 23% 19%, 19% 13%,
+    27% 7%, 30% 12%, 34% 10%, 32% 4%,
+    42% 1%, 43% 7%, 47% 7%, 48% 1%
+  );
+  animation: gear-cw 10s linear infinite;
 }
 
+/* tooth edge glow for gear 1 */
 .gear-scene .gear--1::before {
-  inset: -8px;
-  box-shadow:
-    0px -10px 0 -3px var(--accent),
-    7.07px -7.07px 0 -3px var(--accent),
-    10px 0px 0 -3px var(--accent),
-    7.07px 7.07px 0 -3px var(--accent),
-    0px 10px 0 -3px var(--accent),
-    -7.07px 7.07px 0 -3px var(--accent),
-    -10px 0px 0 -3px var(--accent),
-    -7.07px -7.07px 0 -3px var(--accent),
-    3.83px -9.24px 0 -3px var(--accent),
-    9.24px -3.83px 0 -3px var(--accent),
-    9.24px 3.83px 0 -3px var(--accent),
-    3.83px 9.24px 0 -3px var(--accent),
-    -3.83px 9.24px 0 -3px var(--accent),
-    -9.24px 3.83px 0 -3px var(--accent),
-    -9.24px -3.83px 0 -3px var(--accent),
-    -3.83px -9.24px 0 -3px var(--accent);
+  content: '';
+  position: absolute;
+  inset: -1px;
+  border-radius: 50%;
+  background: rgba(255,255,255,0.06);
+  clip-path: inherit;
+  box-shadow: 0 0 8px rgba(200, 255, 0, 0.08);
+  z-index: 1;
 }
 
-/* --- gear 2: medium, meshed right of gear 1, counter-clockwise --- */
+/* GEAR 2: Medium (80px), 12 teeth, counter-clockwise, meshed right of gear 1 */
 .gear-scene .gear--2 {
   width: 80px;
   height: 80px;
   top: 60px;
-  left: 132px;
-  animation: gear-ccw 5.33s linear infinite;
+  left: 120px;
+  clip-path: polygon(
+    50% 0%, 55% 8%, 62% 6%, 59% 0%,
+    73% 5%, 69% 13%, 76% 17%, 80% 10%,
+    90% 22%, 84% 28%, 89% 35%, 96% 30%,
+    98% 46%, 90% 48%, 90% 55%, 98% 56%,
+    94% 72%, 87% 68%, 83% 75%, 89% 82%,
+    78% 92%, 73% 85%, 66% 88%, 69% 96%,
+    54% 100%, 52% 92%, 45% 92%, 44% 100%,
+    29% 96%, 32% 88%, 25% 85%, 21% 92%,
+    12% 82%, 18% 76%, 14% 69%, 7% 72%,
+    3% 57%, 10% 55%, 10% 48%, 3% 46%,
+    6% 31%, 13% 35%, 17% 28%, 10% 22%,
+    20% 11%, 25% 18%, 32% 13%, 28% 5%,
+    42% 0%, 44% 8%, 48% 8%, 48% 0%
+  );
+  animation: gear-ccw 6.67s linear infinite;
 }
 
 .gear-scene .gear--2::before {
-  inset: -7px;
-  box-shadow:
-    0px -8px 0 -2.5px var(--accent),
-    5.66px -5.66px 0 -2.5px var(--accent),
-    8px 0px 0 -2.5px var(--accent),
-    5.66px 5.66px 0 -2.5px var(--accent),
-    0px 8px 0 -2.5px var(--accent),
-    -5.66px 5.66px 0 -2.5px var(--accent),
-    -8px 0px 0 -2.5px var(--accent),
-    -5.66px -5.66px 0 -2.5px var(--accent),
-    3.06px -7.39px 0 -2.5px var(--accent),
-    7.39px -3.06px 0 -2.5px var(--accent),
-    7.39px 3.06px 0 -2.5px var(--accent),
-    3.06px 7.39px 0 -2.5px var(--accent);
+  content: '';
+  position: absolute;
+  inset: -1px;
+  border-radius: 50%;
+  background: rgba(255,255,255,0.06);
+  clip-path: inherit;
+  box-shadow: 0 0 6px rgba(200, 255, 0, 0.06);
+  z-index: 1;
 }
 
-/* --- gear 3: small, meshed below gear 2, clockwise --- */
+/* GEAR 3: Small (50px), 10 teeth, clockwise, meshed below gear 2 */
 .gear-scene .gear--3 {
-  width: 60px;
-  height: 60px;
-  top: 136px;
-  left: 142px;
-  animation: gear-cw 4s linear infinite;
+  width: 50px;
+  height: 50px;
+  top: 135px;
+  left: 128px;
+  clip-path: polygon(
+    50% 0%, 57% 10%, 65% 7%, 61% 0%,
+    78% 8%, 72% 17%, 80% 24%, 88% 17%,
+    95% 35%, 86% 39%, 88% 48%, 97% 47%,
+    95% 66%, 86% 62%, 82% 71%, 90% 79%,
+    78% 91%, 72% 83%, 64% 88%, 67% 97%,
+    50% 100%, 48% 90%, 40% 90%, 38% 100%,
+    22% 95%, 28% 86%, 20% 80%, 12% 88%,
+    5% 74%, 14% 68%, 12% 59%, 3% 58%,
+    3% 40%, 12% 42%, 15% 33%, 6% 27%,
+    16% 13%, 22% 21%, 30% 15%, 25% 5%,
+    40% 0%, 42% 10%, 47% 10%, 48% 0%
+  );
+  animation: gear-cw 4.17s linear infinite;
 }
 
 .gear-scene .gear--3::before {
-  inset: -6px;
-  box-shadow:
-    0px -7px 0 -2px var(--accent),
-    4.95px -4.95px 0 -2px var(--accent),
-    7px 0px 0 -2px var(--accent),
-    4.95px 4.95px 0 -2px var(--accent),
-    0px 7px 0 -2px var(--accent),
-    -4.95px 4.95px 0 -2px var(--accent),
-    -7px 0px 0 -2px var(--accent),
-    -4.95px -4.95px 0 -2px var(--accent);
+  content: '';
+  position: absolute;
+  inset: -1px;
+  border-radius: 50%;
+  background: rgba(255,255,255,0.06);
+  clip-path: inherit;
+  box-shadow: 0 0 5px rgba(200, 255, 0, 0.06);
+  z-index: 1;
 }
 
-/* --- gear 4: tiny accent gear, top-right, counter-clockwise --- */
+/* GEAR 4: Small (44px), 8 teeth, counter-clockwise, top-right */
 .gear-scene .gear--4 {
   width: 44px;
   height: 44px;
-  top: 10px;
-  left: 200px;
-  animation: gear-ccw 3s linear infinite;
-  background: rgba(200, 255, 0, 0.12);
+  top: 15px;
+  left: 140px;
+  clip-path: polygon(
+    50% 0%, 58% 12%, 68% 8%, 64% 0%,
+    85% 12%, 78% 22%, 88% 32%, 96% 24%,
+    100% 48%, 88% 50%, 90% 62%, 100% 62%,
+    90% 82%, 80% 76%, 74% 86%, 82% 96%,
+    60% 100%, 56% 88%, 46% 90%, 44% 100%,
+    22% 94%, 28% 84%, 18% 76%, 10% 84%,
+    2% 66%, 12% 62%, 10% 50%, 0% 48%,
+    6% 28%, 16% 34%, 22% 24%, 14% 14%,
+    34% 2%, 38% 14%, 46% 12%, 46% 0%
+  );
+  animation: gear-ccw 3.67s linear infinite;
 }
 
 .gear-scene .gear--4::before {
-  inset: -5px;
-  box-shadow:
-    0px -6px 0 -2px var(--accent),
-    4.24px -4.24px 0 -2px var(--accent),
-    6px 0px 0 -2px var(--accent),
-    4.24px 4.24px 0 -2px var(--accent),
-    0px 6px 0 -2px var(--accent),
-    -4.24px 4.24px 0 -2px var(--accent),
-    -6px 0px 0 -2px var(--accent),
-    -4.24px -4.24px 0 -2px var(--accent);
+  content: '';
+  position: absolute;
+  inset: -1px;
+  border-radius: 50%;
+  background: rgba(255,255,255,0.06);
+  clip-path: inherit;
+  box-shadow: 0 0 4px rgba(200, 255, 0, 0.05);
+  z-index: 1;
 }
 
 .gear-scene .gear--4::after {
-  width: 25%;
-  height: 25%;
+  width: 20%;
+  height: 20%;
 }
+
+/* GEAR 5: Medium (70px), 12 teeth, clockwise, lower-left area */
+.gear-scene .gear--5 {
+  width: 70px;
+  height: 70px;
+  top: 160px;
+  left: 20px;
+  clip-path: polygon(
+    50% 0%, 55% 8%, 62% 6%, 59% 0%,
+    73% 5%, 69% 13%, 76% 17%, 80% 10%,
+    90% 22%, 84% 28%, 89% 35%, 96% 30%,
+    98% 46%, 90% 48%, 90% 55%, 98% 56%,
+    94% 72%, 87% 68%, 83% 75%, 89% 82%,
+    78% 92%, 73% 85%, 66% 88%, 69% 96%,
+    54% 100%, 52% 92%, 45% 92%, 44% 100%,
+    29% 96%, 32% 88%, 25% 85%, 21% 92%,
+    12% 82%, 18% 76%, 14% 69%, 7% 72%,
+    3% 57%, 10% 55%, 10% 48%, 3% 46%,
+    6% 31%, 13% 35%, 17% 28%, 10% 22%,
+    20% 11%, 25% 18%, 32% 13%, 28% 5%,
+    42% 0%, 44% 8%, 48% 8%, 48% 0%
+  );
+  animation: gear-cw 5.83s linear infinite;
+}
+
+.gear-scene .gear--5::before {
+  content: '';
+  position: absolute;
+  inset: -1px;
+  border-radius: 50%;
+  background: rgba(255,255,255,0.06);
+  clip-path: inherit;
+  box-shadow: 0 0 5px rgba(200, 255, 0, 0.06);
+  z-index: 1;
+}
+
+/* GEAR 6: Tiny (34px), 8 teeth, counter-clockwise, top-right corner */
+.gear-scene .gear--6 {
+  width: 34px;
+  height: 34px;
+  top: 8px;
+  left: 178px;
+  clip-path: polygon(
+    50% 0%, 58% 12%, 68% 8%, 64% 0%,
+    85% 12%, 78% 22%, 88% 32%, 96% 24%,
+    100% 48%, 88% 50%, 90% 62%, 100% 62%,
+    90% 82%, 80% 76%, 74% 86%, 82% 96%,
+    60% 100%, 56% 88%, 46% 90%, 44% 100%,
+    22% 94%, 28% 84%, 18% 76%, 10% 84%,
+    2% 66%, 12% 62%, 10% 50%, 0% 48%,
+    6% 28%, 16% 34%, 22% 24%, 14% 14%,
+    34% 2%, 38% 14%, 46% 12%, 46% 0%
+  );
+  animation: gear-ccw 2.83s linear infinite;
+}
+
+.gear-scene .gear--6::before {
+  content: '';
+  position: absolute;
+  inset: -1px;
+  border-radius: 50%;
+  background: rgba(255,255,255,0.06);
+  clip-path: inherit;
+  box-shadow: 0 0 3px rgba(200, 255, 0, 0.05);
+  z-index: 1;
+}
+
+.gear-scene .gear--6::after {
+  width: 18%;
+  height: 18%;
+}
+
+/* GEAR 7: Medium-large (100px), 14 teeth, clockwise, right side */
+.gear-scene .gear--7 {
+  width: 100px;
+  height: 100px;
+  top: 100px;
+  left: 188px;
+  clip-path: polygon(
+    50% 0%, 54% 7%, 59% 6%, 57% 0%,
+    67% 2%, 65% 9%, 71% 10%, 73% 4%,
+    82% 10%, 78% 16%, 83% 20%, 87% 15%,
+    93% 24%, 88% 29%, 91% 34%, 97% 31%,
+    99% 43%, 92% 44%, 93% 50%, 99% 51%,
+    98% 63%, 92% 61%, 90% 66%, 96% 70%,
+    91% 80%, 86% 76%, 82% 80%, 86% 87%,
+    78% 93%, 74% 88%, 69% 90%, 71% 97%,
+    61% 99%, 59% 93%, 54% 93%, 53% 99%,
+    43% 99%, 43% 93%, 38% 92%, 36% 98%,
+    27% 95%, 29% 89%, 24% 87%, 21% 93%,
+    13% 86%, 17% 81%, 14% 77%, 9% 80%,
+    5% 71%, 10% 67%, 8% 62%, 2% 63%,
+    1% 52%, 7% 51%, 7% 45%, 1% 44%,
+    3% 33%, 9% 35%, 11% 30%, 5% 26%,
+    11% 17%, 16% 21%, 20% 17%, 15% 11%,
+    24% 5%, 27% 11%, 32% 9%, 30% 3%,
+    41% 0%, 43% 7%, 47% 7%, 48% 0%
+  );
+  animation: gear-cw 8.33s linear infinite;
+}
+
+.gear-scene .gear--7::before {
+  content: '';
+  position: absolute;
+  inset: -1px;
+  border-radius: 50%;
+  background: rgba(255,255,255,0.06);
+  clip-path: inherit;
+  box-shadow: 0 0 7px rgba(200, 255, 0, 0.07);
+  z-index: 1;
+}
+
+/* GEAR 8: Tiny accent (30px), 8 teeth, counter-clockwise, bottom center */
+.gear-scene .gear--8 {
+  width: 30px;
+  height: 30px;
+  top: 180px;
+  left: 90px;
+  clip-path: polygon(
+    50% 0%, 58% 12%, 68% 8%, 64% 0%,
+    85% 12%, 78% 22%, 88% 32%, 96% 24%,
+    100% 48%, 88% 50%, 90% 62%, 100% 62%,
+    90% 82%, 80% 76%, 74% 86%, 82% 96%,
+    60% 100%, 56% 88%, 46% 90%, 44% 100%,
+    22% 94%, 28% 84%, 18% 76%, 10% 84%,
+    2% 66%, 12% 62%, 10% 50%, 0% 48%,
+    6% 28%, 16% 34%, 22% 24%, 14% 14%,
+    34% 2%, 38% 14%, 46% 12%, 46% 0%
+  );
+  background: rgba(200, 255, 0, 0.08);
+  animation: gear-ccw 2.5s linear infinite;
+}
+
+.gear-scene .gear--8::before {
+  content: '';
+  position: absolute;
+  inset: -1px;
+  border-radius: 50%;
+  background: rgba(200, 255, 0, 0.08);
+  clip-path: inherit;
+  box-shadow: 0 0 3px rgba(200, 255, 0, 0.06);
+  z-index: 1;
+}
+
+.gear-scene .gear--8::after {
+  width: 18%;
+  height: 18%;
+}
+
+/* --- gear rotation keyframes -------------------------------------------- */
 
 @keyframes gear-cw {
   from { transform: rotate(0deg); }
@@ -170,18 +360,20 @@
   to { transform: rotate(-360deg); }
 }
 
-/* --- pixel cat on the gears --- */
+
+/* ==========================================================================
+   2. GEAR CAT — ~20px white cat that jumps between gears
+   ========================================================================== */
+
 .gear-scene .gear-cat {
   position: absolute;
   width: 20px;
-  height: 16px;
-  top: 18px;
-  left: 68px;
+  height: 18px;
   z-index: 10;
-  animation: gear-cat-bounce 3s ease-in-out infinite;
+  transition: none;
 }
 
-/* cat body */
+/* cat body (rounded torso) */
 .gear-scene .gear-cat::before {
   content: '';
   position: absolute;
@@ -193,27 +385,30 @@
   border-radius: 7px 7px 3px 3px;
 }
 
-/* cat head + ears */
+/* cat head with pointed ears and lime dot eyes */
 .gear-scene .gear-cat::after {
   content: '';
   position: absolute;
   bottom: 7px;
   left: 4px;
   width: 10px;
-  height: 8px;
+  height: 9px;
   background: #e5e5e5;
   border-radius: 50% 50% 40% 40%;
-  /* ears as box-shadow triangles approximated with circles */
   box-shadow:
-    -3px -4px 0 -2px #e5e5e5,
-    3px -4px 0 -2px #e5e5e5;
+    /* pointed ears */
+    -3px -5px 0 -2px #e5e5e5,
+    3px -5px 0 -2px #e5e5e5,
+    /* lime dot eyes */
+    -2px 3px 0 -1.5px #c8ff00,
+    2px 3px 0 -1.5px #c8ff00;
 }
 
 /* cat tail */
-.gear-scene .gear-cat-tail {
+.gear-scene .gear-cat__tail {
   position: absolute;
   bottom: 2px;
-  right: 0;
+  right: -2px;
   width: 8px;
   height: 3px;
   background: #e5e5e5;
@@ -222,24 +417,61 @@
   animation: gear-cat-tail-wag 0.8s ease-in-out infinite alternate;
 }
 
-@keyframes gear-cat-bounce {
-  0%, 100% {
+/* --- gear cat position classes (sitting on top of specific gears) ------- */
+
+/* on gear 1 (large, top-left): top of the gear circle */
+.gear-scene .gear-cat.on-gear-1 {
+  top: 30px;
+  left: 56px;
+  animation: gear-cat-bounce-1 2s ease-in-out infinite;
+}
+
+/* on gear 2 (medium, center): top of gear 2 */
+.gear-scene .gear-cat.on-gear-2 {
+  top: 42px;
+  left: 148px;
+  animation: gear-cat-bounce-2 1.8s ease-in-out infinite;
+}
+
+/* on gear 7 (medium-large, right): top of gear 7 */
+.gear-scene .gear-cat.on-gear-3 {
+  top: 82px;
+  left: 226px;
+  animation: gear-cat-bounce-3 2.2s ease-in-out infinite;
+}
+
+/* subtle up/down bounce while sitting on a gear */
+@keyframes gear-cat-bounce-1 {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-3px); }
+}
+
+@keyframes gear-cat-bounce-2 {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-4px); }
+}
+
+@keyframes gear-cat-bounce-3 {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-3px); }
+}
+
+/* jump arc animation between gears */
+@keyframes gear-cat-jump-arc {
+  0% {
     transform: translateY(0);
   }
-  15% {
-    transform: translateY(-14px) translateX(4px);
-  }
-  30% {
-    transform: translateY(0) translateX(8px);
+  25% {
+    transform: translateY(-20px);
   }
   50% {
-    transform: translateY(-18px) translateX(40px);
+    transform: translateY(-28px);
   }
-  65% {
-    transform: translateY(0) translateX(50px);
+  75% {
+    transform: translateY(-15px);
   }
-  80% {
-    transform: translateY(-12px) translateX(25px);
+  100% {
+    transform: translateY(0);
   }
 }
 
@@ -250,8 +482,7 @@
 
 
 /* ==========================================================================
-   2. NYAN CAT
-   Fixed bottom-right, replaces scroll cat
+   3. NYAN CAT — fixed bottom-right corner
    ========================================================================== */
 
 .nyan-cat {
@@ -264,7 +495,8 @@
   align-items: center;
 }
 
-/* rainbow trail */
+/* --- rainbow trail (6-color horizontal stripes) ------------------------- */
+
 .nyan-cat__trail {
   width: 40px;
   height: 18px;
@@ -293,11 +525,12 @@
   50% { opacity: 1; transform: scaleX(0.7); }
 }
 
-/* cat body */
+/* --- cat body (~30px) --------------------------------------------------- */
+
 .nyan-cat__body {
   position: relative;
   width: 30px;
-  height: 20px;
+  height: 22px;
   will-change: transform;
 }
 
@@ -313,7 +546,7 @@
   border-radius: 8px 8px 4px 4px;
 }
 
-/* head with ears and eyes */
+/* head with pointed ears and lime dot eyes */
 .nyan-cat__body::after {
   content: '';
   position: absolute;
@@ -323,13 +556,13 @@
   height: 11px;
   background: #e5e5e5;
   border-radius: 50% 50% 40% 40%;
-  /* ears */
   box-shadow:
+    /* pointed ears */
     -4px -5px 0 -2.5px #e5e5e5,
     4px -5px 0 -2.5px #e5e5e5,
-    /* eyes using accent color */
-    -2px 3px 0 -1.5px var(--accent),
-    2px 3px 0 -1.5px var(--accent);
+    /* lime dot eyes */
+    -2px 3px 0 -1.5px #c8ff00,
+    2px 3px 0 -1.5px #c8ff00;
 }
 
 /* tail */
@@ -350,20 +583,21 @@
   to { transform: rotate(15deg); }
 }
 
-/* zzz for sleeping state */
+/* zzz text for sleeping state */
 .nyan-cat__zzz {
   position: absolute;
   top: -6px;
   right: -4px;
   font-family: var(--mono, monospace);
   font-size: 0.5rem;
-  color: var(--accent);
+  color: #c8ff00;
   opacity: 0;
   pointer-events: none;
   will-change: transform, opacity;
 }
 
-/* --- state: running (scrolling) --- */
+/* --- state: running (user is scrolling) --------------------------------- */
+
 .nyan-cat.is-running .nyan-cat__body {
   animation: nyan-bob 0.25s ease-in-out infinite alternate;
 }
@@ -389,7 +623,8 @@
   50% { opacity: 1; transform: scaleX(0.6); }
 }
 
-/* --- state: idle (default) --- */
+/* --- state: idle (default, not scrolling) ------------------------------- */
+
 .nyan-cat.is-idle .nyan-cat__body {
   animation: none;
 }
@@ -398,9 +633,9 @@
   animation: nyan-shimmer 1.2s ease-in-out infinite;
 }
 
-/* --- state: sleeping (idle > 5s) --- */
+/* --- state: sleeping (idle for >5s) ------------------------------------- */
+
 .nyan-cat.is-sleeping .nyan-cat__body::before {
-  /* flatten body slightly to look curled up */
   height: 10px;
   width: 24px;
   border-radius: 12px 12px 6px 6px;
@@ -441,7 +676,7 @@
 
 
 /* ==========================================================================
-   3. CAT SECTION DIVIDERS
+   4. CAT SECTION DIVIDERS
    ========================================================================== */
 
 .cat-divider {
@@ -459,7 +694,7 @@
   content: '';
   flex: 1;
   height: 1px;
-  background: var(--border);
+  background: rgba(255,255,255,0.06);
   max-width: 200px;
 }
 
@@ -480,11 +715,11 @@
   left: 2px;
   width: 10px;
   height: 8px;
-  background: var(--text-dim);
+  background: var(--text-dim, #666666);
   border-radius: 5px 5px 2px 2px;
 }
 
-/* cat head + ears */
+/* cat head + pointed ears */
 .cat-divider__cat::after {
   content: '';
   position: absolute;
@@ -492,11 +727,11 @@
   left: 3px;
   width: 8px;
   height: 7px;
-  background: var(--text-dim);
+  background: var(--text-dim, #666666);
   border-radius: 50% 50% 40% 40%;
   box-shadow:
-    -2.5px -3.5px 0 -1.5px var(--text-dim),
-    2.5px -3.5px 0 -1.5px var(--text-dim);
+    -2.5px -3.5px 0 -1.5px var(--text-dim, #666666),
+    2.5px -3.5px 0 -1.5px var(--text-dim, #666666);
 }
 
 /* tail wraps around */
@@ -506,19 +741,19 @@
   right: 0;
   width: 6px;
   height: 2px;
-  background: var(--text-dim);
+  background: var(--text-dim, #666666);
   border-radius: 0 3px 3px 0;
 }
 
 
 /* ==========================================================================
-   REDUCED MOTION
+   5. REDUCED MOTION — respects user preferences
    ========================================================================== */
 
 @media (prefers-reduced-motion: reduce) {
   .gear-scene .gear,
   .gear-scene .gear-cat,
-  .gear-scene .gear-cat-tail,
+  .gear-scene .gear-cat__tail,
   .nyan-cat__body,
   .nyan-cat__trail span,
   .nyan-cat__tail,

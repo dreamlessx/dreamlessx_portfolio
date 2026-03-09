@@ -43,22 +43,6 @@ document.addEventListener('DOMContentLoaded', () => {
     .project-card-featured { transition: opacity 0.35s ease, transform 0.35s ease; }
     .project-card-featured.crossfade-out { opacity: 0; transform: scale(0.98); }
     .project-card-featured.crossfade-in { opacity: 1; transform: scale(1); }
-    .nyan-rainbow {
-      position: fixed; pointer-events: none; z-index: 49;
-      height: 6px; opacity: 0; transition: opacity 0.3s ease;
-    }
-    .nyan-rainbow.visible { opacity: 1; }
-    .nyan-zzz {
-      position: absolute; top: -12px; right: -4px;
-      font-family: var(--mono, monospace); font-size: 0.5rem;
-      color: var(--accent, #c8ff00); opacity: 0;
-      transition: opacity 0.5s ease;
-    }
-    .nyan-zzz.visible { opacity: 0.6; animation: float-zzz-nyan 2s ease infinite; }
-    @keyframes float-zzz-nyan {
-      0%, 100% { transform: translateY(0); opacity: 0.6; }
-      50% { transform: translateY(-6px); opacity: 0.3; }
-    }
   `;
   document.head.appendChild(style);
 
@@ -520,90 +504,35 @@ document.addEventListener('DOMContentLoaded', () => {
 
 
   // ========================================
-  // 11. NYAN CAT BEHAVIOR
+  // 11. NYAN CAT BEHAVIOR (CSS class-driven states)
   // ========================================
   const nyanCat = document.querySelector('.nyan-cat');
   if (nyanCat) {
     let nyanScrollTimer = null;
     let nyanIdleTimer = null;
     let nyanLastY = window.scrollY;
-    let nyanBobRaf = null;
-    let nyanBobAngle = 0;
 
-    // create zzz element
-    const nyanZzz = document.createElement('span');
-    nyanZzz.classList.add('nyan-zzz');
-    nyanZzz.textContent = 'zzz';
-    nyanCat.appendChild(nyanZzz);
-
-    // create rainbow trail
-    const rainbow = document.createElement('div');
-    rainbow.classList.add('nyan-rainbow');
-    rainbow.style.cssText = `
-      left: 0; right: 0; bottom: 0;
-      background: linear-gradient(
-        to bottom,
-        #ff0000 0%, #ff0000 16.6%,
-        #ff9900 16.6%, #ff9900 33.3%,
-        #ffff00 33.3%, #ffff00 50%,
-        #33ff00 50%, #33ff00 66.6%,
-        #0099ff 66.6%, #0099ff 83.3%,
-        #6633ff 83.3%, #6633ff 100%
-      );
-    `;
-    nyanCat.style.position = nyanCat.style.position || 'relative';
-    nyanCat.appendChild(rainbow);
-
-    const stopBob = () => {
-      if (nyanBobRaf) {
-        cancelAnimationFrame(nyanBobRaf);
-        nyanBobRaf = null;
-      }
-      nyanCat.style.transform = '';
-    };
-
-    const startBob = () => {
-      if (nyanBobRaf) return;
-      const bob = () => {
-        nyanBobAngle += 0.15;
-        const offset = Math.sin(nyanBobAngle) * 3;
-        nyanCat.style.transform = `translateY(${offset}px)`;
-        nyanBobRaf = requestAnimationFrame(bob);
-      };
-      nyanBobRaf = requestAnimationFrame(bob);
+    const setNyanState = (state) => {
+      nyanCat.classList.remove('is-running', 'is-idle', 'is-sleeping');
+      nyanCat.classList.add(state);
     };
 
     const setNyanIdle = () => {
-      stopBob();
-      rainbow.classList.remove('visible');
+      setNyanState('is-idle');
       nyanIdleTimer = setTimeout(() => {
-        nyanZzz.classList.add('visible');
+        setNyanState('is-sleeping');
       }, 5000);
     };
 
-    // initial state: idle
     setNyanIdle();
 
     window.addEventListener('scroll', () => {
-      const dir = window.scrollY > nyanLastY ? 1 : -1;
       nyanLastY = window.scrollY;
 
-      // wake up
-      nyanZzz.classList.remove('visible');
       clearTimeout(nyanIdleTimer);
       clearTimeout(nyanScrollTimer);
 
-      // bob while scrolling
-      startBob();
-
-      // show rainbow on scroll down, hide on scroll up
-      if (dir === 1) {
-        rainbow.classList.add('visible');
-        nyanCat.style.direction = 'ltr';
-      } else {
-        rainbow.classList.remove('visible');
-        nyanCat.style.direction = 'rtl';
-      }
+      setNyanState('is-running');
 
       nyanScrollTimer = setTimeout(setNyanIdle, 200);
     }, { passive: true });

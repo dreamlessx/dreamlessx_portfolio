@@ -8,6 +8,7 @@
   <link rel="icon" type="image/svg+xml" href="favicon.svg">
   <link rel="stylesheet" href="styles.css">
   <link rel="stylesheet" href="animations.css">
+  <link rel="stylesheet" href="cat-scenes.css">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
@@ -29,8 +30,7 @@
         <a href="#research">research</a>
         <a href="#clinical">clinical</a>
         <a href="#projects">projects</a>
-        <a href="#mentorship">mentorship</a>
-        <a href="#contact">contact</a>
+        <a href="#mentorship">contact</a>
       </div>
       <button class="nav-toggle" id="navToggle" aria-label="Menu">
         <span></span><span></span>
@@ -65,15 +65,26 @@
             <div class="gear gear--2"></div>
             <div class="gear gear--3"></div>
             <div class="gear gear--4"></div>
-            <div class="gear-cat on-gear-1"></div>
+            <div class="gear gear--5"></div>
+            <div class="gear gear--6"></div>
+            <div class="gear gear--7"></div>
+            <div class="gear gear--8"></div>
+            <div class="gear-cat on-gear-1">
+              <span class="gear-cat__tail"></span>
+            </div>
           </div>
         </div>
       </div>
     </section>
 
-    <div class="cat-divider"><span></span></div>
+    <div class="cat-divider">
+      <div class="cat-divider__cat">
+        <span class="cat-divider__tail"></span>
+      </div>
+    </div>
 
-    <section class="section" id="about">
+    <section class="section" id="about" style="position:relative;overflow:hidden;">
+      <div class="cat-scene-vines" aria-hidden="true"><div class="cat-scene-vines__vine"></div><div class="cat-scene-vines__leaf"></div><div class="cat-scene-vines__cat"></div></div>
       <div class="container">
         <h2 class="section-label mono">about</h2>
         <div class="about-grid">
@@ -130,23 +141,20 @@
               <span class="stat-num mono" data-rng-min="4" data-rng-max="10">0</span>
               <span class="stat-label">terminal windows open</span>
             </div>
-            <div class="stat-card stat-card-fun">
+            <div class="stat-card stat-card-fun stat-card-full">
               <span class="stat-num mono" data-target="223" data-overshoot="240" data-auto-increment="1.5" data-base-date="2026-03-09">0</span>
               <span class="stat-label">monsters consumed</span>
-            </div>
-            <div class="stat-card stat-card-fun">
-              <span class="stat-num mono" data-rng-min="0" data-rng-max="0">0</span>
-              <span class="stat-label">notifications</span>
             </div>
           </div>
         </div>
       </div>
     </section>
 
-    <section class="section section-alt" id="research">
+    <section class="section section-alt" id="research" style="position:relative;overflow:hidden;">
+      <div class="cat-scene-lab" aria-hidden="true"><div class="cat-scene-lab__beaker"></div><div class="cat-scene-lab__tube"></div><div class="cat-scene-lab__cat"></div></div>
       <div class="container">
         <h2 class="section-label mono">research</h2>
-        <p class="section-intro">Six laboratories across three institutions. The common thread is computation meets biology. Click into Bair Lab and Meiler Lab for the deep dives.</p>
+        <p class="section-intro" style="max-width:100%;">six labs, three institutions, one thread: computation meets biology. click bair lab or meiler lab for the deep dives.</p>
 
         <div class="research-grid">
 
@@ -201,7 +209,8 @@
       </div>
     </section>
 
-    <section class="section" id="clinical">
+    <section class="section" id="clinical" style="position:relative;overflow:hidden;">
+      <div class="cat-scene-hospital" aria-hidden="true"><div class="cat-scene-hospital__ekg"></div><div class="cat-scene-hospital__steth"></div><div class="cat-scene-hospital__cat"></div></div>
       <div class="container">
         <h2 class="section-label mono">clinical experience</h2>
         <p class="section-intro">1,900+ total hours across paid clinical roles, hospital volunteering, and physician shadowing across five specialties.</p>
@@ -345,7 +354,8 @@
       </div>
     </section>
 
-    <section class="section section-alt" id="projects">
+    <section class="section section-alt" id="projects" style="position:relative;overflow:hidden;">
+      <div class="cat-scene-code" aria-hidden="true"><div class="cat-scene-code__terminal"></div><div class="cat-scene-code__braces"></div><div class="cat-scene-code__cat"></div></div>
       <div class="container">
         <h2 class="section-label mono">side projects</h2>
         <p class="section-intro">Things I built because I thought "how hard could it be?" (always harder than expected)</p>
@@ -405,7 +415,8 @@
       </div>
     </section>
 
-    <section class="section" id="leadership">
+    <section class="section" id="leadership" style="position:relative;overflow:hidden;">
+      <div class="cat-scene-community" aria-hidden="true"><div class="cat-scene-community__bubble"></div><div class="cat-scene-community__heart"></div><div class="cat-scene-community__cat"></div></div>
       <div class="container">
         <h2 class="section-label mono">leadership & service</h2>
 
@@ -434,30 +445,48 @@
       </div>
     </section>
 
-    <section class="section section-alt" id="publications">
+    <section class="section section-alt" id="publications" style="position:relative;overflow:hidden;">
+      <div class="cat-scene-academic" aria-hidden="true"><div class="cat-scene-academic__journal"></div><div class="cat-scene-academic__diploma"></div><div class="cat-scene-academic__cat"></div></div>
       <div class="container">
         <h2 class="section-label mono">publications & presentations</h2>
-        <p class="section-intro">Currently on hiatus from publishing while I finish my application cycle. See <a href="https://www.linkedin.com/in/rajagar/" target="_blank" rel="noopener" class="accent-link">LinkedIn</a> for the latest.</p>
-        <div class="pub-list">
-          <div class="pub-item">
-            <span class="pub-status mono">in prep</span>
-            <p>First-author. Cross-orientation suppression across cortical depth in macaque V1. <em>arXiv preprint, target April 2026.</em></p>
-          </div>
-          <div class="pub-item">
-            <span class="pub-status mono">in prep</span>
-            <p>First-author. Benchmarking AlphaFold 2.3.2 and Boltz-1 on BM5.5 protein-protein complexes. <em>Meiler Lab, Vanderbilt.</em></p>
-          </div>
-          <div class="pub-item">
-            <span class="pub-status mono">in prep</span>
-            <p>Second author. TB/macrophage MAPKAPK2 gene expression study. <em>Hawn Lab, UW.</em></p>
-          </div>
-          <div class="pub-item">
-            <span class="pub-status mono">presented</span>
-            <p>Society for Neuroscience (SfN) 2025 poster, San Diego. WANPRC poster, Seattle.</p>
-          </div>
-          <div class="pub-item">
-            <span class="pub-status mono">presented</span>
-            <p>Vanderbilt Summer Research Symposium. UW Undergraduate Research Symposium.</p>
+        <p class="section-intro" style="max-width:100%;">three papers cooking, four presentations done. see <a href="https://www.linkedin.com/in/rajagar/" target="_blank" rel="noopener" class="accent-link">LinkedIn</a> for the latest.</p>
+        <div class="pub-scroll">
+          <div class="pub-list">
+            <div class="pub-item">
+              <span class="pub-status mono">in prep</span>
+              <span class="pub-lab mono">bair lab</span>
+              <p>First-author. Cross-orientation suppression across cortical depth in macaque V1. <em>arXiv preprint, target April 2026.</em></p>
+            </div>
+            <div class="pub-item">
+              <span class="pub-status mono">in prep</span>
+              <span class="pub-lab mono">meiler lab</span>
+              <p>First-author. Benchmarking AlphaFold 2.3.2 and Boltz-1 on BM5.5 protein-protein complexes. <em>Vanderbilt University.</em></p>
+            </div>
+            <div class="pub-item">
+              <span class="pub-status mono">in prep</span>
+              <span class="pub-lab mono">hawn lab</span>
+              <p>Second author. TB/macrophage MAPKAPK2 gene expression study. <em>University of Washington.</em></p>
+            </div>
+            <div class="pub-item">
+              <span class="pub-status mono">nov 2025</span>
+              <span class="pub-lab mono">bair lab</span>
+              <p>Society for Neuroscience (SfN) 2025 poster, San Diego. Cross-orientation suppression in macaque V1.</p>
+            </div>
+            <div class="pub-item">
+              <span class="pub-status mono">2025</span>
+              <span class="pub-lab mono">bair lab</span>
+              <p>WANPRC annual conference poster, Seattle. Primate neuroscience.</p>
+            </div>
+            <div class="pub-item">
+              <span class="pub-status mono">aug 2025</span>
+              <span class="pub-lab mono">meiler lab</span>
+              <p>Vanderbilt VICB Summer Research Symposium. In silico design of prefusion-stabilizing mutations in alphavirus envelope glycoproteins.</p>
+            </div>
+            <div class="pub-item">
+              <span class="pub-status mono">dec 2024</span>
+              <span class="pub-lab mono">anderson lab</span>
+              <p>UW Undergraduate Research Symposium. Examining alternatives to rifampin in MDR-tuberculosis.</p>
+            </div>
           </div>
         </div>
       </div>
@@ -507,38 +536,24 @@
       </div>
     </section>
 
-    <section class="section section-alt" id="mentorship">
+    <section class="section section-alt" id="mentorship" style="position:relative;overflow:hidden;">
+      <div class="cat-scene-finale" aria-hidden="true"><div class="cat-scene-finale__envelope"></div><div class="cat-scene-finale__at"></div><div class="cat-scene-finale__bubble"></div><div class="cat-scene-finale__cat1"></div><div class="cat-scene-finale__cat2"></div></div>
       <div class="container">
-        <h2 class="section-label mono">mentorship</h2>
-        <div class="mentorship-block">
-          <p class="lead">
-            The premed process felt way harder than it needed to be. Not because the material is impossible. Because nobody tells you what actually matters vs what's just noise.
-          </p>
-          <p>
-            I run 1-on-1 mentorship for pre-med students. MCAT strategy, application walkthroughs, personal statement feedback, school list building, interview prep, and the general "what should I even be doing right now?" conversations.
-          </p>
-          <p>
-            If you want to work together, reach out. I'll send you details on what I offer and we'll figure out what makes sense for where you're at.
-          </p>
-          <div class="mentorship-actions">
-            <a href="#contact" class="btn">get in touch</a>
-            <a href="https://youtube.com/@theoverzealouspremed" target="_blank" rel="noopener" class="btn btn-ghost">free content on youtube &nearr;</a>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <section class="section" id="contact">
-      <div class="container">
-        <h2 class="section-label mono">contact</h2>
-        <div class="contact-grid">
-          <div class="contact-text">
-            <p class="lead">Interested in mentorship, research collaboration, or just want to say what's up?</p>
-            <div class="contact-links">
-              <a href="#contactForm" class="contact-link mono">use the form &rarr;</a>
-              <a href="https://www.linkedin.com/in/rajagar/" target="_blank" rel="noopener" class="contact-link mono">linkedin &nearr;</a>
-              <a href="https://youtube.com/@theoverzealouspremed" target="_blank" rel="noopener" class="contact-link mono">youtube &nearr;</a>
-              <a href="https://github.com/dreamlessx" target="_blank" rel="noopener" class="contact-link mono">github &nearr;</a>
+        <h2 class="section-label mono">mentorship & contact</h2>
+        <div class="mentor-contact-grid">
+          <div class="mentorship-block">
+            <p class="lead">
+              The premed process felt way harder than it needed to be. Not because the material is impossible. Because nobody tells you what actually matters vs what's just noise.
+            </p>
+            <p>
+              I run 1-on-1 mentorship for pre-med students. MCAT strategy, application walkthroughs, personal statement feedback, school list building, interview prep, and the "what should I even be doing right now?" conversations.
+            </p>
+            <p>
+              Interested in mentorship, research collaboration, or just want to say what's up?
+            </p>
+            <div class="mentorship-actions">
+              <a href="#contactForm" class="btn btn-sq">get in touch</a>
+              <a href="https://youtube.com/@theoverzealouspremed" target="_blank" rel="noopener" class="btn btn-ghost btn-sq">youtube &nearr;</a>
             </div>
           </div>
           <form class="contact-form" id="contactForm" action="https://formspree.io/f/placeholder" method="POST">
@@ -553,11 +568,17 @@
               <option value="collab">YouTube / Business</option>
               <option value="other">Just saying hey</option>
             </select>
-            <textarea name="message" rows="5" placeholder="tell me about yourself and what you need..." required></textarea>
+            <textarea name="message" rows="4" placeholder="tell me about yourself and what you need..." required></textarea>
             <input type="hidden" name="_replyto" value="muditagar2005@gmail.com">
             <button type="submit" class="btn btn-block">send</button>
             <div class="form-success" id="formSuccess">sent. i'll get back to you soon.</div>
           </form>
+        </div>
+        <div class="social-pills">
+          <a href="https://www.linkedin.com/in/rajagar/" target="_blank" rel="noopener" class="social-pill mono">linkedin</a>
+          <a href="https://youtube.com/@theoverzealouspremed" target="_blank" rel="noopener" class="social-pill mono">youtube</a>
+          <a href="https://github.com/dreamlessx" target="_blank" rel="noopener" class="social-pill mono">github</a>
+          <a href="resume.pdf" target="_blank" rel="noopener" class="social-pill mono">resume</a>
         </div>
       </div>
     </section>
@@ -565,14 +586,19 @@
   </main>
 
   <!-- nyan cat -->
-  <div class="nyan-cat" aria-hidden="true">
-    <span class="nyan-trail"></span>
-    <span class="nyan-trail"></span>
-    <span class="nyan-trail"></span>
-    <span class="nyan-trail"></span>
-    <span class="nyan-trail"></span>
-    <span class="nyan-trail"></span>
-    <div class="nyan-body"></div>
+  <div class="nyan-cat is-idle" aria-hidden="true">
+    <div class="nyan-cat__trail">
+      <span></span>
+      <span></span>
+      <span></span>
+      <span></span>
+      <span></span>
+      <span></span>
+    </div>
+    <div class="nyan-cat__body">
+      <span class="nyan-cat__tail"></span>
+      <span class="nyan-cat__zzz">zzz</span>
+    </div>
   </div>
 
   <footer class="footer">
