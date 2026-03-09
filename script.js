@@ -287,4 +287,76 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
+
+  // -- typing cat code animation --
+  const catCode = document.querySelector('.cat-code');
+  if (catCode) {
+    const lines = [
+      'import brain',
+      'from lab import *',
+      '',
+      'def research():',
+      '  neurons = scan()',
+      '  proteins = fold()',
+      '  return magic',
+      '',
+      '# TODO: sleep',
+      '# TODO: touch grass',
+      'while True:',
+      '  research()',
+      '  coffee += 1',
+    ];
+    let lineIdx = 0;
+    let charIdx = 0;
+    let currentText = '';
+
+    const typeChar = () => {
+      if (lineIdx >= lines.length) {
+        lineIdx = 0;
+        charIdx = 0;
+        currentText = '';
+      }
+
+      const line = lines[lineIdx];
+      if (charIdx <= line.length) {
+        const display = currentText + line.slice(0, charIdx) + '_';
+        catCode.textContent = display;
+        charIdx++;
+        setTimeout(typeChar, 60 + Math.random() * 80);
+      } else {
+        currentText += line + '\n';
+        // keep last 8 lines visible
+        const displayLines = currentText.split('\n');
+        if (displayLines.length > 8) {
+          currentText = displayLines.slice(-8).join('\n');
+        }
+        lineIdx++;
+        charIdx = 0;
+        setTimeout(typeChar, 300 + Math.random() * 200);
+      }
+    };
+
+    setTimeout(typeChar, 1200);
+  }
+
+
+  // -- status bar scroll hide --
+  const statusBar = document.querySelector('.status-bar');
+  const navEl = document.getElementById('nav');
+  if (statusBar && navEl) {
+    let lastScroll = 0;
+    window.addEventListener('scroll', () => {
+      if (window.scrollY > 100) {
+        statusBar.style.transform = 'translateY(-100%)';
+        statusBar.style.transition = 'transform 0.3s ease';
+        navEl.style.top = '0';
+        navEl.style.transition = 'top 0.3s ease, padding 0.2s ease, background 0.2s ease';
+      } else {
+        statusBar.style.transform = 'translateY(0)';
+        navEl.style.top = '33px';
+      }
+      lastScroll = window.scrollY;
+    }, { passive: true });
+  }
+
 });
