@@ -1230,7 +1230,7 @@ a {
 }
 
 .inline-footer {
-  font-size: 0.85rem;
+  font-size: 0.8rem;
   color: var(--text-dim);
   background: #0a1f0a;
   position: absolute;
@@ -1288,7 +1288,7 @@ a {
 
 .footer-links a {
   font-family: var(--mono);
-  font-size: 0.85rem;
+  font-size: inherit;
   color: var(--text-dim);
   transition: color var(--transition);
 }
@@ -2817,6 +2817,11 @@ a {
 
   .about-stats {
     grid-template-columns: repeat(2, 1fr);
+  }
+
+  /* more room between form and footer on mobile */
+  #mentorship > .container {
+    padding-bottom: 8rem;
   }
 
   /* inline footer stacks */
