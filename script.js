@@ -1083,22 +1083,25 @@ document.addEventListener('DOMContentLoaded', () => {
       ctx.restore();
     };
 
-    let _lastFrame = 0, _skipNext = false;
+    let _lastFrame = 0, _skipNext = false, _prevT = 0;
     const draw = () => {
       const t0 = performance.now();
       if (_skipNext) { _skipNext = false; requestAnimationFrame(draw); return; }
-      try { _drawInner(); } catch (e) { console.warn('pond draw error:', e.message); }
-      if (performance.now() - t0 > 20) _skipNext = true; // skip next if frame took >20ms
+      try { _drawInner(t0); } catch (e) { console.warn('pond draw error:', e.message); }
+      if (performance.now() - t0 > 20) _skipNext = true;
       requestAnimationFrame(draw);
     };
-    const _drawInner = () => {
+    const _drawInner = (t0) => {
+      const rawDt = _prevT ? (t0 - _prevT) / 16.667 : 1;
+      _prevT = t0;
+      const dt = Math.min(rawDt, 3); // cap at 3x to prevent huge jumps
       ctx.clearRect(0, 0, W, H);
       const now = Date.now();
 
       // --- ripples ---
       for (let i = drops.length - 1; i >= 0; i--) {
         const d = drops[i];
-        d.r += d.speed;
+        d.r += d.speed * dt;
         const progress = d.r / d.maxR;
         if (progress > 1) { drops.splice(i, 1); continue; }
 
@@ -1134,8 +1137,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
       // --- lily pads ---
       for (const l of leaves) {
-        l.rot += l.rotSpeed;
-        l.drift += l.driftSpeed;
+        l.rot += l.rotSpeed * dt;
+        l.drift += l.driftSpeed * dt;
         const lx = l.x * W + Math.sin(l.drift) * 8;
         const ly = l.y * H + Math.cos(l.drift * 0.7) * 5;
         drawLeaf(lx, ly, l.size, l.rot, l.sliceAngle);
@@ -1148,12 +1151,12 @@ document.addEventListener('DOMContentLoaded', () => {
 
       for (let di = 0; di < ducks.length; di++) {
         const dk = ducks[di];
-        dk.wobble += 0.008;
-        dk.driftPhase += 0.004;
+        dk.wobble += 0.008 * dt;
+        dk.driftPhase += 0.004 * dt;
 
         // solo ducks sometimes rest near another duck — if opposite sex, both stop face-to-face and show a tiny heart
         if (dk.restTimer > 0) {
-          dk.restTimer--;
+          dk.restTimer -= dt;
           // if kissing, gently slide toward partner so they touch beak-to-beak
           if (dk._kissPartner >= 0) {
             const partner = ducks[dk._kissPartner];
@@ -1164,8 +1167,8 @@ document.addEventListener('DOMContentLoaded', () => {
               const dist = Math.hypot(dk.x - partner.x, dk.y - partner.y);
               const touchDist = (dk.size + partner.size) * 1.5 / W;
               if (dist > touchDist) {
-                dk.x += (partner.x - dk.x) * 0.03;
-                dk.y += (partner.y - dk.y) * 0.03;
+                dk.x += (partner.x - dk.x) * 0.03 * dt;
+                dk.y += (partner.y - dk.y) * 0.03 * dt;
               }
             }
           }
@@ -1221,8 +1224,8 @@ document.addEventListener('DOMContentLoaded', () => {
         let diff = desired - dk.heading;
         while (diff > Math.PI) diff -= Math.PI * 2;
         while (diff < -Math.PI) diff += Math.PI * 2;
-        const turnAmt = diff * 0.025;
-        dk.heading += Math.max(-MAX_TURN, Math.min(MAX_TURN, turnAmt));
+        const turnAmt = diff * 0.025 * dt;
+        dk.heading += Math.max(-MAX_TURN * dt, Math.min(MAX_TURN * dt, turnAmt));
 
         // --- social forces ---
         let socialX = 0, socialY = 0;
@@ -1322,8 +1325,8 @@ document.addEventListener('DOMContentLoaded', () => {
           if (hasBabies) {
             const hardR = (l.size + 50) / Math.min(W, H);
             if (dist < hardR && dist > 0) {
-              dk.x += ((dk.x - lx) / dist) * 0.003;
-              dk.y += ((dk.y - ly) / dist) * 0.003;
+              dk.x += ((dk.x - lx) / dist) * 0.003 * dt;
+              dk.y += ((dk.y - ly) / dist) * 0.003 * dt;
             }
           }
         }
@@ -1339,7 +1342,7 @@ document.addEventListener('DOMContentLoaded', () => {
             dk.speed = Math.min(dk.speed + str * CRUISE_SPEED * 2, CRUISE_SPEED * 4);
             // direct position push when very close
             if (cdist < cAvR * 0.4) {
-              const push = Math.min(0.003, 0.003 * (1 - cdist / (cAvR * 0.4)));
+              const push = Math.min(0.003, 0.003 * (1 - cdist / (cAvR * 0.4))) * dt;
               dk.x += ((dk.x - cursorX) / cdist) * push;
               dk.y += ((dk.y - cursorY) / cdist) * push;
             }
@@ -1354,7 +1357,7 @@ document.addEventListener('DOMContentLoaded', () => {
           let avDiff = avAngle - dk.heading;
           while (avDiff > Math.PI) avDiff -= Math.PI * 2;
           while (avDiff < -Math.PI) avDiff += Math.PI * 2;
-          dk.heading += Math.sign(avDiff) * Math.min(Math.abs(avDiff), MAX_TURN * 8 * Math.min(avMag, 2.0));
+          dk.heading += Math.sign(avDiff) * Math.min(Math.abs(avDiff), MAX_TURN * 8 * dt * Math.min(avMag, 2.0));
         }
 
         // NaN guard + speed cap
@@ -1362,13 +1365,12 @@ document.addEventListener('DOMContentLoaded', () => {
           dk.x = 0.5; dk.y = 0.5; dk.heading = Math.random() * Math.PI * 2; dk.speed = CRUISE_SPEED;
         }
         dk.speed = Math.min(dk.speed, CRUISE_SPEED * 5);
-        // move forward — faster decay so ducks slow down quickly after cursor leaves
-        dk.speed += (CRUISE_SPEED - dk.speed) * 0.12;
-        dk.x += Math.cos(dk.heading) * dk.speed;
-        dk.y += Math.sin(dk.heading) * dk.speed;
+        dk.speed += (CRUISE_SPEED - dk.speed) * (1 - Math.pow(0.88, dt));
+        dk.x += Math.cos(dk.heading) * dk.speed * dt;
+        dk.y += Math.sin(dk.heading) * dk.speed * dt;
 
         // body sway
-        const driftAmt = Math.sin(dk.driftPhase) * 0.00018;
+        const driftAmt = Math.sin(dk.driftPhase) * 0.00018 * dt;
         dk.x += Math.cos(dk.heading + Math.PI / 2) * driftAmt;
         dk.y += Math.sin(dk.heading + Math.PI / 2) * driftAmt;
 
@@ -1396,7 +1398,7 @@ document.addEventListener('DOMContentLoaded', () => {
         drawDuck(dk.x * W, dk.y * H, dk.size, dk.heading, false, dk.sex);
 
         // communication — nearby ducks occasionally send quack ripples
-        dk.quackTimer--;
+        dk.quackTimer -= dt;
         if (dk.quackTimer <= 0) {
           // check if any neighbor is close enough to "talk" to
           for (let j = 0; j < ducks.length; j++) {
@@ -1429,17 +1431,17 @@ document.addEventListener('DOMContentLoaded', () => {
               const tx = leader.x - (bdx / bdist) * BABY_DIST;
               const ty = leader.y - (bdy / bdist) * BABY_DIST;
               const follow = 0.10 + Math.min((bdist - BABY_DIST) * 5, 0.20);
-              baby.x += (tx - baby.x) * follow;
-              baby.y += (ty - baby.y) * follow;
+              baby.x += (tx - baby.x) * follow * dt;
+              baby.y += (ty - baby.y) * follow * dt;
             }
             if (bdist > 0.002) {
               const dh = Math.atan2(bdy, bdx);
               let hd = dh - baby.heading;
               while (hd > Math.PI) hd -= Math.PI * 2;
               while (hd < -Math.PI) hd += Math.PI * 2;
-              baby.heading += hd * 0.15;
+              baby.heading += hd * 0.15 * dt;
             }
-            baby.wobble += 0.018;
+            baby.wobble += 0.018 * dt;
             drawDuck(baby.x * W, baby.y * H, dk.size, baby.heading, true, dk.sex);
 
             // very rare: baby grows into adult duck (once every ~15 min on avg)
@@ -1881,22 +1883,25 @@ document.addEventListener('DOMContentLoaded', () => {
       sctx.restore();
     };
 
-    let sAnimating = false, _sSkip = false;
+    let sAnimating = false, _sSkip = false, _sPrevT = 0;
     const sDraw = () => {
       if (!sAnimating) return;
       if (_sSkip) { _sSkip = false; requestAnimationFrame(sDraw); return; }
       const st0 = performance.now();
-      try { _sDrawInner(); } catch (e) { console.warn('section draw error (' + id + '):', e.message); }
+      try { _sDrawInner(st0); } catch (e) { console.warn('section draw error (' + id + '):', e.message); }
       if (performance.now() - st0 > 18) _sSkip = true;
       requestAnimationFrame(sDraw);
     };
-    const _sDrawInner = () => {
+    const _sDrawInner = (st0) => {
+      const rawDt = _sPrevT ? (st0 - _sPrevT) / 16.667 : 1;
+      _sPrevT = st0;
+      const sdt = Math.min(rawDt, 3);
       sctx.clearRect(0, 0, sw, sh);
 
       // ripples
       for (let i = sDrops.length - 1; i >= 0; i--) {
         const d = sDrops[i];
-        d.r += d.speed;
+        d.r += d.speed * sdt;
         const p = d.r / d.maxR;
         if (p > 1) { sDrops.splice(i, 1); continue; }
         const fade = p < 0.12 ? p / 0.12 : 1 - (p - 0.12) / 0.88;
@@ -1916,8 +1921,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
       // lily pads
       for (const l of sLeaves) {
-        l.rot += l.rotSpd;
-        l.drift += l.driftSpd;
+        l.rot += l.rotSpd * sdt;
+        l.drift += l.driftSpd * sdt;
         const lx = l.x * sw + Math.sin(l.drift) * 6;
         const ly = l.y * sh + Math.cos(l.drift * 0.7) * 4;
 
@@ -1957,12 +1962,12 @@ document.addEventListener('DOMContentLoaded', () => {
       const sElapsed = Date.now() - sPathStart;
       for (let sdi = 0; sdi < secDucks.length; sdi++) {
         const sd = secDucks[sdi];
-        sd.wobble += 0.008;
-        sd.driftPhase += 0.004;
+        sd.wobble += 0.008 * sdt;
+        sd.driftPhase += 0.004 * sdt;
 
         // rest + kiss behavior for section ducks
         if (sd.restTimer > 0) {
-          sd.restTimer--;
+          sd.restTimer -= sdt;
           if (sd._kissPartner >= 0) {
             const sp = secDucks[sd._kissPartner];
             if (sp.restTimer > 0 && sp._kissPartner === sdi) {
@@ -1970,8 +1975,8 @@ document.addEventListener('DOMContentLoaded', () => {
               const dist = Math.hypot(sd.x - sp.x, sd.y - sp.y);
               const touchDist = (sd.size + sp.size) * 1.5 / sw;
               if (dist > touchDist) {
-                sd.x += (sp.x - sd.x) * 0.03;
-                sd.y += (sp.y - sd.y) * 0.03;
+                sd.x += (sp.x - sd.x) * 0.03 * sdt;
+                sd.y += (sp.y - sd.y) * 0.03 * sdt;
               }
             }
           }
@@ -2040,13 +2045,13 @@ document.addEventListener('DOMContentLoaded', () => {
           let fbDiff = fbDesired - sd.heading;
           while (fbDiff > Math.PI) fbDiff -= Math.PI * 2;
           while (fbDiff < -Math.PI) fbDiff += Math.PI * 2;
-          sd.heading += Math.max(-sDuckMaxTurn, Math.min(sDuckMaxTurn, fbDiff * 0.025));
+          sd.heading += Math.max(-sDuckMaxTurn * sdt, Math.min(sDuckMaxTurn * sdt, fbDiff * 0.025 * sdt));
         } else {
           const sDesired = Math.atan2(sddy, sddx);
           let sDiff = sDesired - sd.heading;
           while (sDiff > Math.PI) sDiff -= Math.PI * 2;
           while (sDiff < -Math.PI) sDiff += Math.PI * 2;
-          sd.heading += Math.max(-sDuckMaxTurn, Math.min(sDuckMaxTurn, sDiff * 0.025));
+          sd.heading += Math.max(-sDuckMaxTurn * sdt, Math.min(sDuckMaxTurn * sdt, sDiff * 0.025 * sdt));
         }
 
         // avoidance forces
@@ -2110,15 +2115,15 @@ document.addEventListener('DOMContentLoaded', () => {
           if (sIsMama) {
             const hardR = (l.size + 50) / Math.min(sw, sh);
             if (dist < hardR && dist > 0) {
-              sd.x += ((sd.x - lpx) / dist) * 0.003;
-              sd.y += ((sd.y - lpy) / dist) * 0.003;
+              sd.x += ((sd.x - lpx) / dist) * 0.003 * sdt;
+              sd.y += ((sd.y - lpy) / dist) * 0.003 * sdt;
             }
           }
           // all ducks: absolute push if overlapping pad center
           const overlapR = (l.size + 15) / Math.min(sw, sh);
           if (dist < overlapR && dist > 0) {
-            sd.x += ((sd.x - lpx) / dist) * 0.005;
-            sd.y += ((sd.y - lpy) / dist) * 0.005;
+            sd.x += ((sd.x - lpx) / dist) * 0.005 * sdt;
+            sd.y += ((sd.y - lpy) / dist) * 0.005 * sdt;
           }
         }
 
@@ -2133,7 +2138,7 @@ document.addEventListener('DOMContentLoaded', () => {
             sd.speed = Math.min(sd.speed + str * sDuckSpeed * 2, sDuckSpeed * 4);
             // direct position push when very close
             if (scDist < scAvR * 0.4) {
-              const push = Math.min(0.003, 0.003 * (1 - scDist / (scAvR * 0.4)));
+              const push = Math.min(0.003, 0.003 * (1 - scDist / (scAvR * 0.4))) * sdt;
               sd.x += ((sd.x - sCurX) / scDist) * push;
               sd.y += ((sd.y - sCurY) / scDist) * push;
             }
@@ -2168,15 +2173,15 @@ document.addEventListener('DOMContentLoaded', () => {
           let sAD = sAA - sd.heading;
           while (sAD > Math.PI) sAD -= Math.PI * 2;
           while (sAD < -Math.PI) sAD += Math.PI * 2;
-          sd.heading += Math.sign(sAD) * Math.min(Math.abs(sAD), sDuckMaxTurn * 8 * Math.min(sAM, 2.0));
+          sd.heading += Math.sign(sAD) * Math.min(Math.abs(sAD), sDuckMaxTurn * 8 * sdt * Math.min(sAM, 2.0));
         }
 
         // anti-trap: if mama stuck (barely moving), teleport toward center
         if (sd.isMama) {
           if (!sd._prevX) { sd._prevX = sd.x; sd._prevY = sd.y; sd._stuckFrames = 0; }
           if (Math.hypot(sd.x - sd._prevX, sd.y - sd._prevY) < 0.0002) {
-            sd._stuckFrames++;
-            if (sd._stuckFrames > 45) { // stuck for ~0.75 sec
+            sd._stuckFrames += sdt;
+            if (sd._stuckFrames > 45) {
               // jolt heading + nudge toward center of open area
               sd.heading += (Math.random() - 0.5) * Math.PI * 1.5;
               const cx = 0.5, cy = 0.5;
@@ -2195,10 +2200,10 @@ document.addEventListener('DOMContentLoaded', () => {
           sd.x = 0.5; sd.y = 0.5; sd.heading = Math.random() * Math.PI * 2; sd.speed = sDuckSpeed;
         }
         sd.speed = Math.min(sd.speed, sDuckSpeed * 5);
-        sd.speed += (sDuckSpeed - sd.speed) * 0.12;
-        sd.x += Math.cos(sd.heading) * sd.speed;
-        sd.y += Math.sin(sd.heading) * sd.speed;
-        const sdAmt = Math.sin(sd.driftPhase) * 0.00015;
+        sd.speed += (sDuckSpeed - sd.speed) * (1 - Math.pow(0.88, sdt));
+        sd.x += Math.cos(sd.heading) * sd.speed * sdt;
+        sd.y += Math.sin(sd.heading) * sd.speed * sdt;
+        const sdAmt = Math.sin(sd.driftPhase) * 0.00015 * sdt;
         sd.x += Math.cos(sd.heading + Math.PI / 2) * sdAmt;
         sd.y += Math.sin(sd.heading + Math.PI / 2) * sdAmt;
         sd.x = Math.max(0.03, Math.min(0.97, sd.x));
@@ -2217,15 +2222,15 @@ document.addEventListener('DOMContentLoaded', () => {
             const tx = leader.x - (bdx / bdist) * sBabyDist;
             const ty = leader.y - (bdy / bdist) * sBabyDist;
             const follow = 0.08 + Math.min((bdist - sBabyDist) * 5, 0.18);
-            baby.x += (tx - baby.x) * follow;
-            baby.y += (ty - baby.y) * follow;
+            baby.x += (tx - baby.x) * follow * sdt;
+            baby.y += (ty - baby.y) * follow * sdt;
           }
           if (bdist > 0.002) {
             const dh = Math.atan2(bdy, bdx);
             let hd = dh - baby.heading;
             while (hd > Math.PI) hd -= Math.PI * 2;
             while (hd < -Math.PI) hd += Math.PI * 2;
-            baby.heading += hd * 0.12;
+            baby.heading += hd * 0.12 * sdt;
           }
           drawSecDuck(baby.x * sw, baby.y * sh, sd.size, baby.heading, true, sd.sex);
         }
