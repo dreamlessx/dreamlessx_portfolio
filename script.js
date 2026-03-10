@@ -824,8 +824,12 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // track cursor for duck interaction
     let cursorX = -1, cursorY = -1;
+    let _lastMouseT = 0;
     canvas.parentElement.style.pointerEvents = 'auto';
     canvas.parentElement.addEventListener('mousemove', (e) => {
+      const now = performance.now();
+      if (now - _lastMouseT < 16) return; // throttle to ~60fps
+      _lastMouseT = now;
       const r = canvas.parentElement.getBoundingClientRect();
       cursorX = (e.clientX - r.left) / W;
       cursorY = (e.clientY - r.top) / H;
@@ -1321,18 +1325,19 @@ document.addEventListener('DOMContentLoaded', () => {
             const str = Math.pow((cAvR - cdist) / cAvR, 0.4);
             avoidX += ((dk.x - cursorX) / cdist) * str * 7.0;
             avoidY += ((dk.y - cursorY) / cdist) * str * 7.0;
-            dk.speed = Math.max(dk.speed, CRUISE_SPEED * (2.0 + str * 2.5));
-            // direct position push when very close — prevents "stuck drifting forward"
-            if (cdist < cAvR * 0.5) {
-              const push = 0.004 * Math.pow((cAvR * 0.5 - cdist) / (cAvR * 0.5), 0.5);
+            dk.speed = Math.min(dk.speed + str * CRUISE_SPEED * 2, CRUISE_SPEED * 4);
+            // direct position push when very close
+            if (cdist < cAvR * 0.4) {
+              const push = Math.min(0.003, 0.003 * (1 - cdist / (cAvR * 0.4)));
               dk.x += ((dk.x - cursorX) / cdist) * push;
               dk.y += ((dk.y - cursorY) / cdist) * push;
             }
           }
         }
 
-        // apply avoidance
-        const avMag = Math.hypot(avoidX, avoidY);
+        // apply avoidance — cap total force to prevent oscillation
+        let avMag = Math.hypot(avoidX, avoidY);
+        if (avMag > 15) { avoidX *= 15 / avMag; avoidY *= 15 / avMag; avMag = 15; }
         if (avMag > 0.01) {
           const avAngle = Math.atan2(avoidY, avoidX);
           let avDiff = avAngle - dk.heading;
@@ -1341,12 +1346,13 @@ document.addEventListener('DOMContentLoaded', () => {
           dk.heading += Math.sign(avDiff) * Math.min(Math.abs(avDiff), MAX_TURN * 8 * Math.min(avMag, 2.0));
         }
 
-        // NaN guard
+        // NaN guard + speed cap
         if (isNaN(dk.x) || isNaN(dk.y) || isNaN(dk.heading)) {
           dk.x = 0.5; dk.y = 0.5; dk.heading = Math.random() * Math.PI * 2; dk.speed = CRUISE_SPEED;
         }
-        // move forward
-        dk.speed += (CRUISE_SPEED - dk.speed) * 0.08;
+        dk.speed = Math.min(dk.speed, CRUISE_SPEED * 5);
+        // move forward — faster decay so ducks slow down quickly after cursor leaves
+        dk.speed += (CRUISE_SPEED - dk.speed) * 0.12;
         dk.x += Math.cos(dk.heading) * dk.speed;
         dk.y += Math.sin(dk.heading) * dk.speed;
 
@@ -1469,31 +1475,20 @@ document.addEventListener('DOMContentLoaded', () => {
       // spawn drops
       if (drops.length < MAX_DROPS && Math.random() < 0.025) spawnDrop();
 
-      // bridge: spawn ripples near boundary — hero bottom + about top
-      if (pondBridge.about && Math.random() < 0.018) {
+      // bridge: spawn ripple near top of about section (from hero)
+      if (pondBridge.about && Math.random() < 0.012 && pondBridge.about.drops.length < 40) {
         const aw = pondBridge.about.getW();
         const ah = pondBridge.about.getH();
-        if (aw > 0 && pondBridge.about.drops.length < 50) {
+        if (aw > 0) {
           pondBridge.about.drops.push({
             x: Math.random() * aw,
-            y: Math.random() * ah * 0.15,
-            r: 0, maxR: 50 + Math.random() * 80,
-            rings: 2 + Math.floor(Math.random() * 3),
-            speed: 0.06 + Math.random() * 0.10,
+            y: Math.random() * ah * 0.12,
+            r: 0, maxR: 40 + Math.random() * 60,
+            rings: 2 + Math.floor(Math.random() * 2),
+            speed: 0.08 + Math.random() * 0.12,
             peak: 0.04 + Math.random() * 0.05
           });
         }
-      }
-      // also spawn large ripples at hero bottom edge that visually bleed toward about
-      if (pondBridge.about && Math.random() < 0.012) {
-        drops.push({
-          x: Math.random() * W,
-          y: H * (0.90 + Math.random() * 0.10),
-          r: 0, maxR: 60 + Math.random() * 90,
-          rings: 3 + Math.floor(Math.random() * 2),
-          speed: 0.05 + Math.random() * 0.08,
-          peakAlpha: 0.04 + Math.random() * 0.05
-        });
       }
 
       requestAnimationFrame(draw);
@@ -1655,9 +1650,12 @@ document.addEventListener('DOMContentLoaded', () => {
       });
     }
 
-    // cursor tracking for section ducks
-    let sCurX = -1, sCurY = -1;
+    // cursor tracking for section ducks (throttled)
+    let sCurX = -1, sCurY = -1, _sLastMouse = 0;
     sec.addEventListener('mousemove', (e) => {
+      const now = performance.now();
+      if (now - _sLastMouse < 16) return;
+      _sLastMouse = now;
       const r = sec.getBoundingClientRect();
       sCurX = (e.clientX - r.left) / sw;
       sCurY = (e.clientY - r.top) / sh;
@@ -2116,10 +2114,10 @@ document.addEventListener('DOMContentLoaded', () => {
             const str = Math.pow((scAvR - scDist) / scAvR, 0.4);
             sAvX += ((sd.x - sCurX) / scDist) * str * 6.0;
             sAvY += ((sd.y - sCurY) / scDist) * str * 6.0;
-            sd.speed = Math.max(sd.speed, sDuckSpeed * (2.0 + str * 2.0));
+            sd.speed = Math.min(sd.speed + str * sDuckSpeed * 2, sDuckSpeed * 4);
             // direct position push when very close
-            if (scDist < scAvR * 0.5) {
-              const push = 0.004 * Math.pow((scAvR * 0.5 - scDist) / (scAvR * 0.5), 0.5);
+            if (scDist < scAvR * 0.4) {
+              const push = Math.min(0.003, 0.003 * (1 - scDist / (scAvR * 0.4)));
               sd.x += ((sd.x - sCurX) / scDist) * push;
               sd.y += ((sd.y - sCurY) / scDist) * push;
             }
@@ -2147,7 +2145,8 @@ document.addEventListener('DOMContentLoaded', () => {
           }
         }
 
-        const sAM = Math.hypot(sAvX, sAvY);
+        let sAM = Math.hypot(sAvX, sAvY);
+        if (sAM > 15) { sAvX *= 15 / sAM; sAvY *= 15 / sAM; sAM = 15; }
         if (sAM > 0.01) {
           const sAA = Math.atan2(sAvY, sAvX);
           let sAD = sAA - sd.heading;
@@ -2175,11 +2174,12 @@ document.addEventListener('DOMContentLoaded', () => {
           sd._prevX = sd.x; sd._prevY = sd.y;
         }
 
-        // NaN guard
+        // NaN guard + speed cap
         if (isNaN(sd.x) || isNaN(sd.y) || isNaN(sd.heading)) {
           sd.x = 0.5; sd.y = 0.5; sd.heading = Math.random() * Math.PI * 2; sd.speed = sDuckSpeed;
         }
-        sd.speed += (sDuckSpeed - sd.speed) * 0.08;
+        sd.speed = Math.min(sd.speed, sDuckSpeed * 5);
+        sd.speed += (sDuckSpeed - sd.speed) * 0.12;
         sd.x += Math.cos(sd.heading) * sd.speed;
         sd.y += Math.sin(sd.heading) * sd.speed;
         const sdAmt = Math.sin(sd.driftPhase) * 0.00015;
@@ -2216,18 +2216,18 @@ document.addEventListener('DOMContentLoaded', () => {
       }
 
       if (sDrops.length < sMaxDrops && Math.random() < 0.07) sSpawn();
-      // bridge: spawn ripples near bottom of hero from about section
-      if (id === 'about' && pondBridge.hero && Math.random() < 0.015) {
+      // bridge: spawn ripple near bottom of hero from about section
+      if (id === 'about' && pondBridge.hero && Math.random() < 0.008) {
         const hw = pondBridge.hero.getW();
         const hh = pondBridge.hero.getH();
-        if (hw > 0 && pondBridge.hero.drops.length < 35) {
+        if (hw > 0 && pondBridge.hero.drops.length < 22) {
           pondBridge.hero.drops.push({
             x: Math.random() * hw,
-            y: hh * (0.85 + Math.random() * 0.15),
-            r: 0, maxR: 50 + Math.random() * 80,
-            rings: 2 + Math.floor(Math.random() * 3),
-            speed: 0.06 + Math.random() * 0.10,
-            peakAlpha: 0.05 + Math.random() * 0.06
+            y: hh * (0.88 + Math.random() * 0.12),
+            r: 0, maxR: 40 + Math.random() * 60,
+            rings: 2 + Math.floor(Math.random() * 2),
+            speed: 0.08 + Math.random() * 0.12,
+            peakAlpha: 0.04 + Math.random() * 0.05
           });
         }
       }
