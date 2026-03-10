@@ -11,6 +11,24 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
   <style>
+    /* disable snap scroll inherited from styles.css */
+    main {
+      scroll-snap-type: none !important;
+      height: auto !important;
+      overflow: visible !important;
+    }
+    .section {
+      scroll-snap-align: none !important;
+      height: auto !important;
+      min-height: auto !important;
+      overflow: visible !important;
+      display: block !important;
+    }
+    .section .container {
+      max-height: none !important;
+      overflow: visible !important;
+    }
+
     /* bair lab page-specific styles */
     .back-link {
       font-family: var(--mono);
@@ -46,7 +64,7 @@
     .lab-hero-content {
       position: relative;
       z-index: 2;
-      max-width: 700px;
+      max-width: 800px;
     }
 
     .lab-hero-tag {
@@ -90,7 +108,6 @@
       background: var(--border);
       border: 1px solid var(--border);
       border-radius: 8px;
-      overflow: hidden;
       margin-top: 3rem;
       animation: hero-fade-up 0.8s var(--ease-out-expo) 0.55s both;
     }
@@ -102,10 +119,37 @@
       flex-direction: column;
       gap: 0.25rem;
       transition: background 0.3s ease;
+      text-decoration: none;
+      position: relative;
+      cursor: pointer;
     }
 
     .lab-stat:hover {
       background: var(--bg-card);
+    }
+
+    .lab-stat[data-detail]::after {
+      content: attr(data-detail);
+      position: absolute;
+      bottom: -2rem;
+      left: 50%;
+      transform: translateX(-50%) translateY(100%);
+      background: rgba(10, 10, 10, 0.95);
+      border: 1px solid var(--border-hover);
+      color: var(--text-secondary);
+      font-family: var(--mono);
+      font-size: 0.6rem;
+      padding: 0.35rem 0.6rem;
+      border-radius: 4px;
+      white-space: nowrap;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.15s ease;
+      z-index: 10;
+    }
+
+    .lab-stat[data-detail]:hover::after {
+      opacity: 1;
     }
 
     .lab-stat-num {
@@ -171,9 +215,14 @@
     }
 
     .method-card li::before {
-      content: '\2013';
-      margin-right: 0.5rem;
-      color: var(--text-dim);
+      content: '';
+      display: inline-block;
+      width: 4px;
+      height: 4px;
+      border-radius: 50%;
+      background: var(--text-dim);
+      margin-right: 0.6rem;
+      vertical-align: middle;
     }
 
     /* results */
@@ -215,13 +264,14 @@
 
     /* publications */
     .output-grid {
-      display: grid;
-      grid-template-columns: repeat(2, 1fr);
+      display: flex;
+      flex-direction: column;
       gap: 1px;
       background: var(--border);
       border: 1px solid var(--border);
       border-radius: 8px;
-      overflow: hidden;
+      max-height: 434px;
+      overflow-y: auto;
     }
 
     .output-card {
@@ -232,6 +282,69 @@
 
     .output-card:hover {
       background: var(--bg-card-hover);
+    }
+
+    .output-card {
+      cursor: pointer;
+      position: relative;
+    }
+
+    .output-card.active {
+      background: var(--bg-card);
+      box-shadow: inset 0 0 0 1px var(--border-hover);
+    }
+
+    .output-detail-panel {
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      background: var(--bg-card);
+      padding: 0;
+      max-height: 0;
+      overflow: hidden;
+      opacity: 0;
+      transition: max-height 0.4s ease, opacity 0.3s ease, padding 0.4s ease, margin-top 0.4s ease;
+      margin-top: 0;
+    }
+
+    .output-detail-panel.open {
+      max-height: 300px;
+      opacity: 1;
+      padding: 2rem;
+      margin-top: 1.5rem;
+    }
+
+    .output-detail-panel h4 {
+      font-family: var(--mono);
+      font-size: 0.7rem;
+      color: var(--accent);
+      text-transform: lowercase;
+      letter-spacing: 0.08em;
+      margin-bottom: 0.5rem;
+      font-weight: 400;
+    }
+
+    .output-detail-panel p {
+      color: var(--text-secondary);
+      font-size: 0.85rem;
+      line-height: 1.7;
+    }
+
+    .output-poster-link {
+      display: inline-block;
+      margin-top: 0.75rem;
+      font-family: var(--mono);
+      font-size: 0.7rem;
+      color: var(--accent);
+      border: 1px solid rgba(200, 255, 0, 0.3);
+      padding: 0.3rem 0.6rem;
+      border-radius: 4px;
+      text-decoration: none;
+      transition: background 0.2s ease, border-color 0.2s ease;
+    }
+
+    .output-poster-link:hover {
+      background: rgba(200, 255, 0, 0.08);
+      border-color: var(--accent);
     }
 
     .output-status {
@@ -334,6 +447,74 @@
         padding: 1.5rem;
       }
     }
+
+    /* footer overrides for bair-lab */
+    .footer {
+      background: #0a1f0a;
+      padding: 1.5rem 0;
+      border-top: 1px solid rgba(200, 255, 0, 0.08);
+    }
+
+    .footer-inner .mono,
+    .footer-links a {
+      font-family: var(--mono);
+      font-size: 0.8rem;
+    }
+
+    /* scroll to top circle in footer */
+    .scroll-top-circle {
+      background: none;
+      border: none;
+      color: var(--text-dim);
+      cursor: pointer;
+      padding: 0;
+      display: inline-flex;
+      align-items: center;
+      transition: color 0.3s ease;
+      vertical-align: middle;
+      margin-left: 0.25rem;
+    }
+
+    .scroll-top-circle:hover {
+      color: var(--accent);
+    }
+
+    /* floating return-to-research button */
+    .floating-return {
+      position: fixed;
+      bottom: 1.1rem;
+      right: 2rem;
+      z-index: 100;
+      font-family: var(--mono);
+      font-size: 0.7rem;
+      color: var(--text-dim);
+      background: rgba(10, 10, 10, 0.85);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 0.55rem 0.9rem;
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+      transition: color 0.3s ease, border-color 0.3s ease, transform 0.2s ease;
+    }
+
+    .floating-return:hover {
+      color: var(--accent);
+      border-color: var(--accent);
+      transform: translateY(-2px);
+    }
+
+    @media (max-width: 640px) {
+      .floating-return {
+        bottom: 1rem;
+        right: 1rem;
+        font-size: 0.65rem;
+        padding: 0.45rem 0.7rem;
+      }
+    }
   </style>
 </head>
 <body>
@@ -343,9 +524,9 @@
       <a href="index.html" class="nav-name">mudit.</a>
       <div class="nav-links" id="navLinks">
         <a href="index.html">home</a>
-        <a href="index.html#research">research</a>
-        <a href="index.html#projects">projects</a>
-        <a href="index.html#contact">contact</a>
+        <a href="#methods">methods</a>
+        <a href="#results">results</a>
+        <a href="#outputs">outputs</a>
       </div>
       <button class="nav-toggle" id="navToggle" aria-label="Menu">
         <span></span><span></span>
@@ -359,37 +540,36 @@
       <div class="container">
         <a href="index.html" class="back-link">&larr; back to main</a>
         <div class="lab-hero-content" style="margin-top: 2rem;">
-          <p class="lab-hero-tag">computational neuroscience / bair lab / university of washington</p>
+          <p class="lab-hero-tag">bair lab / uw neurobiology & biophysics</p>
           <h1 class="lab-hero-title">
-            cross-orientation suppression<br>
-            across cortical depth in macaque v1
+            cross-orientation suppression across<br>
+            cortical depth in macaque v1
           </h1>
-          <p class="lab-hero-role">december 2024 - present / ~12 hrs/week / surgical assistant + computational analysis</p>
+          <p class="lab-hero-role">dec 2024 - present / ~12 hrs/week / surgical assistant + computational analysis</p>
           <p class="lab-hero-desc">
-            Two-photon calcium imaging of cross-orientation suppression in macaque primary visual cortex.
-            Investigating how neuronal interactions vary across cortical depth using orthogonal plaids
-            versus linear prediction. Built the full XORI analysis pipeline from ROI extraction to
-            mixed-effects modeling.
+            Two-photon calcium imaging in anesthetized macaque V1. We present orthogonal plaids and compare
+            responses to a linear prediction from component gratings. I built the full XORI analysis
+            pipeline and assist in non-human primate neurosurgery.
           </p>
         </div>
 
         <div class="lab-stats">
-          <div class="lab-stat">
+          <a href="#results" class="lab-stat" data-detail="Suite2p extraction across all fields of view">
             <span class="lab-stat-num">4,785</span>
             <span class="lab-stat-label">ROIs analyzed</span>
-          </div>
-          <div class="lab-stat">
+          </a>
+          <a href="#methods" class="lab-stat" data-detail="28 fields of view from 140 to 518 um">
             <span class="lab-stat-num">28</span>
             <span class="lab-stat-label">cortical depths</span>
-          </div>
-          <div class="lab-stat">
-            <span class="lab-stat-num">140-518</span>
-            <span class="lab-stat-label">depth range (micrometers)</span>
-          </div>
-          <div class="lab-stat">
-            <span class="lab-stat-num">7.9e-10</span>
-            <span class="lab-stat-label">mixed-effects p-value</span>
-          </div>
+          </a>
+          <a href="#methods" class="lab-stat" data-detail="Superficial through deep layer 2/3">
+            <span class="lab-stat-num">140-518 um</span>
+            <span class="lab-stat-label">depth range</span>
+          </a>
+          <a href="#outputs" class="lab-stat" data-detail="First-author preprint, SfN poster, WANPRC talk, UW symposium">
+            <span class="lab-stat-num">5</span>
+            <span class="lab-stat-label">publications + talks</span>
+          </a>
         </div>
       </div>
     </section>
@@ -397,43 +577,43 @@
     <section class="section section-alt" id="methods">
       <div class="container">
         <h2 class="section-label mono">methods</h2>
-        <p class="section-intro">Combining non-human primate neurosurgery with computational analysis to map orientation selectivity across laminar circuits.</p>
+        <p class="section-intro">Two-photon imaging + surgery in anesthetized macaque, with a custom Python pipeline for all analysis.</p>
 
         <div class="methods-grid">
           <div class="method-card">
             <h4>imaging</h4>
-            <p>Two-photon and three-photon calcium imaging in awake macaque V1. Visual stimuli consist of oriented gratings and orthogonal plaid patterns presented at multiple spatial frequencies.</p>
+            <p>Two-photon calcium imaging in anesthetized macaque V1 using PHP.eB-CAG-GCaMP6s. Drifting gratings and orthogonal plaids at 50% contrast, 4 Hz, 4 cyc/deg.</p>
             <ul>
-              <li>GCaMP-based calcium indicators</li>
-              <li>28 imaging depths from 140 to 518 micrometers</li>
-              <li>Spanning superficial through deep cortical layers</li>
+              <li>28 fields of view, 140 to 518 um deep</li>
+              <li>Superficial through deep layer 2/3</li>
+              <li>Collaboration with Allen Institute and WANPRC</li>
             </ul>
           </div>
           <div class="method-card">
             <h4>roi extraction</h4>
-            <p>Automated region-of-interest extraction using Suite2p with custom integration for primate cortical imaging data.</p>
+            <p>Suite2p for automated cell detection, adapted for primate cortical data. Neuropil correction applied to all traces.</p>
             <ul>
-              <li>Suite2p pipeline integration</li>
-              <li>4,785 ROIs across all depths</li>
-              <li>Neuropil correction and signal decontamination</li>
+              <li>4,785 ROIs across 28 depths</li>
+              <li>Neuropil subtraction and signal cleanup</li>
+              <li>SNR filtering at multiple thresholds</li>
             </ul>
           </div>
           <div class="method-card">
-            <h4>xori analysis</h4>
-            <p>Cross-orientation suppression index (XORI) computed by comparing plaid responses to linear predictions from component grating responses.</p>
+            <h4>xori metric</h4>
+            <p>For each ROI, build a linear prediction from component grating responses (shifted by 90 degrees, summed with baseline correction). Compare to actual plaid response.</p>
             <ul>
-              <li>Orthogonal plaid vs linear prediction comparison</li>
-              <li>XORI &lt; 0 = suppression, XORI &gt; 0 = facilitation</li>
-              <li>Computed per-ROI across all stimulus conditions</li>
+              <li>S: plaid / linear prediction ratio</li>
+              <li>S > 1 = facilitation, S < 1 = suppression</li>
+              <li>C: Pearson r between predicted and observed tuning</li>
             </ul>
           </div>
           <div class="method-card">
-            <h4>statistical modeling</h4>
-            <p>Mixed-effects models to account for nested data structure (ROIs within depths within sessions) and assess how XORI varies with cortical depth.</p>
+            <h4>statistics</h4>
+            <p>Mixed-effects models to handle the nested structure: ROIs within depths within sessions. Mediation analysis for covariates.</p>
             <ul>
-              <li>Linear mixed-effects regression (statsmodels)</li>
+              <li>Linear mixed-effects (statsmodels)</li>
               <li>Random intercepts for session and depth</li>
-              <li>Mediation analysis for spatial frequency and bandwidth</li>
+              <li>Mediation: spatial frequency (~40%), bandwidth (~21%)</li>
             </ul>
           </div>
         </div>
@@ -443,28 +623,28 @@
     <section class="section" id="results">
       <div class="container">
         <h2 class="section-label mono">results</h2>
-        <p class="section-intro">A laminar gradient in cross-orientation interactions, shifting from facilitation in superficial layers to suppression at depth.</p>
+        <p class="section-intro" style="max-width:none;">Suppression increases with depth. Facilitation in superficial layer 2/3, suppression in deep layer 2/3.</p>
 
         <div class="results-list">
           <div class="result-item">
-            <span class="result-metric">p = 7.9 x 10^-10</span>
-            <span class="result-desc">Mixed-effects model confirms significant relationship between cortical depth and cross-orientation suppression index. XORI decreases with depth.</span>
+            <span class="result-metric">S vs. depth</span>
+            <span class="result-desc">S (suppression/facilitation strength) decreases with cortical depth, transitioning from facilitation in superficial L2/3 to suppression deeper. Persists after controlling for SNR, baseline fluorescence, and spatial frequency.</span>
           </div>
           <div class="result-item">
-            <span class="result-metric">~40% variance</span>
-            <span class="result-desc">Spatial frequency mediates approximately 40% of the variance in XORI across cortical depth, suggesting tuning-dependent suppression mechanisms.</span>
+            <span class="result-metric">C vs. depth</span>
+            <span class="result-desc">C (Pearson correlation between predicted and observed plaid tuning) increases with depth. Linear predictions become more accurate deeper in L2/3, even as responses fall below the linear sum.</span>
           </div>
           <div class="result-item">
-            <span class="result-metric">~21% variance</span>
-            <span class="result-desc">Orientation bandwidth accounts for roughly 21% of variance, indicating that broadly tuned neurons show different suppression profiles than sharply tuned ones.</span>
+            <span class="result-metric">spatial clustering</span>
+            <span class="result-desc">S values cluster spatially within individual fields of view, suggesting local organization of suppressive interactions across the cortical surface.</span>
           </div>
           <div class="result-item">
-            <span class="result-metric">laminar shift</span>
-            <span class="result-desc">Superficial layers (140-250 micrometers) show net facilitation on average. Deep layers (400-518 micrometers) show net suppression. The transition is gradual, not binary.</span>
+            <span class="result-metric">bandwidth gradient</span>
+            <span class="result-desc">Orientation bandwidth increases from ~60 to ~80 degrees with depth. Shows negative correlation with C within sites but positive correlation across sites, revealing complex tuning patterns.</span>
           </div>
           <div class="result-item">
-            <span class="result-metric">4,785 ROIs</span>
-            <span class="result-desc">Full dataset spans 28 cortical depths with sufficient statistical power to resolve laminar differences in cross-orientation interactions.</span>
+            <span class="result-metric">laminar gradient</span>
+            <span class="result-desc">Superficial (140-250 um): high SF, narrow tuning, high OSI, facilitation. Deep (400-518 um): low SF, broad tuning, low OSI, suppression. Gradual transition, not binary.</span>
           </div>
         </div>
       </div>
@@ -476,11 +656,11 @@
         <div class="methods-grid">
           <div class="method-card">
             <h4>surgical</h4>
-            <p>Surgical assistant in non-human primate neurosurgery. Assist with craniotomy preparation, optical window implantation, and perioperative monitoring for chronic two-photon imaging access.</p>
+            <p>I assist in non-human primate neurosurgery: craniotomy prep, optical window implantation, perioperative monitoring. This gives us chronic two-photon imaging access to V1.</p>
           </div>
           <div class="method-card">
             <h4>computational</h4>
-            <p>Designed and built the entire XORI analysis pipeline from scratch. ROI extraction, signal processing, cross-orientation index computation, mixed-effects modeling, mediation analysis, and all figure generation. Every line of analysis code is mine.</p>
+            <p>I built the entire XORI analysis pipeline. ROI extraction, signal processing, cross-orientation index computation, mixed-effects modeling, mediation analysis, all figures. Every line of analysis code is mine.</p>
           </div>
         </div>
       </div>
@@ -491,32 +671,47 @@
         <h2 class="section-label mono">publications + presentations</h2>
 
         <div class="output-grid">
-          <div class="output-card">
+          <div class="output-card" data-expanded="Cross-orientation suppression across cortical depth in macaque V1. Covers the full XORI pipeline, depth-dependent suppression gradient, mixed-effects modeling, and mediation analysis. First-author with Dr. Wyeth Bair. Target submission: April 2026.">
             <div class="output-status">in preparation</div>
             <h4>first-author arXiv preprint</h4>
-            <p>Cross-orientation suppression across cortical depth in macaque V1. Target submission April 2026.</p>
+            <p>Cross-orientation suppression across cortical depth in macaque V1. Target: April 2026.</p>
           </div>
-          <div class="output-card">
+          <div class="output-card" data-expanded="Comprehensive study combining the XORI analysis with expanded electrophysiology dataset and additional laminar analyses. Co-authored with the full Bair Lab team. Journal and timeline TBD.">
             <div class="output-status">in preparation</div>
-            <h4>second-author peer-reviewed manuscript</h4>
-            <p>Full study with additional analyses and expanded dataset. Journal TBD.</p>
+            <h4>second-author manuscript</h4>
+            <p>Full study with expanded dataset and additional analyses. Journal TBD.</p>
           </div>
-          <div class="output-card">
-            <div class="output-status">accepted</div>
-            <h4>SfN 2025 poster presentation</h4>
-            <p>Society for Neuroscience annual meeting. San Diego, CA.</p>
+          <div class="output-card" data-expanded="Presenting cross-orientation suppression findings at the annual UW undergraduate research symposium. Poster format covering methods, key results, and implications for cortical computation models. University of Washington, May 2026.">
+            <div class="output-status">upcoming</div>
+            <h4>UW Research Symposium poster</h4>
+            <p>University of Washington. May 2026.</p>
           </div>
-          <div class="output-card">
+          <div class="output-card" data-expanded="Presented two-photon calcium imaging results showing depth-dependent cross-orientation suppression in macaque V1. Demonstrated laminar gradient from facilitation in superficial L2/3 to suppression in deep L2/3. Society for Neuroscience annual meeting, San Diego, CA. November 2025." data-poster="true">
             <div class="output-status">presented</div>
-            <h4>WANPRC poster presentation</h4>
-            <p>Washington National Primate Research Center. Seattle, WA.</p>
+            <h4>SfN 2025 poster</h4>
+            <p>Society for Neuroscience. San Diego, CA. Nov 2025.</p>
           </div>
+          <div class="output-card" data-expanded="Talk and poster at the Washington National Primate Research Center annual symposium. Covered surgical methods, two-photon imaging protocol, and preliminary XORI analysis results. Seattle, WA. December 2025." data-poster="true">
+            <div class="output-status">presented</div>
+            <h4>WANPRC talk + poster</h4>
+            <p>Washington National Primate Research Center. Seattle, WA. Dec 2025.</p>
+          </div>
+        </div>
+
+        <div class="output-detail-panel" id="outputDetail"></div>
+
+        <div class="repo-cta">
+          <div class="repo-cta-text">
+            <h4>poster</h4>
+            <p>Cross-orientation suppression across cortical depth in macaque V1. Presented at SfN San Diego and WANPRC Seattle.</p>
+          </div>
+          <a href="https://drive.google.com/file/d/PLACEHOLDER/view" target="_blank" rel="noopener" class="btn btn-ghost">download poster &nearr;</a>
         </div>
 
         <div class="repo-cta">
           <div class="repo-cta-text">
             <h4>source code</h4>
-            <p>The full XORI analysis pipeline is open source. Suite2p integration, statistical modeling, visualization, and all analysis notebooks.</p>
+            <p>Full pipeline: Suite2p integration, metric computation, mixed-effects models, mediation analysis, and all figures.</p>
           </div>
           <a href="https://github.com/dreamlessx/XORI_Data_Analysis" target="_blank" rel="noopener" class="btn btn-ghost">view on github &nearr;</a>
         </div>
@@ -525,16 +720,26 @@
 
     <section class="section section-alt" id="tools">
       <div class="container">
-        <h2 class="section-label mono">tools</h2>
+        <h2 class="section-label mono">tools + skills</h2>
         <div class="tools-grid">
           <div class="tools-group">
-            <h4 class="mono">analysis</h4>
+            <h4 class="mono">analysis pipeline</h4>
             <div class="tools-tags">
               <span>Python</span>
               <span>Suite2p</span>
               <span>statsmodels</span>
               <span>scipy</span>
               <span>numpy</span>
+              <span>pandas</span>
+            </div>
+          </div>
+          <div class="tools-group">
+            <h4 class="mono">statistics</h4>
+            <div class="tools-tags">
+              <span>linear mixed-effects models</span>
+              <span>mediation analysis</span>
+              <span>bootstrap CIs</span>
+              <span>Pearson/Spearman correlation</span>
             </div>
           </div>
           <div class="tools-group">
@@ -543,6 +748,25 @@
               <span>matplotlib</span>
               <span>seaborn</span>
               <span>Jupyter</span>
+              <span>scientific figures</span>
+            </div>
+          </div>
+          <div class="tools-group">
+            <h4 class="mono">imaging + surgery</h4>
+            <div class="tools-tags">
+              <span>two-photon microscopy</span>
+              <span>GCaMP6s calcium imaging</span>
+              <span>craniotomy prep</span>
+              <span>optical window implantation</span>
+            </div>
+          </div>
+          <div class="tools-group">
+            <h4 class="mono">signal processing</h4>
+            <div class="tools-tags">
+              <span>neuropil subtraction</span>
+              <span>SNR filtering</span>
+              <span>ROI extraction</span>
+              <span>tuning curve analysis</span>
             </div>
           </div>
           <div class="tools-group">
@@ -551,6 +775,7 @@
               <span>Git</span>
               <span>Linux</span>
               <span>MATLAB</span>
+              <span>LaTeX</span>
             </div>
           </div>
         </div>
@@ -563,12 +788,22 @@
     <div class="container footer-inner">
       <span class="mono">mudit agarwal &copy; 2026</span>
       <span class="footer-links">
+        <a href="https://www.linkedin.com/in/rajagar/" target="_blank" rel="noopener">linkedin</a>
         <a href="https://youtube.com/@theoverzealouspremed" target="_blank" rel="noopener">youtube</a>
         <a href="https://github.com/dreamlessx" target="_blank" rel="noopener">github</a>
-        <a href="mailto:muditagar2005@gmail.com">email</a>
+        <a href="index.html#mentorship">contact</a>
+        <a href="index.html#mentorship">resume</a>
+        <button class="scroll-top-circle" onclick="window.scrollTo({top:0,behavior:'smooth'})" aria-label="Scroll to top">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="12" cy="12" r="11"/>
+            <polyline points="8 14 12 9 16 14"/>
+          </svg>
+        </button>
       </span>
     </div>
   </footer>
+
+  <a href="index.html#research" class="floating-return" onclick="sessionStorage.setItem('scrollTo','research')">&larr; back to research</a>
 
   <script>
     // nav scroll behavior
@@ -604,6 +839,34 @@
     document.querySelectorAll('.section').forEach(section => {
       section.classList.add('fade-in');
       observer.observe(section);
+    });
+
+    // output card expand/collapse into shared detail panel
+    const detailPanel = document.getElementById('outputDetail');
+    let activeCard = null;
+
+    document.querySelectorAll('.output-card[data-expanded]').forEach(card => {
+      card.addEventListener('click', () => {
+        if (activeCard === card) {
+          card.classList.remove('active');
+          detailPanel.classList.remove('open');
+          detailPanel.innerHTML = '';
+          activeCard = null;
+          return;
+        }
+        document.querySelectorAll('.output-card.active').forEach(c => c.classList.remove('active'));
+        card.classList.add('active');
+        activeCard = card;
+
+        const title = card.querySelector('h4').textContent;
+        const status = card.querySelector('.output-status').textContent;
+        let html = '<h4>' + status + ' \u2014 ' + title + '</h4><p>' + card.dataset.expanded + '</p>';
+        if (card.dataset.poster) {
+          html += '<a href="bair-lab.html#outputs" class="output-poster-link">view poster \u2197</a>';
+        }
+        detailPanel.innerHTML = html;
+        detailPanel.classList.add('open');
+      });
     });
   </script>
 

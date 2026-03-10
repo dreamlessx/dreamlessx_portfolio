@@ -11,16 +11,33 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
   <style>
+    /* disable snap scroll inherited from styles.css */
+    main {
+      scroll-snap-type: none !important;
+      height: auto !important;
+      overflow: visible !important;
+    }
+    .section {
+      scroll-snap-align: none !important;
+      height: auto !important;
+      min-height: auto !important;
+      overflow: visible !important;
+      display: block !important;
+    }
+    .section .container {
+      max-height: none !important;
+      overflow: visible !important;
+    }
+
     /* meiler lab page-specific styles */
     .back-link {
-      display: inline-flex;
-      align-items: center;
-      gap: 0.5rem;
       font-family: var(--mono);
       font-size: 0.75rem;
       color: var(--text-dim);
       transition: color var(--transition), padding-left 0.2s ease;
-      margin-bottom: 3rem;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
     }
 
     .back-link:hover {
@@ -29,7 +46,7 @@
     }
 
     .lab-hero {
-      padding: 8rem 0 5rem;
+      padding: 10rem 0 5rem;
       position: relative;
       overflow: hidden;
     }
@@ -47,19 +64,16 @@
     .lab-hero-content {
       position: relative;
       z-index: 2;
+      max-width: 800px;
     }
 
-    .lab-hero-meta {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 1.5rem;
-      margin-bottom: 1.5rem;
-    }
-
-    .lab-hero-meta span {
+    .lab-hero-tag {
       font-family: var(--mono);
       font-size: 0.75rem;
-      color: var(--text-dim);
+      color: var(--accent);
+      text-transform: lowercase;
+      margin-bottom: 1.5rem;
+      animation: hero-fade-up 0.8s var(--ease-out-expo) 0.1s both;
     }
 
     .lab-hero-title {
@@ -67,24 +81,24 @@
       font-weight: 300;
       line-height: 1.15;
       letter-spacing: -0.035em;
-      margin-bottom: 0.5rem;
-      animation: hero-fade-up 0.8s var(--ease-out-expo) 0.1s both;
+      margin-bottom: 0.75rem;
+      animation: hero-fade-up 0.8s var(--ease-out-expo) 0.25s both;
     }
 
-    .lab-hero-institution {
+    .lab-hero-role {
       font-family: var(--mono);
-      font-size: 0.85rem;
-      color: var(--accent);
+      font-size: 0.8rem;
+      color: var(--text-dim);
       margin-bottom: 1.5rem;
-      animation: hero-fade-up 0.8s var(--ease-out-expo) 0.2s both;
+      animation: hero-fade-up 0.8s var(--ease-out-expo) 0.35s both;
     }
 
     .lab-hero-desc {
       color: var(--text-secondary);
       font-size: 1.05rem;
-      max-width: 700px;
       line-height: 1.7;
-      animation: hero-fade-up 0.8s var(--ease-out-expo) 0.35s both;
+      max-width: 600px;
+      animation: hero-fade-up 0.8s var(--ease-out-expo) 0.45s both;
     }
 
     .lab-stats {
@@ -94,9 +108,8 @@
       background: var(--border);
       border: 1px solid var(--border);
       border-radius: 8px;
-      overflow: hidden;
       margin-top: 3rem;
-      animation: hero-fade-up 0.8s var(--ease-out-expo) 0.5s both;
+      animation: hero-fade-up 0.8s var(--ease-out-expo) 0.55s both;
     }
 
     .lab-stat {
@@ -106,26 +119,53 @@
       flex-direction: column;
       gap: 0.25rem;
       transition: background 0.3s ease;
+      text-decoration: none;
+      position: relative;
+      cursor: pointer;
     }
 
     .lab-stat:hover {
       background: var(--bg-card);
     }
 
+    .lab-stat[data-detail]::after {
+      content: attr(data-detail);
+      position: absolute;
+      bottom: -2rem;
+      left: 50%;
+      transform: translateX(-50%) translateY(100%);
+      background: rgba(10, 10, 10, 0.95);
+      border: 1px solid var(--border-hover);
+      color: var(--text-secondary);
+      font-family: var(--mono);
+      font-size: 0.6rem;
+      padding: 0.35rem 0.6rem;
+      border-radius: 4px;
+      white-space: nowrap;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.15s ease;
+      z-index: 10;
+    }
+
+    .lab-stat[data-detail]:hover::after {
+      opacity: 1;
+    }
+
     .lab-stat-num {
       font-family: var(--mono);
-      font-size: 1.5rem;
-      font-weight: 500;
+      font-size: 1.3rem;
       color: var(--text);
+      font-weight: 500;
     }
 
     .lab-stat-label {
-      font-size: 0.75rem;
+      font-size: 0.7rem;
       color: var(--text-dim);
       text-transform: lowercase;
     }
 
-    /* pipeline section */
+    /* methods / pipeline */
     .pipeline-steps {
       display: flex;
       flex-direction: column;
@@ -144,7 +184,6 @@
       gap: 1.5rem;
       align-items: start;
       transition: background 0.3s ease;
-      position: relative;
     }
 
     .pipeline-step:hover {
@@ -191,7 +230,7 @@
       border-radius: 3px;
     }
 
-    /* results section */
+    /* results */
     .results-grid {
       display: grid;
       grid-template-columns: repeat(2, 1fr);
@@ -248,58 +287,130 @@
       color: var(--text-dim);
     }
 
-    /* repos section */
-    .repo-grid {
+    /* publications */
+    .output-grid {
       display: flex;
       flex-direction: column;
       gap: 1px;
       background: var(--border);
       border: 1px solid var(--border);
       border-radius: 8px;
-      overflow: hidden;
+      max-height: 434px;
+      overflow-y: auto;
     }
 
-    .repo-card {
+    .output-card {
       background: var(--bg-alt);
       padding: 1.5rem 2rem;
-      display: grid;
-      grid-template-columns: 1fr auto;
-      gap: 2rem;
-      align-items: center;
       transition: background 0.3s ease;
+      cursor: pointer;
+      position: relative;
     }
 
-    .repo-card:hover {
+    .output-card:hover {
       background: var(--bg-card-hover);
     }
 
-    .repo-name {
+    .output-card.active {
+      background: var(--bg-card);
+      box-shadow: inset 0 0 0 1px var(--border-hover);
+    }
+
+    .output-detail-panel {
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      background: var(--bg-card);
+      padding: 0;
+      max-height: 0;
+      overflow: hidden;
+      opacity: 0;
+      transition: max-height 0.4s ease, opacity 0.3s ease, padding 0.4s ease, margin-top 0.4s ease;
+      margin-top: 0;
+    }
+
+    .output-detail-panel.open {
+      max-height: 300px;
+      opacity: 1;
+      padding: 2rem;
+      margin-top: 1.5rem;
+    }
+
+    .output-detail-panel h4 {
       font-family: var(--mono);
+      font-size: 0.7rem;
+      color: var(--accent);
+      text-transform: lowercase;
+      letter-spacing: 0.08em;
+      margin-bottom: 0.5rem;
+      font-weight: 400;
+    }
+
+    .output-detail-panel p {
+      color: var(--text-secondary);
+      font-size: 0.85rem;
+      line-height: 1.7;
+    }
+
+    .output-status {
+      font-family: var(--mono);
+      font-size: 0.65rem;
+      color: var(--accent);
+      text-transform: lowercase;
+      margin-bottom: 0.5rem;
+      letter-spacing: 0.05em;
+    }
+
+    .output-card h4 {
       font-size: 0.9rem;
       font-weight: 500;
-      color: var(--text);
       margin-bottom: 0.35rem;
     }
 
-    .repo-desc {
+    .output-card p {
       color: var(--text-secondary);
-      font-size: 0.85rem;
+      font-size: 0.8rem;
       line-height: 1.6;
     }
 
-    .repo-link {
+    /* github cta */
+    .repo-cta {
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 2.5rem;
+      background: var(--bg-card);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 2rem;
+      transition: border-color 0.4s ease;
+      margin-top: 3rem;
+    }
+
+    .repo-cta:hover {
+      border-color: var(--border-hover);
+    }
+
+    .repo-cta + .repo-cta {
+      margin-top: 1rem;
+    }
+
+    .repo-cta-text h4 {
       font-family: var(--mono);
-      font-size: 0.75rem;
-      color: var(--text-dim);
-      white-space: nowrap;
-      transition: color var(--transition);
-    }
-
-    .repo-link:hover {
+      font-size: 0.7rem;
       color: var(--accent);
+      text-transform: lowercase;
+      letter-spacing: 0.08em;
+      margin-bottom: 0.5rem;
+      font-weight: 400;
     }
 
-    /* responsive */
+    .repo-cta-text p {
+      color: var(--text-secondary);
+      font-size: 0.85rem;
+      line-height: 1.6;
+      max-width: 500px;
+    }
+
     @media (max-width: 900px) {
       .lab-stats {
         grid-template-columns: repeat(2, 1fr);
@@ -308,20 +419,15 @@
       .results-grid {
         grid-template-columns: 1fr;
       }
-
-      .repo-card {
-        grid-template-columns: 1fr;
-        gap: 0.75rem;
-      }
     }
 
     @media (max-width: 640px) {
       .lab-hero {
-        padding: 6rem 0 3rem;
+        padding: 7rem 0 3rem;
       }
 
-      .lab-hero-meta {
-        gap: 0.75rem;
+      .lab-stats {
+        grid-template-columns: 1fr 1fr;
       }
 
       .pipeline-step {
@@ -333,59 +439,143 @@
       .step-num {
         font-size: 0.65rem;
       }
+
+      .repo-cta {
+        flex-direction: column;
+        align-items: flex-start;
+        padding: 2rem 1.5rem;
+      }
     }
 
     @media (max-width: 414px) {
       .lab-hero {
-        padding: 5rem 0 2.5rem;
+        padding: 6rem 0 2.5rem;
       }
 
       .lab-stats {
         grid-template-columns: 1fr 1fr;
       }
     }
+
+    /* footer overrides */
+    .footer {
+      background: #0a1f0a;
+      padding: 1.5rem 0;
+      border-top: 1px solid rgba(200, 255, 0, 0.08);
+    }
+
+    .footer-inner .mono,
+    .footer-links a {
+      font-family: var(--mono);
+      font-size: 0.8rem;
+    }
+
+    .scroll-top-circle {
+      background: none;
+      border: none;
+      color: var(--text-dim);
+      cursor: pointer;
+      padding: 0;
+      display: inline-flex;
+      align-items: center;
+      transition: color 0.3s ease;
+      vertical-align: middle;
+      margin-left: 0.25rem;
+    }
+
+    .scroll-top-circle:hover {
+      color: var(--accent);
+    }
+
+    /* floating return-to-research button */
+    .floating-return {
+      position: fixed;
+      bottom: 1.1rem;
+      right: 2rem;
+      z-index: 100;
+      font-family: var(--mono);
+      font-size: 0.7rem;
+      color: var(--text-dim);
+      background: rgba(10, 10, 10, 0.85);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 0.55rem 0.9rem;
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+      transition: color 0.3s ease, border-color 0.3s ease, transform 0.2s ease;
+    }
+
+    .floating-return:hover {
+      color: var(--accent);
+      border-color: var(--accent);
+      transform: translateY(-2px);
+    }
+
+    @media (max-width: 640px) {
+      .floating-return {
+        bottom: 1rem;
+        right: 1rem;
+        font-size: 0.65rem;
+        padding: 0.45rem 0.7rem;
+      }
+    }
   </style>
 </head>
 <body>
+
+  <nav class="nav" id="nav">
+    <div class="nav-inner">
+      <a href="index.html" class="nav-name">mudit.</a>
+      <div class="nav-links" id="navLinks">
+        <a href="index.html">home</a>
+        <a href="#pipeline">methods</a>
+        <a href="#results">results</a>
+        <a href="#outputs">outputs</a>
+      </div>
+      <button class="nav-toggle" id="navToggle" aria-label="Menu">
+        <span></span><span></span>
+      </button>
+    </div>
+  </nav>
 
   <main>
 
     <section class="lab-hero">
       <div class="container">
-        <div class="lab-hero-content">
-          <a href="index.html" class="back-link">&larr; back to home</a>
-
-          <div class="lab-hero-meta">
-            <span>may 2025 - present</span>
-            <span>nashville, tennessee</span>
-            <span>hybrid</span>
-          </div>
-
-          <h1 class="lab-hero-title">meiler lab</h1>
-          <p class="lab-hero-institution">vanderbilt university / computational structural biology</p>
-
+        <a href="index.html" class="back-link">&larr; back to main</a>
+        <div class="lab-hero-content" style="margin-top: 2rem;">
+          <p class="lab-hero-tag">meiler lab / vanderbilt computational structural biology</p>
+          <h1 class="lab-hero-title">
+            building the computational backbone<br>
+            for a $46m vaccine project
+          </h1>
+          <p class="lab-hero-role">may 2025 - present / remote from seattle / computational pipeline development</p>
           <p class="lab-hero-desc">
-            Under a $46 million ARPA-H grant, working with Dr. Cristina Martina on alphavirus stabilization for vaccine development. I built the full protein-protein complex benchmarking infrastructure from scratch and developed end-to-end computational pipelines integrating AI structure prediction with physics-based relaxation and sequence design.
+            The Meiler Lab received a $46M ARPA-H grant to stabilize alphaviruses for vaccine development. I'm building the workflow that helps the computational team generate their protein structures as efficiently as possible: benchmarking prediction methods, automating relaxation protocols, and streamlining sequence design so they can iterate faster.
           </p>
+        </div>
 
-          <div class="lab-stats">
-            <div class="lab-stat">
-              <span class="lab-stat-num">6,800+</span>
-              <span class="lab-stat-label">structures generated</span>
-            </div>
-            <div class="lab-stat">
-              <span class="lab-stat-num">257</span>
-              <span class="lab-stat-label">protein complexes</span>
-            </div>
-            <div class="lab-stat">
-              <span class="lab-stat-num">6</span>
-              <span class="lab-stat-label">relaxation protocols</span>
-            </div>
-            <div class="lab-stat">
-              <span class="lab-stat-num">3</span>
-              <span class="lab-stat-label">public repositories</span>
-            </div>
-          </div>
+        <div class="lab-stats">
+          <a href="#results" class="lab-stat" data-detail="AlphaFold + Boltz-1 across full BM5.5 benchmark">
+            <span class="lab-stat-num">6,800+</span>
+            <span class="lab-stat-label">structures generated</span>
+          </a>
+          <a href="#results" class="lab-stat" data-detail="Full Protein-Protein Docking Benchmark 5.5">
+            <span class="lab-stat-num">257</span>
+            <span class="lab-stat-label">protein complexes</span>
+          </a>
+          <a href="#pipeline" class="lab-stat" data-detail="FastRelax variants with 5 replicates each">
+            <span class="lab-stat-num">6</span>
+            <span class="lab-stat-label">relaxation protocols</span>
+          </a>
+          <a href="#outputs" class="lab-stat" data-detail="Protein_Data_Analysis, Protein_Ideal, Protein_Relax_Pipeline">
+            <span class="lab-stat-num">3</span>
+            <span class="lab-stat-label">public repositories</span>
+          </a>
         </div>
       </div>
     </section>
@@ -393,14 +583,14 @@
     <section class="section section-alt" id="pipeline">
       <div class="container">
         <h2 class="section-label mono">methods / pipeline</h2>
-        <p class="section-intro">End-to-end computational pipeline integrating AI structure prediction, physics-based relaxation, sequence design, and quality validation.</p>
+        <p class="section-intro" style="max-width:none;">Prediction, relaxation, sequence design, and validation in one automated workflow.</p>
 
         <div class="pipeline-steps">
           <div class="pipeline-step">
             <span class="step-num mono">01</span>
             <div class="step-content">
               <h4>structure prediction</h4>
-              <p>Ran AlphaFold 2.3.2 and Boltz-1 v0.4.1 across the full BM5.5 protein-protein docking benchmark (257 complexes). Generated initial structure predictions for all bound and unbound conformations, providing the raw material for downstream benchmarking.</p>
+              <p>Ran AlphaFold 2.3.2 and Boltz-1 v0.4.1 across the full BM5.5 protein-protein docking benchmark (257 complexes). Generated initial structure predictions for all bound and unbound conformations.</p>
               <div class="step-tools">
                 <span>AlphaFold 2.3.2</span>
                 <span>Boltz-1 v0.4.1</span>
@@ -413,7 +603,7 @@
             <span class="step-num mono">02</span>
             <div class="step-content">
               <h4>AMBER relaxation</h4>
-              <p>Applied AMBER force field relaxation on all AlphaFold and Boltz-1 predicted models. This physics-based energy minimization step resolves steric clashes and refines local geometry from the AI-predicted structures.</p>
+              <p>Applied AMBER force field relaxation on all AlphaFold and Boltz-1 predicted models. Physics-based energy minimization resolves steric clashes and refines local geometry.</p>
               <div class="step-tools">
                 <span>AMBER</span>
                 <span>OpenMM</span>
@@ -425,7 +615,7 @@
             <span class="step-num mono">03</span>
             <div class="step-content">
               <h4>Rosetta relaxation</h4>
-              <p>Ran 6 Rosetta 3.15 relaxation protocols with 5 replicates each across all 257 complexes. This systematic approach tests multiple energy landscapes and sampling strategies to find the most physically realistic conformations.</p>
+              <p>Ran 6 Rosetta 3.15 relaxation protocols with 5 replicates each across all 257 complexes. Systematic approach tests multiple energy landscapes and sampling strategies.</p>
               <div class="step-tools">
                 <span>Rosetta 3.15</span>
                 <span>FastRelax</span>
@@ -438,7 +628,7 @@
             <span class="step-num mono">04</span>
             <div class="step-content">
               <h4>sequence design</h4>
-              <p>Built an end-to-end computational pipeline integrating AlphaFold, Rosetta, and ProteinMPNN for protein design. ProteinMPNN generates optimized amino acid sequences conditioned on the relaxed backbone structures, targeting improved stability for alphavirus vaccine candidates.</p>
+              <p>End-to-end pipeline integrating AlphaFold, Rosetta, and ProteinMPNN for protein design. ProteinMPNN generates optimized sequences conditioned on relaxed backbones, targeting improved stability for alphavirus vaccine candidates.</p>
               <div class="step-tools">
                 <span>ProteinMPNN</span>
                 <span>AlphaFold</span>
@@ -451,7 +641,7 @@
             <span class="step-num mono">05</span>
             <div class="step-content">
               <h4>quality validation</h4>
-              <p>Validated all generated structures using MolProbity quality metrics (clashscore, Ramachandran outliers, rotamer analysis) and PoseBusters geometry validation (bond lengths, angles, steric clashes). This ensures structural integrity before any downstream biological conclusions.</p>
+              <p>Validated all structures using MolProbity quality metrics (clashscore, Ramachandran outliers, rotamer analysis) and PoseBusters geometry validation (bond lengths, angles, steric clashes).</p>
               <div class="step-tools">
                 <span>MolProbity</span>
                 <span>PoseBusters</span>
@@ -466,85 +656,141 @@
     <section class="section" id="results">
       <div class="container">
         <h2 class="section-label mono">results</h2>
-        <p class="section-intro">Key outcomes from the BM5.5 benchmarking effort and protein design pipeline.</p>
+        <p class="section-intro" style="max-width:none;">Benchmarking outcomes and pipeline validation results.</p>
 
         <div class="results-grid">
           <div class="result-card">
             <h4>full BM5.5 benchmark</h4>
-            <p>Built the complete protein-protein complex relaxation benchmark across all 257 complexes in the Protein-Protein Docking Benchmark 5.5. This is the first systematic comparison of AI-predicted vs. experimentally-derived structures at this scale with multi-protocol Rosetta relaxation.</p>
+            <p>First systematic comparison of AI-predicted vs. experimentally-derived structures at this scale with multi-protocol Rosetta relaxation across all 257 complexes.</p>
             <span class="mono">257 complexes / 6,800+ structures</span>
           </div>
 
           <div class="result-card">
             <h4>multi-protocol relaxation</h4>
-            <p>Systematic evaluation of 6 distinct Rosetta relaxation protocols, each with 5 independent replicates, generating a comprehensive landscape of relaxed conformations. Enables robust statistical comparison of protocol performance across diverse complex types.</p>
+            <p>Systematic evaluation of 6 distinct Rosetta relaxation protocols, each with 5 independent replicates. Enables robust statistical comparison of protocol performance across diverse complex types.</p>
             <span class="mono">6 protocols x 5 replicates x 257 complexes</span>
           </div>
 
           <div class="result-card">
             <h4>structure quality metrics</h4>
-            <p>MolProbity validation across all structures: clashscore analysis, Ramachandran favored/outlier percentages, rotamer quality, and Cbeta deviations. PoseBusters geometry checks confirm physical plausibility of AI-generated models post-relaxation.</p>
+            <p>MolProbity validation across all structures: clashscore, Ramachandran analysis, rotamer quality, and Cbeta deviations. PoseBusters geometry checks confirm physical plausibility post-relaxation.</p>
             <span class="mono">molprobity + posebusters on all models</span>
           </div>
 
           <div class="result-card">
             <h4>protein design pipeline</h4>
-            <p>End-to-end integration of structure prediction, relaxation, and inverse folding for alphavirus vaccine stabilization. The pipeline takes a target complex, predicts structure, relaxes, designs sequences, and validates, all automated.</p>
+            <p>End-to-end integration of structure prediction, relaxation, and inverse folding for alphavirus vaccine stabilization. Automated from target complex through validated designed sequences.</p>
             <span class="mono">alphafold + rosetta + proteinmpnn</span>
           </div>
         </div>
       </div>
     </section>
 
-    <section class="section section-alt" id="repos">
+    <section class="section section-alt" id="outputs">
       <div class="container">
-        <h2 class="section-label mono">github repositories</h2>
-        <p class="section-intro">All code is public. The benchmarking data, analysis pipelines, and relaxation framework are available for reproduction and extension.</p>
+        <h2 class="section-label mono">publications</h2>
 
-        <div class="repo-grid">
-          <a href="https://github.com/dreamlessx/Protein_Data_Analysis" target="_blank" rel="noopener" class="repo-card">
-            <div>
-              <div class="repo-name">Protein_Data_Analysis</div>
-              <p class="repo-desc">Validation and analysis pipeline for protein structure quality metrics. MolProbity scoring, PoseBusters geometry checks, and comparative statistics across all predicted and relaxed structures in the BM5.5 benchmark.</p>
-            </div>
-            <span class="repo-link">view repo &nearr;</span>
-          </a>
+        <div class="output-grid">
+          <div class="output-card" data-expanded="First-author preprint benchmarking AlphaFold 2.3.2 and Boltz-1 on the full BM5.5 protein-protein docking benchmark with multi-protocol Rosetta relaxation. 257 complexes, 6 relaxation protocols, comprehensive quality validation. Planned for arXiv May 2026, full publication to follow.">
+            <div class="output-status">arxiv planned may 2026</div>
+            <h4>BM5.5 protein complex benchmarking</h4>
+            <p>First-author. AI structure prediction vs. experimental benchmarking with multi-protocol relaxation. Full publication to follow.</p>
+          </div>
+          <div class="output-card" data-expanded="Contributing author on the alphavirus stabilization paper. Built the computational protein design pipeline powering the vaccine candidate development under the $46M ARPA-H grant. Co-authored with Dr. Cristina Martina and the Meiler Lab team.">
+            <div class="output-status">in preparation</div>
+            <h4>alphavirus stabilization for vaccine design</h4>
+            <p>Contributing author. Computational pipeline for the ARPA-H vaccine project. Meiler Lab, Vanderbilt.</p>
+          </div>
+        </div>
 
-          <a href="https://github.com/dreamlessx/Protein_Ideal" target="_blank" rel="noopener" class="repo-card">
-            <div>
-              <div class="repo-name">Protein_Ideal</div>
-              <p class="repo-desc">Full BM5.5 protein-protein complex benchmark. Contains the complete dataset, relaxation results, and analysis for 257 complexes across AlphaFold 2.3.2 and Boltz-1 v0.4.1 predictions. 39KB README documenting methodology.</p>
-            </div>
-            <span class="repo-link">view repo &nearr;</span>
-          </a>
+        <div class="output-detail-panel" id="outputDetail"></div>
 
-          <a href="https://github.com/dreamlessx/Protein_Relax_Pipeline" target="_blank" rel="noopener" class="repo-card">
-            <div>
-              <div class="repo-name">Protein_Relax_Pipeline</div>
-              <p class="repo-desc">Rosetta and AMBER relaxation framework. Automated pipeline for running multiple relaxation protocols with configurable replicates across large structure sets. Built for HPC batch submission.</p>
-            </div>
-            <span class="repo-link">view repo &nearr;</span>
-          </a>
+        <div class="repo-cta">
+          <div class="repo-cta-text">
+            <h4>Protein_Data_Analysis</h4>
+            <p>Validation and analysis pipeline for protein structure quality metrics. MolProbity scoring, PoseBusters geometry checks, and comparative statistics.</p>
+          </div>
+          <a href="https://github.com/dreamlessx/Protein_Data_Analysis" target="_blank" rel="noopener" class="btn btn-ghost">view on github &nearr;</a>
+        </div>
+
+        <div class="repo-cta">
+          <div class="repo-cta-text">
+            <h4>Protein_Ideal</h4>
+            <p>Full BM5.5 benchmark dataset. 257 complexes across AlphaFold 2.3.2 and Boltz-1 v0.4.1 with relaxation results and analysis.</p>
+          </div>
+          <a href="https://github.com/dreamlessx/Protein_Ideal" target="_blank" rel="noopener" class="btn btn-ghost">view on github &nearr;</a>
+        </div>
+
+        <div class="repo-cta">
+          <div class="repo-cta-text">
+            <h4>Protein_Relax_Pipeline</h4>
+            <p>Rosetta and AMBER relaxation framework. Automated pipeline for running multiple protocols with configurable replicates. Built for HPC batch submission.</p>
+          </div>
+          <a href="https://github.com/dreamlessx/Protein_Relax_Pipeline" target="_blank" rel="noopener" class="btn btn-ghost">view on github &nearr;</a>
         </div>
       </div>
     </section>
 
-    <section class="section" id="publications">
+    <section class="section" id="tools">
       <div class="container">
-        <h2 class="section-label mono">publications and presentations</h2>
-
-        <div class="pub-list">
-          <div class="pub-item">
-            <span class="pub-status mono">in prep</span>
-            <p><strong>Agarwal, M.</strong> et al. Benchmarking AlphaFold 2.3.2 and Boltz-1 on BM5.5 protein-protein complexes with multi-protocol Rosetta relaxation. <em>Meiler Lab, Vanderbilt University.</em></p>
+        <h2 class="section-label mono">tools + skills</h2>
+        <div class="tools-grid">
+          <div class="tools-group">
+            <h4 class="mono">structure prediction</h4>
+            <div class="tools-tags">
+              <span>AlphaFold 2.3.2</span>
+              <span>Boltz-1</span>
+              <span>ColabFold</span>
+              <span>ESMFold</span>
+            </div>
           </div>
-          <div class="pub-item">
-            <span class="pub-status mono">in prep</span>
-            <p>Middle author. Alphavirus stabilization for vaccine development via computational protein design. <em>Meiler Lab, Vanderbilt University.</em></p>
+          <div class="tools-group">
+            <h4 class="mono">molecular simulation</h4>
+            <div class="tools-tags">
+              <span>Rosetta 3.15</span>
+              <span>AMBER</span>
+              <span>OpenMM</span>
+              <span>FastRelax</span>
+              <span>ProteinMPNN</span>
+            </div>
           </div>
-          <div class="pub-item">
-            <span class="pub-status mono">presented</span>
-            <p>Vanderbilt Summer Research Symposium. Poster presentation on BM5.5 benchmarking and computational pipeline for protein design.</p>
+          <div class="tools-group">
+            <h4 class="mono">validation</h4>
+            <div class="tools-tags">
+              <span>MolProbity</span>
+              <span>PoseBusters</span>
+              <span>Ramachandran analysis</span>
+              <span>clashscore</span>
+            </div>
+          </div>
+          <div class="tools-group">
+            <h4 class="mono">analysis pipeline</h4>
+            <div class="tools-tags">
+              <span>Python</span>
+              <span>pandas</span>
+              <span>numpy</span>
+              <span>scipy</span>
+              <span>BioPython</span>
+            </div>
+          </div>
+          <div class="tools-group">
+            <h4 class="mono">visualization</h4>
+            <div class="tools-tags">
+              <span>matplotlib</span>
+              <span>seaborn</span>
+              <span>PyMOL</span>
+              <span>Jupyter</span>
+            </div>
+          </div>
+          <div class="tools-group">
+            <h4 class="mono">infrastructure</h4>
+            <div class="tools-tags">
+              <span>SLURM / HPC</span>
+              <span>Bash scripting</span>
+              <span>Git</span>
+              <span>Linux</span>
+              <span>Docker</span>
+            </div>
           </div>
         </div>
       </div>
@@ -556,12 +802,84 @@
     <div class="container footer-inner">
       <span class="mono">mudit agarwal &copy; 2026</span>
       <span class="footer-links">
-        <a href="index.html">home</a>
+        <a href="https://www.linkedin.com/in/rajagar/" target="_blank" rel="noopener">linkedin</a>
+        <a href="https://youtube.com/@theoverzealouspremed" target="_blank" rel="noopener">youtube</a>
         <a href="https://github.com/dreamlessx" target="_blank" rel="noopener">github</a>
-        <a href="mailto:muditagar2005@gmail.com">email</a>
+        <a href="index.html#mentorship">contact</a>
+        <a href="index.html#mentorship">resume</a>
+        <button class="scroll-top-circle" onclick="window.scrollTo({top:0,behavior:'smooth'})" aria-label="Scroll to top">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="12" cy="12" r="11"/>
+            <polyline points="8 14 12 9 16 14"/>
+          </svg>
+        </button>
       </span>
     </div>
   </footer>
+
+  <a href="index.html#research" class="floating-return" onclick="sessionStorage.setItem('scrollTo','research')">&larr; back to research</a>
+
+  <script>
+    // nav scroll behavior
+    const nav = document.getElementById('nav');
+    window.addEventListener('scroll', () => {
+      nav.classList.toggle('scrolled', window.scrollY > 20);
+    });
+
+    // mobile nav toggle
+    const navToggle = document.getElementById('navToggle');
+    const navLinks = document.getElementById('navLinks');
+    navToggle.addEventListener('click', () => {
+      navToggle.classList.toggle('open');
+      navLinks.classList.toggle('open');
+    });
+
+    navLinks.querySelectorAll('a').forEach(link => {
+      link.addEventListener('click', () => {
+        navToggle.classList.remove('open');
+        navLinks.classList.remove('open');
+      });
+    });
+
+    // fade-in on scroll
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('visible');
+        }
+      });
+    }, { threshold: 0.1 });
+
+    document.querySelectorAll('.section').forEach(section => {
+      section.classList.add('fade-in');
+      observer.observe(section);
+    });
+
+    // output card expand/collapse into shared detail panel
+    const detailPanel = document.getElementById('outputDetail');
+    let activeCard = null;
+
+    document.querySelectorAll('.output-card[data-expanded]').forEach(card => {
+      card.addEventListener('click', () => {
+        if (activeCard === card) {
+          card.classList.remove('active');
+          detailPanel.classList.remove('open');
+          detailPanel.innerHTML = '';
+          activeCard = null;
+          return;
+        }
+        document.querySelectorAll('.output-card.active').forEach(c => c.classList.remove('active'));
+        card.classList.add('active');
+        activeCard = card;
+
+        const title = card.querySelector('h4').textContent;
+        const status = card.querySelector('.output-status').textContent;
+        let html = '<h4>' + status + ' \u2014 ' + title + '</h4><p>' + card.dataset.expanded + '</p>';
+        detailPanel.innerHTML = html;
+        detailPanel.classList.add('open');
+      });
+    });
+  </script>
 
 </body>
 </html>
