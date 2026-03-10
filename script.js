@@ -1084,6 +1084,10 @@ document.addEventListener('DOMContentLoaded', () => {
     };
 
     const draw = () => {
+      try { _drawInner(); } catch (e) { console.warn('pond draw error:', e.message); }
+      requestAnimationFrame(draw);
+    };
+    const _drawInner = () => {
       ctx.clearRect(0, 0, W, H);
       const now = Date.now();
 
@@ -1493,8 +1497,6 @@ document.addEventListener('DOMContentLoaded', () => {
           });
         }
       }
-
-      requestAnimationFrame(draw);
     };
     draw();
   }
@@ -1878,6 +1880,10 @@ document.addEventListener('DOMContentLoaded', () => {
     let sAnimating = false;
     const sDraw = () => {
       if (!sAnimating) return;
+      try { _sDrawInner(); } catch (e) { console.warn('section draw error (' + id + '):', e.message); }
+      requestAnimationFrame(sDraw);
+    };
+    const _sDrawInner = () => {
       sctx.clearRect(0, 0, sw, sh);
 
       // ripples
@@ -2234,7 +2240,6 @@ document.addEventListener('DOMContentLoaded', () => {
           });
         }
       }
-      requestAnimationFrame(sDraw);
     };
 
     // only animate visible sections — check on scroll + initial check
