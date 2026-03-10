@@ -765,9 +765,10 @@ document.addEventListener('DOMContentLoaded', () => {
     const CRUISE_SPEED = 0.00055;
     const MAX_TURN = 0.008;
     const BABY_DIST = 0.024;
-    const SOLO_COUNT = 5 + Math.floor(Math.random() * 3); // 5-7 solo
-    const FAMILY_COUNT = 1 + Math.floor(Math.random() * 2); // 1 or 2 families
-    const TOTAL_ADULTS = SOLO_COUNT + FAMILY_COUNT; // 7-9 total
+    const isMobile = window.innerWidth < 768;
+    const SOLO_COUNT = isMobile ? 3 + Math.floor(Math.random() * 2) : 5 + Math.floor(Math.random() * 3);
+    const FAMILY_COUNT = isMobile ? 0 : 1 + Math.floor(Math.random() * 2);
+    const TOTAL_ADULTS = SOLO_COUNT + FAMILY_COUNT;
     const NEIGHBOR_DIST = 0.12;
     const SEPARATION_DIST = 0.06;
 
@@ -1752,31 +1753,32 @@ document.addEventListener('DOMContentLoaded', () => {
     };
 
     const secDucks = [];
+    const sMobile = window.innerWidth < 768;
     if (!isAlt) {
-    const mamaPos = safeSpawn();
-    const sInitH = Math.random() * Math.PI * 2;
-    const sBabies = [];
-    for (let b = 0; b < 3; b++) {
-      sBabies.push({
-        x: mamaPos.x - Math.cos(sInitH) * sBabyDist * (b + 1),
-        y: mamaPos.y - Math.sin(sInitH) * sBabyDist * (b + 1),
-        heading: sInitH, wobble: b * 1.1,
+    if (!sMobile) {
+      const mamaPos = safeSpawn();
+      const sInitH = Math.random() * Math.PI * 2;
+      const sBabies = [];
+      for (let b = 0; b < 3; b++) {
+        sBabies.push({
+          x: mamaPos.x - Math.cos(sInitH) * sBabyDist * (b + 1),
+          y: mamaPos.y - Math.sin(sInitH) * sBabyDist * (b + 1),
+          heading: sInitH, wobble: b * 1.1,
+        });
+      }
+      secDucks.push({
+        x: mamaPos.x, y: mamaPos.y,
+        heading: sInitH, speed: sDuckSpeed,
+        wobble: 0, driftPhase: Math.random() * Math.PI * 2,
+        size: 13, isMama: true,
+        targetX: 0, targetY: 0,
+        babies: sBabies,
+        sex: 'f',
+        variant: 0, pathOffset: Math.random(),
+        restTimer: 0, _kissPartner: -1,
       });
     }
-    // mama duck — always visible
-    secDucks.push({
-      x: mamaPos.x, y: mamaPos.y,
-      heading: sInitH, speed: sDuckSpeed,
-      wobble: 0, driftPhase: Math.random() * Math.PI * 2,
-      size: 13, isMama: true,
-      targetX: 0, targetY: 0,
-      babies: sBabies,
-      sex: 'f',
-      variant: 0, pathOffset: Math.random(),
-      restTimer: 0, _kissPartner: -1,
-    });
-    // about: 4-5 solo adults, others: 2-3 — all spawn in visible areas
-    const sSoloCount = isAbout ? (4 + Math.floor(Math.random() * 2)) : (2 + Math.floor(Math.random() * 2));
+    const sSoloCount = sMobile ? (2 + Math.floor(Math.random() * 2)) : isAbout ? (4 + Math.floor(Math.random() * 2)) : (2 + Math.floor(Math.random() * 2));
     for (let si = 0; si < sSoloCount; si++) {
       const sp = safeSpawn();
       const swp = sPickWP(sp.x, sp.y);
