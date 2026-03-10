@@ -2184,18 +2184,18 @@ document.addEventListener('DOMContentLoaded', () => {
       requestAnimationFrame(sDraw);
     };
 
-    // only animate when section is near viewport, pause when not
-    const sObs = new IntersectionObserver(entries => {
-      entries.forEach(e => {
-        if (e.isIntersecting && !sAnimating) {
-          sAnimating = true;
-          sDraw();
-        } else if (!e.isIntersecting) {
-          sAnimating = false;
-        }
-      });
-    }, { rootMargin: '200px' });
-    sObs.observe(sec);
+    // start drawing immediately, use scroll-based visibility to pause/resume
+    sAnimating = true;
+    sDraw();
+    const mainScroller = document.querySelector('main');
+    const checkSecVisible = () => {
+      const r = sec.getBoundingClientRect();
+      const vis = r.bottom > -200 && r.top < window.innerHeight + 200;
+      if (!vis && sAnimating) sAnimating = false;
+      else if (vis && !sAnimating) { sAnimating = true; sDraw(); }
+    };
+    if (mainScroller) mainScroller.addEventListener('scroll', checkSecVisible, { passive: true });
+    window.addEventListener('scroll', checkSecVisible, { passive: true });
   });
 
 });
