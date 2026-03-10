@@ -590,13 +590,17 @@ document.addEventListener('DOMContentLoaded', () => {
 
     form.addEventListener('submit', e => {
       e.preventDefault();
+      const formData = new FormData(form);
       form.classList.add('hiding');
       setTimeout(async () => {
         form.style.visibility = 'hidden';
         form.style.position = 'absolute';
         success.classList.add('show');
         await typeText(termLine1, '$ sending email...', 35);
-        await new Promise(r => setTimeout(r, 600));
+        try {
+          await fetch(form.action, { method: 'POST', body: formData, headers: { 'Accept': 'application/json' } });
+        } catch (_) {}
+        await new Promise(r => setTimeout(r, 300));
         await typeText(termLine2, '\u2713 delivered. encrypted.', 25);
         await new Promise(r => setTimeout(r, 500));
         termLine3.style.display = 'flex';
@@ -1337,8 +1341,12 @@ document.addEventListener('DOMContentLoaded', () => {
           dk.heading += Math.sign(avDiff) * Math.min(Math.abs(avDiff), MAX_TURN * 8 * Math.min(avMag, 2.0));
         }
 
+        // NaN guard
+        if (isNaN(dk.x) || isNaN(dk.y) || isNaN(dk.heading)) {
+          dk.x = 0.5; dk.y = 0.5; dk.heading = Math.random() * Math.PI * 2; dk.speed = CRUISE_SPEED;
+        }
         // move forward
-        dk.speed += (CRUISE_SPEED - dk.speed) * 0.05;
+        dk.speed += (CRUISE_SPEED - dk.speed) * 0.08;
         dk.x += Math.cos(dk.heading) * dk.speed;
         dk.y += Math.sin(dk.heading) * dk.speed;
 
@@ -1461,20 +1469,31 @@ document.addEventListener('DOMContentLoaded', () => {
       // spawn drops
       if (drops.length < MAX_DROPS && Math.random() < 0.025) spawnDrop();
 
-      // bridge: spawn ripple near top of about section
-      if (pondBridge.about && Math.random() < 0.008) {
+      // bridge: spawn ripples near boundary — hero bottom + about top
+      if (pondBridge.about && Math.random() < 0.018) {
         const aw = pondBridge.about.getW();
         const ah = pondBridge.about.getH();
-        if (aw > 0 && pondBridge.about.drops.length < 40) {
+        if (aw > 0 && pondBridge.about.drops.length < 50) {
           pondBridge.about.drops.push({
             x: Math.random() * aw,
-            y: Math.random() * ah * 0.10,
-            r: 0, maxR: 30 + Math.random() * 50,
-            rings: 2 + Math.floor(Math.random() * 2),
-            speed: 0.08 + Math.random() * 0.12,
-            peak: 0.03 + Math.random() * 0.04
+            y: Math.random() * ah * 0.15,
+            r: 0, maxR: 50 + Math.random() * 80,
+            rings: 2 + Math.floor(Math.random() * 3),
+            speed: 0.06 + Math.random() * 0.10,
+            peak: 0.04 + Math.random() * 0.05
           });
         }
+      }
+      // also spawn large ripples at hero bottom edge that visually bleed toward about
+      if (pondBridge.about && Math.random() < 0.012) {
+        drops.push({
+          x: Math.random() * W,
+          y: H * (0.90 + Math.random() * 0.10),
+          r: 0, maxR: 60 + Math.random() * 90,
+          rings: 3 + Math.floor(Math.random() * 2),
+          speed: 0.05 + Math.random() * 0.08,
+          peakAlpha: 0.04 + Math.random() * 0.05
+        });
       }
 
       requestAnimationFrame(draw);
@@ -1545,7 +1564,7 @@ document.addEventListener('DOMContentLoaded', () => {
       if (sw === 0 || sh === 0) return;
       const secRect = sec.getBoundingClientRect();
       // find meaningful content blocks — go deeper to find about-text and about-stats separately
-      const targets = sec.querySelectorAll('.about-grid, .section-label, .section-intro, .research-grid, .clinical-grid, .clinical-grid-1, .clinical-grid-2, .proj-viewer, .service-grid, .pub-scroll, .tools-grid, .mentor-contact-grid, .shadowing-details, .subsection-label');
+      const targets = sec.querySelectorAll('.about-text, .about-stats, .section-label, .section-intro, .research-grid, .clinical-grid, .clinical-grid-1, .clinical-grid-2, .proj-viewer, .service-grid, .pub-scroll, .tools-grid, .mentor-contact-grid, .shadowing-details, .subsection-label');
       if (targets.length > 0) {
         for (const el of targets) {
           const r = el.getBoundingClientRect();
@@ -2059,19 +2078,33 @@ document.addEventListener('DOMContentLoaded', () => {
           }
         }
 
-        // lily pad avoidance
+        // lily pad avoidance — strong repulsion, no overlap
         const sIsMama = sd.isMama && sd.babies.length > 0;
         for (const l of sLeaves) {
           const lpx = l.x + Math.sin(l.drift) * 6 / sw;
           const lpy = l.y + Math.cos(l.drift * 0.7) * 4 / sh;
-          const lR = sIsMama ? (l.size + 50) : (l.size + 30);
+          const lR = sIsMama ? (l.size + 90) : (l.size + 60);
           const avR = lR / Math.min(sw, sh);
           const dist = Math.hypot(sd.x - lpx, sd.y - lpy);
           if (dist < avR && dist > 0) {
             const str = Math.pow((avR - dist) / avR, 0.5);
-            const lf = sIsMama ? 5.0 : 1.5;
+            const lf = sIsMama ? 8.0 : 3.5;
             sAvX += ((sd.x - lpx) / dist) * str * lf;
             sAvY += ((sd.y - lpy) / dist) * str * lf;
+          }
+          // hard push out of lily pad zone
+          if (sIsMama) {
+            const hardR = (l.size + 50) / Math.min(sw, sh);
+            if (dist < hardR && dist > 0) {
+              sd.x += ((sd.x - lpx) / dist) * 0.003;
+              sd.y += ((sd.y - lpy) / dist) * 0.003;
+            }
+          }
+          // all ducks: absolute push if overlapping pad center
+          const overlapR = (l.size + 15) / Math.min(sw, sh);
+          if (dist < overlapR && dist > 0) {
+            sd.x += ((sd.x - lpx) / dist) * 0.005;
+            sd.y += ((sd.y - lpy) / dist) * 0.005;
           }
         }
 
@@ -2093,8 +2126,8 @@ document.addEventListener('DOMContentLoaded', () => {
           }
         }
 
-        // text box avoidance — wide buffer so ducks never overlap text
-        const sTB = 0.12;
+        // text box avoidance — buffer keeps ducks off text
+        const sTB = 0.06;
         for (const tb of textBoxes) {
           const cpx = Math.min(Math.max(sd.x, tb.l), tb.r);
           const cpy = Math.min(Math.max(sd.y, tb.t), tb.b);
@@ -2105,7 +2138,7 @@ document.addEventListener('DOMContentLoaded', () => {
             sAvY += ((sd.y - cpy) / tbDist) * str * 10.0;
           }
           // hard push if inside text box
-          if (sd.x > tb.l - 0.02 && sd.x < tb.r + 0.02 && sd.y > tb.t - 0.02 && sd.y < tb.b + 0.02) {
+          if (sd.x > tb.l - 0.01 && sd.x < tb.r + 0.01 && sd.y > tb.t - 0.01 && sd.y < tb.b + 0.01) {
             const cx = (tb.l + tb.r) / 2, cy = (tb.t + tb.b) / 2;
             const pushDx = sd.x - cx, pushDy = sd.y - cy;
             const pushD = Math.hypot(pushDx, pushDy) || 0.01;
@@ -2142,6 +2175,11 @@ document.addEventListener('DOMContentLoaded', () => {
           sd._prevX = sd.x; sd._prevY = sd.y;
         }
 
+        // NaN guard
+        if (isNaN(sd.x) || isNaN(sd.y) || isNaN(sd.heading)) {
+          sd.x = 0.5; sd.y = 0.5; sd.heading = Math.random() * Math.PI * 2; sd.speed = sDuckSpeed;
+        }
+        sd.speed += (sDuckSpeed - sd.speed) * 0.08;
         sd.x += Math.cos(sd.heading) * sd.speed;
         sd.y += Math.sin(sd.heading) * sd.speed;
         const sdAmt = Math.sin(sd.driftPhase) * 0.00015;
@@ -2178,27 +2216,25 @@ document.addEventListener('DOMContentLoaded', () => {
       }
 
       if (sDrops.length < sMaxDrops && Math.random() < 0.07) sSpawn();
-      // bridge: spawn ripple near bottom of hero from about section
-      if (id === 'about' && pondBridge.hero && Math.random() < 0.006) {
+      // bridge: spawn ripples near bottom of hero from about section
+      if (id === 'about' && pondBridge.hero && Math.random() < 0.015) {
         const hw = pondBridge.hero.getW();
         const hh = pondBridge.hero.getH();
-        if (hw > 0 && pondBridge.hero.drops.length < 25) {
+        if (hw > 0 && pondBridge.hero.drops.length < 35) {
           pondBridge.hero.drops.push({
             x: Math.random() * hw,
-            y: hh * (0.88 + Math.random() * 0.10),
-            r: 0, maxR: 40 + Math.random() * 60,
+            y: hh * (0.85 + Math.random() * 0.15),
+            r: 0, maxR: 50 + Math.random() * 80,
             rings: 2 + Math.floor(Math.random() * 3),
-            speed: 0.10 + Math.random() * 0.15,
-            peakAlpha: 0.04 + Math.random() * 0.06
+            speed: 0.06 + Math.random() * 0.10,
+            peakAlpha: 0.05 + Math.random() * 0.06
           });
         }
       }
       requestAnimationFrame(sDraw);
     };
 
-    // start drawing immediately, use scroll-based visibility to pause/resume
-    sAnimating = true;
-    sDraw();
+    // only animate visible sections — check on scroll + initial check
     const mainScroller = document.querySelector('main');
     const checkSecVisible = () => {
       const r = sec.getBoundingClientRect();
@@ -2207,6 +2243,9 @@ document.addEventListener('DOMContentLoaded', () => {
       else if (vis && !sAnimating) { sAnimating = true; sDraw(); }
     };
     if (mainScroller) mainScroller.addEventListener('scroll', checkSecVisible, { passive: true });
+    window.addEventListener('scroll', checkSecVisible, { passive: true });
+    // initial visibility check after layout settles
+    requestAnimationFrame(checkSecVisible);
     window.addEventListener('scroll', checkSecVisible, { passive: true });
   });
 
