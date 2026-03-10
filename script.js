@@ -598,8 +598,11 @@ document.addEventListener('DOMContentLoaded', () => {
         success.classList.add('show');
         await typeText(termLine1, '$ sending email...', 35);
         try {
-          await fetch(form.action, { method: 'POST', body: formData, headers: { 'Accept': 'application/json' } });
-        } catch (_) {}
+          const resp = await fetch(form.action, { method: 'POST', body: formData, headers: { 'Accept': 'application/json' } });
+          if (!resp.ok) console.warn('Formspree error:', resp.status);
+        } catch (err) {
+          console.warn('Formspree fetch failed:', err.message);
+        }
         await new Promise(r => setTimeout(r, 300));
         await typeText(termLine2, '\u2713 delivered. encrypted.', 25);
         await new Promise(r => setTimeout(r, 500));
