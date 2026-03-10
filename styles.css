@@ -1692,6 +1692,7 @@ a {
 }
 
 #clinical .section-intro {
+  max-width: none;
   margin-bottom: 1.25rem;
   font-size: 0.9rem;
 }
