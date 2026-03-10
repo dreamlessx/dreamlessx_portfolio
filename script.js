@@ -1579,9 +1579,6 @@ document.addEventListener('DOMContentLoaded', () => {
     window.addEventListener('resize', sResize);
     // recompute once fonts loaded
     setTimeout(computeTextBoxes, 500);
-    if (id === 'about') {
-      pondBridge.about = { drops: sDrops, getW: () => sw, getH: () => sh };
-    }
 
     // helper: check if a normalized point is inside any text box (with padding)
     const insideTextBox = (nx, ny, pad) => {
@@ -1645,6 +1642,9 @@ document.addEventListener('DOMContentLoaded', () => {
     // section ripples — grey (alt) sections only
     const sDrops = [];
     const sMaxDrops = 35;
+    if (id === 'about') {
+      pondBridge.about = { drops: sDrops, getW: () => sw, getH: () => sh };
+    }
     const sSpawn = () => {
       if (!isAlt && id !== 'about') return; // ripples on grey sections + about (bridge)
       let x, y, att = 0;
