@@ -1510,14 +1510,15 @@ document.addEventListener('DOMContentLoaded', () => {
   // non-grey: ducks + lily pads, no ripples
   // grey (section-alt): ripples only, no ducks
   // about: ducks + lily pads + ripples (bridge to hero)
-  const pondSections = ['about', 'research', 'clinical', 'projects', 'leadership', 'publications', 'tools', 'mentorship'];
+  // collect all sections for pond backgrounds (works on any page)
+  const pondSectionEls = document.querySelectorAll('.section[id]');
   const AC = [200, 255, 0];
   const sectionCanvases = [];
   const isMobilePond = window.innerWidth <= 768;
 
-  pondSections.forEach(id => {
-    const sec = document.getElementById(id);
-    if (!sec) return;
+  pondSectionEls.forEach(sec => {
+    const id = sec.id;
+    if (!id) return;
     if (isMobilePond) return; // no section ponds on mobile
     sec.style.position = 'relative';
     sec.style.overflow = 'hidden';
