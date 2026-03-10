@@ -1318,6 +1318,12 @@ document.addEventListener('DOMContentLoaded', () => {
             avoidX += ((dk.x - cursorX) / cdist) * str * 7.0;
             avoidY += ((dk.y - cursorY) / cdist) * str * 7.0;
             dk.speed = Math.max(dk.speed, CRUISE_SPEED * (2.0 + str * 2.5));
+            // direct position push when very close — prevents "stuck drifting forward"
+            if (cdist < cAvR * 0.5) {
+              const push = 0.004 * Math.pow((cAvR * 0.5 - cdist) / (cAvR * 0.5), 0.5);
+              dk.x += ((dk.x - cursorX) / cdist) * push;
+              dk.y += ((dk.y - cursorY) / cdist) * push;
+            }
           }
         }
 
@@ -1328,7 +1334,7 @@ document.addEventListener('DOMContentLoaded', () => {
           let avDiff = avAngle - dk.heading;
           while (avDiff > Math.PI) avDiff -= Math.PI * 2;
           while (avDiff < -Math.PI) avDiff += Math.PI * 2;
-          dk.heading += Math.sign(avDiff) * Math.min(Math.abs(avDiff), MAX_TURN * 5 * Math.min(avMag, 1.5));
+          dk.heading += Math.sign(avDiff) * Math.min(Math.abs(avDiff), MAX_TURN * 8 * Math.min(avMag, 2.0));
         }
 
         // move forward
@@ -2078,6 +2084,12 @@ document.addEventListener('DOMContentLoaded', () => {
             sAvX += ((sd.x - sCurX) / scDist) * str * 6.0;
             sAvY += ((sd.y - sCurY) / scDist) * str * 6.0;
             sd.speed = Math.max(sd.speed, sDuckSpeed * (2.0 + str * 2.0));
+            // direct position push when very close
+            if (scDist < scAvR * 0.5) {
+              const push = 0.004 * Math.pow((scAvR * 0.5 - scDist) / (scAvR * 0.5), 0.5);
+              sd.x += ((sd.x - sCurX) / scDist) * push;
+              sd.y += ((sd.y - sCurY) / scDist) * push;
+            }
           }
         }
 
@@ -2108,7 +2120,7 @@ document.addEventListener('DOMContentLoaded', () => {
           let sAD = sAA - sd.heading;
           while (sAD > Math.PI) sAD -= Math.PI * 2;
           while (sAD < -Math.PI) sAD += Math.PI * 2;
-          sd.heading += Math.sign(sAD) * Math.min(Math.abs(sAD), sDuckMaxTurn * 4 * Math.min(sAM, 1.5));
+          sd.heading += Math.sign(sAD) * Math.min(Math.abs(sAD), sDuckMaxTurn * 8 * Math.min(sAM, 2.0));
         }
 
         // anti-trap: if mama stuck (barely moving), teleport toward center
