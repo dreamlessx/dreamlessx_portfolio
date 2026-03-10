@@ -713,7 +713,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const ctx = canvas.getContext('2d');
     const dpr = window.devicePixelRatio || 1;
     const drops = [];
-    const MAX_DROPS = 22;
+    const MAX_DROPS = 18;
     const A = [200, 255, 0]; // accent
 
     let W = 0, H = 0;
@@ -853,7 +853,7 @@ document.addEventListener('DOMContentLoaded', () => {
         // avoid only the actual text box area (with small padding)
       } while (x / W < boxR + 0.03 && y / H > boxT - 0.03 && y / H < boxB + 0.03 && attempts < 20);
       const maxR = 50 + Math.random() * 180;
-      const rings = 3 + Math.floor(Math.random() * 5);
+      const rings = 2 + Math.floor(Math.random() * 3);
       const speed = 0.12 + Math.random() * 0.22;
       const peakAlpha = 0.06 + Math.random() * 0.16;
       drops.push({ x, y, r: 0, maxR, rings, speed, peakAlpha });
@@ -1083,8 +1083,12 @@ document.addEventListener('DOMContentLoaded', () => {
       ctx.restore();
     };
 
+    let _lastFrame = 0, _skipNext = false;
     const draw = () => {
+      const t0 = performance.now();
+      if (_skipNext) { _skipNext = false; requestAnimationFrame(draw); return; }
       try { _drawInner(); } catch (e) { console.warn('pond draw error:', e.message); }
+      if (performance.now() - t0 > 20) _skipNext = true; // skip next if frame took >20ms
       requestAnimationFrame(draw);
     };
     const _drawInner = () => {
@@ -1877,10 +1881,13 @@ document.addEventListener('DOMContentLoaded', () => {
       sctx.restore();
     };
 
-    let sAnimating = false;
+    let sAnimating = false, _sSkip = false;
     const sDraw = () => {
       if (!sAnimating) return;
+      if (_sSkip) { _sSkip = false; requestAnimationFrame(sDraw); return; }
+      const st0 = performance.now();
       try { _sDrawInner(); } catch (e) { console.warn('section draw error (' + id + '):', e.message); }
+      if (performance.now() - st0 > 18) _sSkip = true;
       requestAnimationFrame(sDraw);
     };
     const _sDrawInner = () => {
