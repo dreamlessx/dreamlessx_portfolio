@@ -1230,6 +1230,7 @@ a {
 }
 
 .inline-footer {
+  font-family: var(--mono);
   font-size: 0.8rem;
   color: var(--text-dim);
   background: #0a1f0a;
