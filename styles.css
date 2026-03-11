@@ -1952,6 +1952,7 @@ a {
   border: 1px solid var(--border);
   border-radius: 8px;
   overflow: hidden;
+  max-width: 100%;
 }
 
 .pub-item {
@@ -2018,6 +2019,7 @@ a {
   font-size: 0.85rem;
   color: var(--text-secondary);
   line-height: 1.6;
+  min-width: 0;
 }
 
 .pub-item strong {
