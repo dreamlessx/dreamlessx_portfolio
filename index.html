@@ -319,7 +319,7 @@
               </div>
               <h3>LandmarkDiff</h3>
               <p class="proj-sub mono">facial surgery prediction from a smartphone photo</p>
-              <p>A latent diffusion model that generates photorealistic before/after facial surgery previews from standard 2D clinical photos. No CT scanner, no 3D scanning hardware, just a phone camera. Maps 530+ facial landmarks into a FLAME mesh for 3D-aware conditioning, then generates outcome previews via FLUX.1-dev with IP-Adapter identity preservation. Training on synthetic paired data with Triton inference on AWS.</p>
+              <p>A latent diffusion model that generates photorealistic before/after facial surgery previews from a phone camera. Maps 530+ facial landmarks into a FLAME mesh for 3D-aware conditioning, then generates previews via FLUX.1-dev with IP-Adapter identity preservation. No CT scanner, no 3D hardware required.</p>
               <div class="proj-tech"><span>React Native</span><span>FLUX.1-dev</span><span>ControlNet</span><span>IP-Adapter</span><span>FLAME</span><span>MediaPipe</span><span>FastAPI</span><span>Triton</span><span>AWS/SLURM</span></div>
               <p class="proj-vision"><strong>Vision:</strong> Democratize surgical planning. Any patient, any clinic, any phone.</p>
             </div>
@@ -329,7 +329,7 @@
               </div>
               <h3>ICT God</h3>
               <p class="proj-sub mono">full-stack trading journal</p>
-              <p>Next.js 14 app with Prisma ORM, PostgreSQL, and server components. Full trade lifecycle: log entries with ICT methodology tags (FVG, OB, liquidity sweeps), attach screenshots, journal session psychology, and review performance analytics. Custom session replay lets you walk through trade sequences. Built because every trading journal app I tried was either too simple or tried to be a Bloomberg terminal.</p>
+              <p>Next.js 14 app with Prisma ORM, PostgreSQL, and server components. Full trade lifecycle: log entries with ICT methodology tags, attach screenshots, journal session psychology, and review performance analytics. Custom session replay lets you walk through trade sequences.</p>
               <div class="proj-tech"><span>Next.js 14</span><span>TypeScript</span><span>Prisma</span><span>PostgreSQL</span><span>TailwindCSS</span></div>
               <p class="proj-vision"><strong>Vision:</strong> One place to log, review, and learn from every trade.</p>
             </div>
@@ -339,7 +339,7 @@
               </div>
               <h3>YouTube Pipeline</h3>
               <p class="proj-sub mono">automated content production</p>
-              <p>End-to-end video production pipeline that takes a topic and outputs a publish-ready video. Script generation with structured prompts, text-to-speech via edge-tts with voice cloning, automated B-roll editing, thumbnail generation, and YouTube scheduling. FastAPI backend orchestrates Celery workers for each pipeline stage. n8n handles webhook triggers and notification workflows. One command to go from idea to uploaded video.</p>
+              <p>End-to-end video production pipeline that takes a topic and outputs a publish-ready video. Script generation, text-to-speech with voice cloning, automated B-roll editing, thumbnail generation, and YouTube scheduling. FastAPI backend orchestrates Celery workers for each stage.</p>
               <div class="proj-tech"><span>Python</span><span>FastAPI</span><span>Celery</span><span>Redis</span><span>n8n</span><span>Docker</span></div>
               <p class="proj-vision"><strong>Vision:</strong> Idea to published video with a single command.</p>
             </div>
@@ -349,7 +349,7 @@
               </div>
               <h3>RAG Med</h3>
               <p class="proj-sub mono">medical knowledge retrieval</p>
-              <p>Retrieval-augmented generation system for medical literature. Ingest clinical papers as PDFs, chunk them semantically, embed into ChromaDB, then query with natural language. Retrieval pipeline does hybrid search (dense + sparse), cross-encoder reranking, and grounded answer generation with source citations. Built for my own study sessions. Ask it a question about pharmacology and get an answer with the exact paper and page number.</p>
+              <p>Retrieval-augmented generation system for medical literature. Ingest clinical papers as PDFs, chunk them semantically, embed into ChromaDB, then query with natural language. Hybrid search with cross-encoder reranking and grounded answer generation with source citations.</p>
               <div class="proj-tech"><span>Python</span><span>FastAPI</span><span>React</span><span>Vite</span><span>ChromaDB</span><span>Docker</span></div>
               <p class="proj-vision"><strong>Vision:</strong> Ask a question, get the paper and page number.</p>
             </div>
@@ -359,7 +359,7 @@
               </div>
               <h3>Rusty OS</h3>
               <p class="proj-sub mono">bare-metal x86_64 kernel</p>
-              <p>Writing an operating system from scratch in Rust. Custom bootloader, VGA text mode driver, IDT-based interrupt handling, PS/2 keyboard driver, and a frame allocator for physical memory management. No standard library, no runtime, no libc. Just registers, page tables, and raw metal. Currently implementing a basic heap allocator and async executor for cooperative multitasking. Runs in QEMU, debugged with GDB stubs.</p>
+              <p>Writing an operating system from scratch in Rust. Custom bootloader, VGA text mode driver, IDT-based interrupt handling, PS/2 keyboard driver, and physical memory management. No standard library, no runtime, no libc. Currently implementing a heap allocator and async executor for cooperative multitasking.</p>
               <div class="proj-tech"><span>Rust</span><span>x86_64 ASM</span><span>no_std</span><span>QEMU</span><span>Bootimage</span></div>
               <p class="proj-vision"><strong>Vision:</strong> Understand computing from the metal up.</p>
             </div>
