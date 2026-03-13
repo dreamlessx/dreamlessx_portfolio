@@ -290,6 +290,24 @@ a {
   white-space: nowrap;
 }
 
+.hero-contribute {
+  margin-top: 1rem;
+}
+
+.contribute-link {
+  font-size: 0.72rem;
+  color: var(--text-dim);
+  text-decoration: none;
+  border-bottom: 1px solid var(--border);
+  padding-bottom: 2px;
+  transition: color var(--transition), border-color var(--transition);
+}
+
+.contribute-link:hover {
+  color: var(--accent);
+  border-color: var(--accent);
+}
+
 /* --- hero gears background --- */
 .hero-gears-bg {
   position: absolute;
