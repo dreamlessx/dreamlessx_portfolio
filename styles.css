@@ -1484,74 +1484,31 @@ a {
 }
 
 /* --- status bar --- */
-/* --- notification toast --- */
-.notification-toast {
-  position: fixed;
-  top: 1rem;
-  right: 1.5rem;
-  background: var(--bg-card);
-  border: 1px solid rgba(200, 255, 0, 0.15);
-  border-radius: 8px;
-  padding: 0.5rem 0.75rem;
-  font-size: 0.75rem;
-  color: var(--text);
-  z-index: 1000;
+/* --- status bar notification --- */
+.status-notif {
+  margin-left: auto;
   display: flex;
   align-items: center;
-  gap: 0.5rem;
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
-  opacity: 1;
-  transform: translateY(0);
-  transition: opacity 0.3s ease, transform 0.3s ease;
+  gap: 0.4rem;
+  color: var(--text-secondary);
+  text-decoration: none;
+  font-size: 0.7rem;
+  transition: color var(--transition);
 }
 
-.notification-toast.hidden {
-  opacity: 0;
-  transform: translateY(-1rem);
-  pointer-events: none;
+.status-notif:hover {
+  color: var(--accent);
 }
 
 .notification-badge {
   background: var(--accent);
   color: var(--bg);
-  font-size: 0.55rem;
+  font-size: 0.5rem;
   font-weight: 600;
-  padding: 0.12rem 0.4rem;
+  padding: 0.1rem 0.35rem;
   border-radius: 3px;
   text-transform: uppercase;
   letter-spacing: 0.05em;
-  flex-shrink: 0;
-}
-
-.notification-text {
-  color: var(--text-secondary);
-  white-space: nowrap;
-}
-
-.notification-text a {
-  color: var(--accent);
-  text-decoration: none;
-  font-weight: 500;
-}
-
-.notification-text a:hover {
-  text-decoration: underline;
-}
-
-.notification-close {
-  background: none;
-  border: none;
-  color: var(--text-dim);
-  font-size: 1rem;
-  cursor: pointer;
-  padding: 0 0.15rem;
-  line-height: 1;
-  margin-left: 0.25rem;
-  transition: color var(--transition);
-}
-
-.notification-close:hover {
-  color: var(--text);
 }
 
 .status-bar {
