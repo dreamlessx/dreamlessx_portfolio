@@ -290,22 +290,25 @@ a {
   white-space: nowrap;
 }
 
-.hero-contribute {
-  margin-top: 1rem;
-}
-
-.contribute-link {
+.contribute-banner {
+  display: block;
+  margin-top: 1.25rem;
+  max-width: 511px;
+  text-align: center;
+  padding: 0.55rem 1rem;
   font-size: 0.72rem;
-  color: var(--text-dim);
+  color: var(--text-secondary);
   text-decoration: none;
-  border-bottom: 1px solid var(--border);
-  padding-bottom: 2px;
-  transition: color var(--transition), border-color var(--transition);
+  background: var(--accent-dim);
+  border: 1px solid rgba(200, 255, 0, 0.12);
+  border-radius: 6px;
+  transition: background var(--transition), border-color var(--transition), color var(--transition);
 }
 
-.contribute-link:hover {
+.contribute-banner:hover {
+  background: rgba(200, 255, 0, 0.15);
+  border-color: rgba(200, 255, 0, 0.3);
   color: var(--accent);
-  border-color: var(--accent);
 }
 
 /* --- hero gears background --- */
