@@ -2633,6 +2633,27 @@ a {
   margin-top: auto;
 }
 
+.proj-links {
+  display: flex;
+  gap: 0.5rem;
+  margin-top: 0.6rem;
+}
+
+.proj-link {
+  font-size: 0.7rem;
+  color: var(--accent);
+  text-decoration: none;
+  border: 1px solid rgba(200, 255, 0, 0.2);
+  padding: 0.25rem 0.55rem;
+  border-radius: 4px;
+  transition: background var(--transition), border-color var(--transition);
+}
+
+.proj-link:hover {
+  background: var(--accent-dim);
+  border-color: rgba(200, 255, 0, 0.4);
+}
+
 .proj-arrow {
   font-family: var(--mono);
   font-size: 1.2rem;
