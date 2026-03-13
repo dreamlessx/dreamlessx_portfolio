@@ -30,6 +30,19 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   }
 
+  // -- notification banner dismiss --
+  const notifBar = document.getElementById('notificationBar');
+  const notifClose = document.getElementById('notificationClose');
+  if (notifBar && notifClose) {
+    if (sessionStorage.getItem('notif-dismissed')) {
+      notifBar.classList.add('hidden');
+    }
+    notifClose.addEventListener('click', () => {
+      notifBar.classList.add('hidden');
+      sessionStorage.setItem('notif-dismissed', '1');
+    });
+  }
+
   // -- inject animation styles --
   const style = document.createElement('style');
   style.textContent = `
