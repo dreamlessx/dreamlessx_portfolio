@@ -22,6 +22,26 @@
   <meta name="twitter:description" content="Neuroscience, biochemistry, and way too many side projects.">
   <meta name="twitter:image" content="https://dreamlessx.com/og-image.png">
 
+  <!-- Structured Data -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "Person",
+    "name": "Mudit Agarwal",
+    "url": "https://dreamlessx.com",
+    "sameAs": [
+      "https://github.com/dreamlessx",
+      "https://medstudy.dev"
+    ],
+    "jobTitle": "Pre-Medical Student & Researcher",
+    "knowsAbout": ["Neuroscience", "Biochemistry", "Computational Biology", "Protein Engineering"],
+    "alumniOf": {
+      "@type": "CollegeOrUniversity",
+      "name": "Vanderbilt University"
+    }
+  }
+  </script>
+
   <link rel="icon" href="favicon.ico?v=4" sizes="32x32">
   <link rel="icon" type="image/svg+xml" href="favicon.svg?v=4">
   <link rel="icon" type="image/png" sizes="32x32" href="favicon-32.png?v=4">
@@ -41,12 +61,10 @@
     </div>
   </div>
 
-  <div class="notification-bar" id="notificationBar">
-    <div class="notification-inner">
-      <span class="notification-badge mono">new</span>
-      <span class="notification-text">medstudy is live &mdash; <a href="https://medstudy.dev" target="_blank" rel="noopener">medstudy.dev</a></span>
-      <button class="notification-close" id="notificationClose" aria-label="Dismiss">&times;</button>
-    </div>
+  <div class="notification-toast" id="notificationBar">
+    <span class="notification-badge mono">new</span>
+    <span class="notification-text">medstudy is live &mdash; <a href="https://medstudy.dev" target="_blank" rel="noopener">medstudy.dev</a></span>
+    <button class="notification-close" id="notificationClose" aria-label="Dismiss">&times;</button>
   </div>
 
   <nav class="nav" id="nav">

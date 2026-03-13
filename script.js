@@ -30,12 +30,19 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   }
 
-  // -- notification banner dismiss --
+  // -- notification toast dismiss --
   const notifBar = document.getElementById('notificationBar');
   const notifClose = document.getElementById('notificationClose');
   if (notifBar && notifClose) {
     if (sessionStorage.getItem('notif-dismissed')) {
       notifBar.classList.add('hidden');
+    } else {
+      notifBar.style.opacity = '0';
+      notifBar.style.transform = 'translateY(-1rem)';
+      setTimeout(() => {
+        notifBar.style.opacity = '';
+        notifBar.style.transform = '';
+      }, 800);
     }
     notifClose.addEventListener('click', () => {
       notifBar.classList.add('hidden');
