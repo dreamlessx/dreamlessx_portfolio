@@ -97,6 +97,7 @@ document.addEventListener('DOMContentLoaded', () => {
   // 1. STATUS BAR TYPING (terminal style)
   // ========================================
   const statusMessages = [
+    'med study is live → medstudy.dev',
     'currently doomscrolling insta',
     'waiting on mcat results',
     'prepping for harvard summer',
